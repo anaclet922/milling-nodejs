@@ -1,0 +1,347 @@
+<%- include('../includes/dashboard-top') %>
+
+<div class="page-content-wrapper">
+
+    <div class="page-content">
+
+        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+            <div class="breadcrumb-title pe-3">Dashboard</div>
+            <div class="ps-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 p-0 align-items-center">
+                        <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img" class="md hydrated" aria-label="home outline"></ion-icon></a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page"><%= locals.title %></li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="ms-auto">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#new-daily-workforce-modal">New Daily workforce</button>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#new-permanent-workforce-modal">New Permanent workforce</button>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#new-department-modal">New Department</button>
+                </div>
+            </div>
+        </div>
+        <!--end breadcrumb-->
+
+        <br>
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs nav-primary" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                                    <div class="d-flex align-items-center">
+                                        <div class="tab-icon">
+                                        </div>
+                                        <div class="tab-title">Permanent Workforce</div>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
+                                    <div class="d-flex align-items-center">
+                                        <div class="tab-icon">
+                                        </div>
+                                        <div class="tab-title">Daily Workforce</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab" aria-selected="false" tabindex="-1">
+                                    <div class="d-flex align-items-center">
+                                        <div class="tab-icon">
+                                        </div>
+                                        <div class="tab-title">Departments</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content py-3">
+                            <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
+                                <img src="assets/images/carousel/08.jpg" alt="" class="radius-10 mb-3 img-fluid">
+                                <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi.</p>
+                            </div>
+                            <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+                                <img src="assets/images/carousel/07.jpg" alt="" class="radius-10 mb-3 img-fluid">
+                                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                            </div>
+                            <div class="tab-pane fade" id="primarycontact" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+
+                                        <table id="departments" class="table table-striped table-bordered" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Members</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <?php $i = 1;
+                                                foreach ($departments as $d) { ?>
+                                                    <tr>
+                                                        <td><?= $i ?></td>
+                                                        <td><?= $d['title'] ?></td>
+                                                        <td><?= $d['members'] ?></td>
+                                                        <td></td>
+                                                    </tr>
+                                                <?php
+                                                    $i++;
+                                                }
+                                                ?>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Members</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="new-daily-workforce-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <form action="<?= base_url('workforce/new-daily-workforce') ?>" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Daily workforce</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">First name</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="First name" name="first_name">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Last name</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name" name="last_name">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Gender</label>
+                        <select name="gender" id="" class="form-control form-control-lg mb-3">
+                            <option value="">Select gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Year of birth</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Year of birth" name="age">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">NID</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID" name="nid">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Phone number</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number" name="phone">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Department</label>
+                        <select name="department_id" id="" class="form-control form-control-lg mb-3">
+                            <option value="">Select Department</option>
+                            <?php foreach ($departments as $d) { ?>
+                                <option value="<?= $d['department_id'] ?>"><?= $d['title'] ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Position</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Position" name="position">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Start date/hiring date</label>
+                        <input class="form-control form-control-lg mb-3" type="date" placeholder="hired_date" name="position">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">End date</label>
+                        <input class="form-control form-control-lg mb-3" type="date" placeholder="hired_date" name="position">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Contract</label>
+                        <input class="form-control form-control-lg mb-3" type="file" name="contract" accept="application/pdf">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Passport Photo</label>
+                        <input class="form-control form-control-lg mb-3" type="file"  name="picture" accept="image/jpeg, image/png">
+                    </div> 
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Username</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Username" name="username">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Password</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Password" name="password">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Note</label>
+                        <textarea name="note" class="form-control"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="new-permanent-workforce-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+        <form action="<?= base_url('workforce/new-permanent-workforce') ?>" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Permanent workforce</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row">
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">First name</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="First name" name="first_name">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Last name</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name" name="last_name">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Gender</label>
+                        <select name="gender" id="" class="form-control form-control-lg mb-3">
+                            <option value="">Select gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Year of birth</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Year of birth" name="age">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">NID</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID" name="nid">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Phone number</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number" name="phone">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Department</label>
+                        <select name="department_id" id="" class="form-control form-control-lg mb-3">
+                            <option value="">Select Department</option>
+                            <?php foreach ($departments as $d) { ?>
+                                <option value="<?= $d['department_id'] ?>"><?= $d['title'] ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Position</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Position" name="position">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Start date/hiring date</label>
+                        <input class="form-control form-control-lg mb-3" type="date" placeholder="hired_date" name="hired_date">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">End date</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="end_date" name="end_date" value="N/A" readonly="readonly">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Contract</label>
+                        <input class="form-control form-control-lg mb-3" type="file" name="contract" accept="application/pdf">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Passport Photo</label>
+                        <input class="form-control form-control-lg mb-3" type="file"  name="picture" accept="image/jpeg, image/png">
+                    </div> 
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Username</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Username" name="username">
+                    </div>
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Password</label>
+                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Password" name="password">
+                    </div>
+
+                    <div class="form-group col-md-6 col-lg-6">
+                        <label for="">Note</label>
+                        <textarea name="note" class="form-control"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="new-department-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="<?= base_url('workforce/new-department') ?>" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <input class="form-control form-control-lg mb-3" type="text" placeholder="Department name" name="title">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../includes/dashboard-foot') %>

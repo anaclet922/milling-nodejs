@@ -2,6 +2,7 @@ const express = require("express")
 const session = require('express-session');
 const path = require('path');
 const flash = require('connect-flash');
+const conn = require('./database');
 
 const app = express()
 
@@ -18,14 +19,35 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //allow form submit and get values
 app.use(flash());
 
+app.use(async function(req,res,next){
+
+    res.locals.session = req.session;
+    console.log(req.session.loggedInUser);
+    var configs = [];
+    conn.query("SELECT * FROM tbl_configs", async function (error, config, fields) {
+        if (error) throw error;
+
+        for(var i in config){
+            console.log(i)
+            configs[config[i].config_key] = config[i].value;
+        }
+        res.locals.configs = configs;
+        next(); 
+    });
+    
+
+});
+
+
 const authRouter = require('./routes/router-auth');
+app.use('/auth', authRouter);
 
-app.use('/auth', authRouter)
-
+const dashboardRouter = require('./routes/router-dashboard');
+app.use('/dashboard', dashboardRouter);
 
 app.get('/', (req, res) =>{
     if (req.session.loggedin) {
-        req.redirect('/home');
+        res.redirect('/dashboard');
     }else{
         req.session.destroy();
         res.redirect('/auth');

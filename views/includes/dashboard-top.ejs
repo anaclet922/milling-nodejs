@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- loader-->
+    <link href="/assets/css/pace.min.css" rel="stylesheet" />
+    <script src="/assets/js/pace.min.js"></script>
+
+    <!--plugins-->
+    <link href="/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="/assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+
+    <!-- CSS Files -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap-extended.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!--Theme Styles-->
+    <link href="/assets/css/dark-theme.css" rel="stylesheet" />
+    <link href="/assets/css/semi-dark.css" rel="stylesheet" />
+    <link href="/assets/css/header-colors.css" rel="stylesheet" />
+
+
+    <!-- JS Files-->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="/assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <!--plugins-->
+    <script src="/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <!-- Main JS-->
+
+
+
+    <link rel="stylesheet" href="/assets/sweetalert/dist/sweetalert2.min.css">
+    <script src="/assets/sweetalert/dist/sweetalert2.min.js"></script>
+
+
+    <script src="/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/plugins/datatable/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/assets/js/table-datatable.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <title>
+        <%= locals.title %> - <%= locals.configs['system_name'] %>
+    </title>
+</head>
+
+<body>
+
+
+    <!--start wrapper-->
+    <div class="wrapper">
+
+        <!--start sidebar -->
+        <%- include('../includes/left-sidebar') %>
+            <!--end sidebar -->
+
+            <!--start top header-->
+            <%- include('../includes/top-header') %>
+                <!--end top header-->

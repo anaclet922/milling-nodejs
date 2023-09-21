@@ -1,0 +1,49 @@
+
+                <!--start footer-->
+                <footer class="footer">
+                    <div class="footer-text">
+                        Copyright © <%= (new Date()).getFullYear() %>.
+                    </div>
+                </footer>
+                <!--end footer-->
+
+
+                <!--Start Back To Top Button-->
+                <a href="javaScript:;" class="back-to-top">
+                    <ion-icon name="arrow-up-outline"></ion-icon>
+                </a>
+                <!--End Back To Top Button-->
+
+
+    </div>
+    <!--end wrapper-->
+    <button style="display:none;" type="button" onclick="showToastSuccessOrError()"
+        id="toastBtn_id">Q</button>
+    <script>
+
+      
+        function showToastSuccessOrErrorJS(icon, message) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: icon,
+                title: message
+            })
+
+        }
+    </script>
+
+
+</body>
+
+</html>
