@@ -11,7 +11,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(session({
 	secret: 'This a  secret for session encoding',
 	resave: true,
-	saveUninitialized: true
+	saveUninitialized: true,
+    cookie: {
+        sameSite: 'strict'
+    }
 }));
 
 app.set('view engine', 'ejs') //set views engine
@@ -22,16 +25,15 @@ app.use(flash());
 app.use(async function(req,res,next){
 
     res.locals.session = req.session;
-    console.log(req.session.loggedInUser);
     var configs = [];
     conn.query("SELECT * FROM tbl_configs", async function (error, config, fields) {
         if (error) throw error;
 
         for(var i in config){
-            console.log(i)
             configs[config[i].config_key] = config[i].value;
         }
         res.locals.configs = configs;
+        res.locals.message = req.flash();
         next(); 
     });
     

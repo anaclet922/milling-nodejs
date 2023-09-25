@@ -17,17 +17,26 @@
 
     </div>
     <!--end wrapper-->
-    <button style="display:none;" type="button" onclick="showToastSuccessOrError()"
-        id="toastBtn_id">Q</button>
+    
     <script>
 
+        $(document).ready(function(){
+
+            <% if(message.error){ %>
+                showToastSuccessOrErrorJS('error', '<%= message.error %>')
+            <% } %>
+
+            <% if(message.success){ %>
+                showToastSuccessOrErrorJS('success', '<%= message.success %>')
+            <% } %>
+        });
       
         function showToastSuccessOrErrorJS(icon, message) {
             const Toast = Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 4000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)
