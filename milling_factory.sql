@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2023 at 07:57 AM
+-- Generation Time: Sep 25, 2023 at 04:09 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -75,7 +75,7 @@ CREATE TABLE `tbl_configs` (
 --
 
 INSERT INTO `tbl_configs` (`id`, `config_key`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'system_name', 'MILLING FACTORY', '2022-04-14 06:04:13', '2023-09-16 15:15:21');
+(1, 'system_name', 'o', '2022-04-14 06:04:13', '2023-09-25 11:53:26');
 
 -- --------------------------------------------------------
 
@@ -129,9 +129,10 @@ CREATE TABLE `tbl_departments` (
 --
 
 INSERT INTO `tbl_departments` (`id`, `title`, `created_at`, `updated_at`) VALUES
-(2, 'Finance', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'Accounting', '2023-09-17 03:53:04', '2023-09-17 03:53:04'),
-(4, 'Sales and Marketing', '2023-09-17 04:51:51', '2023-09-17 04:51:51');
+(2, 'Finance', '0000-00-00 00:00:00', '2023-09-25 08:48:19'),
+(4, 'Sales & Marketing', '2023-09-17 04:51:51', '2023-09-25 08:41:52'),
+(5, 'Information Technology', '2023-09-25 08:56:40', '2023-09-25 08:57:08'),
+(7, 'Audit', '2023-09-25 11:52:34', '2023-09-25 11:52:34');
 
 -- --------------------------------------------------------
 
@@ -309,7 +310,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `first_name`, `last_name`, `username`, `email`, `password`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Anaclet', 'Ahishakiye', 'anaclet', 'anaclet@example.com', '$2b$08$K5P4ZJMmW0zjPnHLxy9eyOmOu3LrM5vVwMDNWifU8R2NXLRxgOkGa', 'Y', '2023-09-17 01:35:18', '2023-09-22 09:09:18');
+(1, 'Anaclet', 'Ahishakiye', 'anaclet', 'anaclet@example.com', '$2b$08$eYVJvIYeID3YKOqh6tQQu.Xqqg.SN7X46Q4u1ldSmbq5eQQ4ZX4Na', 'Y', '2023-09-17 01:35:18', '2023-09-25 08:35:45');
 
 -- --------------------------------------------------------
 
@@ -377,16 +378,18 @@ CREATE TABLE `tbl_warehouse` (
 
 CREATE TABLE `tbl_workforce` (
   `id` int(11) NOT NULL,
+  `type` enum('PERMANENT','DAILY') NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `gender` varchar(1) NOT NULL,
-  `age` int(11) NOT NULL,
+  `date_of_birth` varchar(50) NOT NULL,
   `nid` varchar(50) NOT NULL,
   `phone` varchar(50) NOT NULL,
-  `department_id` int(11) NOT NULL,
+  `department_id` int(11) DEFAULT NULL,
   `position` varchar(512) NOT NULL,
   `note` text NOT NULL,
   `hired_date` date NOT NULL,
+  `end_date` varchar(50) DEFAULT '',
   `contract` text NOT NULL,
   `picture` text NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -394,6 +397,15 @@ CREATE TABLE `tbl_workforce` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_workforce`
+--
+
+INSERT INTO `tbl_workforce` (`id`, `type`, `first_name`, `last_name`, `gender`, `date_of_birth`, `nid`, `phone`, `department_id`, `position`, `note`, `hired_date`, `end_date`, `contract`, `picture`, `username`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'DAILY', 'Anaclet', 'Ahishakiye', 'M', '2023-08-31', '1197980034115066', '0784354460', 2, 'Vice Chairman', 'Not about w', '2023-09-15', '2023-09-21', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', 'ifvikoyq', '$2b$08$kOBesJ9PTbozorUx7nls3e7Yx84JElTHyWzMkCLXrMWJ/Q722Z8Wq', '2023-09-25 10:11:06', '2023-09-25 10:11:06'),
+(2, 'DAILY', 'Isai', 'Anaclet', 'M', '2023-09-06', '1197980034115094', '+(250) 784 354 4460', NULL, 'Chairman.', '', '2023-09-23', '2023-09-21', '1695636780611-get_turikumwe_moto-2022-06-23.pdf', '1695636780613-start_logo.png', 'ifvikoyq', '$2b$08$Cp9WZrAR29wfk1RunaxzPOF9n9mnMIwlapu9L1hRzScF0hSMtGFt2', '2023-09-25 10:13:00', '2023-09-25 10:13:10'),
+(3, 'PERMANENT', 'Anaclet', 'Ahishakiye', 'M', '2023-08-30', '1199680020158063', '0784354460', 2, 'Accountant', '', '2023-09-01', 'N/A', '1695641538798-get_turikumwe_moto-2022-06-23.pdf', '1695641538834-start_logo.png', '93mt1eei', '$2b$08$bsfEdD6FQr9p.l3QJ6BqwOKTEI4thXQopTT7bChC/9YyDYLRrkr4u', '2023-09-25 11:32:18', '2023-09-25 11:32:18');
 
 --
 -- Indexes for dumped tables
@@ -551,7 +563,7 @@ ALTER TABLE `tbl_debts`
 -- AUTO_INCREMENT for table `tbl_departments`
 --
 ALTER TABLE `tbl_departments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_expenses`
@@ -629,7 +641,7 @@ ALTER TABLE `tbl_warehouse`
 -- AUTO_INCREMENT for table `tbl_workforce`
 --
 ALTER TABLE `tbl_workforce`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

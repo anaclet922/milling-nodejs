@@ -75,7 +75,8 @@
                                             <div class="ms-auto">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-outline-primary"
-                                                        data-bs-toggle="modal" data-bs-target="#new-vehicle">New Vehicle</button>
+                                                        data-bs-toggle="modal" data-bs-target="#new-vehicle">New
+                                                        Vehicle</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -107,89 +108,129 @@
                                                 </tfoot>
                                                 <tbody>
 
-                                                    <% vehicles.forEach((vehicle, index) => { %>
-                                                       <tr>
-                                                        <td><%= index + 1 %></td>
-                                                        <td><%= vehicle.plate_number %></td>
-                                                        <td><%= vehicle.owner %></td>
-                                                        <td><%= vehicle.type %></td>
-                                                        <td><%= vehicle.capacity %></td>
-                                                        <td>
+                                                    <% vehicles.forEach((vehicle, index)=> { %>
+                                                        <tr>
+                                                            <td>
+                                                                <%= index + 1 %>
+                                                            </td>
+                                                            <td>
+                                                                <%= vehicle.plate_number %>
+                                                            </td>
+                                                            <td>
+                                                                <%= vehicle.owner %>
+                                                            </td>
+                                                            <td>
+                                                                <%= vehicle.type %>
+                                                            </td>
+                                                            <td>
+                                                                <%= vehicle.capacity %>
+                                                            </td>
+                                                            <td>
 
-                                                            
-                                                            <div class="btn-group">
-                                                                <a href="javascript:;"
-                                                                    class="btn btn-outline-primary" data-bs-toggle="modal"
-                                                                    data-bs-target="#edit-vehicle-<%= vehicle.id %>">
-                                                                    Edit
-                                                                </a>
-                                                                <button type="button"
-                                                                    class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                                                                    data-bs-toggle="dropdown"> <span
-                                                                        class="visually-hidden">Toggle
-                                                                        Dropdown</span>
-                                                                </button>
-                                                                <div
-                                                                    class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        onclick="areYouSureToDelete(<%= vehicle.id %>)">Delete</a>
+
+                                                                <div class="btn-group">
+                                                                    <a href="javascript:;"
+                                                                        class="btn btn-outline-primary"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#edit-vehicle-<%= vehicle.id %>">
+                                                                        Edit
+                                                                    </a>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                                                                        data-bs-toggle="dropdown"> <span
+                                                                            class="visually-hidden">Toggle
+                                                                            Dropdown</span>
+                                                                    </button>
+                                                                    <div
+                                                                        class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                                                        <a class="dropdown-item" href="javascript:;"
+                                                                            onclick="areYouSureToDelete(<%= vehicle.id %>)">Delete</a>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                               <!-- Modal -->
-    <div class="modal fade" id="edit-vehicle-<%= vehicle.id %>" tabindex="-1" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <form action="/dashboard/post-edit-vehicle" method="post">
-                    <div class="modal-header">
-                        <h5 class="modal-title">New vehicle</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
+                                                                <!-- Modal -->
+                                                                <div class="modal fade"
+                                                                    id="edit-vehicle-<%= vehicle.id %>" tabindex="-1"
+                                                                    aria-hidden="true" style="display: none;">
+                                                                    <div class="modal-dialog modal-dialog-centered">
+                                                                        <div class="modal-content">
+                                                                            <form action="/dashboard/post-edit-vehicle"
+                                                                                method="post">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title">New vehicle
+                                                                                    </h5>
+                                                                                    <button type="button"
+                                                                                        class="btn-close"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
 
-                        <div class="form-group">
-                            <label for="">Plat No</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Plate number"
-                                name="plate_no" required value="<%= vehicle.plate_number %>">
-                        </div>
-
-                        
-                        <div class="form-group">
-                            <label for="">Owner</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Owner name"
-                                name="owner" required value="<%= vehicle.owner %>">
-                        </div>
-
-
-                          
-                        <div class="form-group">
-                            <label for="">Type</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Vehicle type"
-                                name="type" required value="<%= vehicle.type %>">
-                        </div>
-
-                         
-                        <div class="form-group">
-                            <label for="">Carry capacity</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Capacity"
-                                name="capacity" required value="<%= vehicle.capacity %>">
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="id" value="<%= vehicle.id %>">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label for="">Plat No</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="text"
+                                                                                            placeholder="Plate number"
+                                                                                            name="plate_no" required
+                                                                                            value="<%= vehicle.plate_number %>">
+                                                                                    </div>
 
 
-                                                        </td>
-                                                       </tr>
-                                                    <% }); %>
+                                                                                    <div class="form-group">
+                                                                                        <label for="">Owner</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="text"
+                                                                                            placeholder="Owner name"
+                                                                                            name="owner" required
+                                                                                            value="<%= vehicle.owner %>">
+                                                                                    </div>
+
+
+
+                                                                                    <div class="form-group">
+                                                                                        <label for="">Type</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="text"
+                                                                                            placeholder="Vehicle type"
+                                                                                            name="type" required
+                                                                                            value="<%= vehicle.type %>">
+                                                                                    </div>
+
+
+                                                                                    <div class="form-group">
+                                                                                        <label for="">Carry
+                                                                                            capacity</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="text"
+                                                                                            placeholder="Capacity"
+                                                                                            name="capacity" required
+                                                                                            value="<%= vehicle.capacity %>">
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <input type="hidden" name="id"
+                                                                                        value="<%= vehicle.id %>">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-primary">Save
+                                                                                        changes</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </td>
+                                                        </tr>
+                                                        <% }); %>
 
                                                 </tbody>
                                             </table>
@@ -229,7 +270,7 @@
                                 name="plate_no" required>
                         </div>
 
-                        
+
                         <div class="form-group">
                             <label for="">Owner</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Owner name"
@@ -237,14 +278,14 @@
                         </div>
 
 
-                          
+
                         <div class="form-group">
                             <label for="">Type</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Vehicle type"
                                 name="type" required>
                         </div>
 
-                         
+
                         <div class="form-group">
                             <label for="">Carry capacity</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Capacity"

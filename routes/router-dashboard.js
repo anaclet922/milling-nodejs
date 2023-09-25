@@ -1,9 +1,14 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 const routerDashboard = express.Router();
+const bcrypt = require('bcrypt');
 const conn = require('../database');
+var mv = require('mv');
+const upload = require('../upload');
+
 
 routerDashboard.use(express.urlencoded({ extended: true }));
+
+const workforceController = require('../controllers/workforce');
 
 routerDashboard.use(function (req, res, next) {
 
@@ -41,18 +46,10 @@ routerDashboard.get('/sales', (req, res) => {
     res.render('dashboard/sales', page_data);
 });
 
-routerDashboard.get('/workforce', (req, res) => {
-    let page_data = {
-        title: "Workforce"
-    };
-    res.render('dashboard/workforce', page_data);
-});
-
-
 
 routerDashboard.get('/profile', (req, res) => {
     let page_data = {
-        title: "Workforce",
+        title: "Profile",
         message: req.flash('error')
     };
     res.render('dashboard/profile', page_data);
@@ -63,19 +60,16 @@ routerDashboard.get('/payments', async (req, res) => {
 
     let payment_modes = [];
 
-    await conn.query("SELECT * FROM tbl_payments_methods", function (error, result) {
-        if (error) throw error;
+    const [result] = await (await conn).query("SELECT * FROM tbl_payments_methods");
 
-        let page_data = {
-            title: "Payments",
-            payment_modes: result
-        };
-        res.render('dashboard/payments', page_data);
-
-    });
-
+    let page_data = {
+        title: "Payments",
+        payment_modes: result
+    };
+    res.render('dashboard/payments', page_data);
 
 });
+
 
 
 
@@ -83,22 +77,17 @@ routerDashboard.get('/vehicles', async (req, res) => {
 
     let payment_modes = [];
 
-    await conn.query("SELECT * FROM tbl_vehicles", function (error, result) {
-        if (error) throw error;
+    const [result] = await (await conn).query("SELECT * FROM tbl_vehicles");
 
-        let page_data = {
-            title: "Vehicles",
-            vehicles: result
-        };
-        res.render('dashboard/vehicles', page_data);
-
-    });
-
-
+    let page_data = {
+        title: "Vehicles",
+        vehicles: result
+    };
+    res.render('dashboard/vehicles', page_data);
 });
 
 
-routerDashboard.post('/post-change-password', (req, res) => {
+routerDashboard.post('/post-change-password', async (req, res) => {
 
     let current_password = req.body.currentPassword;
     let new_password = req.body.newPassword;
@@ -109,94 +98,82 @@ routerDashboard.post('/post-change-password', (req, res) => {
         res.redirect('/dashboard/profile');
     }
 
-    conn.query("SELECT * FROM tbl_users WHERE email = ?", [req.session.loggedInUser.email], async function (error, user, fields) {
+    const [user] = await (await conn).query("SELECT * FROM tbl_users WHERE email = ?", [req.session.loggedInUser.email]);
 
-        if (error) throw error;
-        if (user.length > 0) {
+    if (user.length > 0) {
 
-            let hash = user[0].password;
+        let hash = user[0].password;
 
-            bcrypt.compare(current_password, hash).then(async function (result) {
-                if (result == true) {
+        bcrypt.compare(current_password, hash).then(async function (result) {
+            if (result == true) {
 
-                    hashedPassword = await bcrypt.hash(new_password, 8);
+                hashedPassword = await bcrypt.hash(new_password, 8);
 
-                    conn.query("UPDATE tbl_users SET password = ? WHERE email = ?", [hashedPassword, req.session.loggedInUser.email], function (error, result, fields) {
-                        req.flash('success', 'Password updated!');
-                        res.redirect('/dashboard/profile');
-                    });
-
-                } else {
-                    req.flash('error', 'Incorrect password provided!');
+                conn.query("UPDATE tbl_users SET password = ? WHERE email = ?", [hashedPassword, req.session.loggedInUser.email], function (error, result, fields) {
+                    req.flash('success', 'Password updated!');
                     res.redirect('/dashboard/profile');
-                }
-            });
+                });
+
+            } else {
+                req.flash('error', 'Incorrect password provided!');
+                res.redirect('/dashboard/profile');
+            }
+        });
 
 
-        } else {
-            req.flash('error', 'Incorrect credentials provided!')
-            res.redirect('dashboard/profile')
-        }
-    });
+    } else {
+        req.flash('error', 'Incorrect credentials provided!')
+        res.redirect('dashboard/profile')
+    }
 
 });
 
 
 
 
-routerDashboard.post('/post-new-payment-mode', (req, res) => {
+routerDashboard.post('/post-new-payment-mode', async (req, res) => {
 
     let payment_mode = req.body.name;
     let status = req.body.status;
 
-    conn.query("INSERT INTO tbl_payments_methods (name, status) VALUES (?,?)", [payment_mode, status], async function (error, result) {
+    const [i] = await (await conn).query("INSERT INTO tbl_payments_methods (name, status) VALUES (?,?)");
 
-        if (error) throw error;
-        req.flash('success', 'Payment mode successfully created!');
-        res.redirect('/dashboard/payments');
-
-    });
+    req.flash('success', 'Payment mode successfully created!');
+    res.redirect('/dashboard/payments');
 
 });
 
 
 
-
-routerDashboard.post('/post-edit-payment-mode', (req, res) => {
+routerDashboard.post('/post-edit-payment-mode', async (req, res) => {
 
     let payment_mode = req.body.name;
     let status = req.body.status;
     let id = req.body.id;
 
-    conn.query("UPDATE tbl_payments_methods SET name = ?, status = ? WHERE id = ?", [payment_mode, status, id], async function (error, result) {
+    const [i] = await (await conn).query("UPDATE tbl_payments_methods SET name = ?, status = ? WHERE id = ?", [payment_mode, status, id]);
 
-        if (error) throw error;
-        req.flash('success', 'Payment mode successfully updated!');
-        res.redirect('/dashboard/payments');
-
-    });
+    req.flash('success', 'Payment mode successfully updated!');
+    res.redirect('/dashboard/payments');
 
 });
 
-routerDashboard.post('/post-new-vehicle', (req, res) => {
+
+routerDashboard.post('/post-new-vehicle', async (req, res) => {
 
     let plate_no = req.body.plate_no;
     let owner = req.body.owner;
     let type = req.body.type;
     let capacity = req.body.capacity;
 
-    conn.query("INSERT INTO tbl_vehicles (plate_number, owner, type, capacity) VALUES (?,?,?,?)", [plate_no, owner, type, capacity], async function (error, result) {
-
-        if (error) throw error;
-        req.flash('success', 'Vehicle successfully recorded!');
-        res.redirect('/dashboard/vehicles');
-
-    });
+    const [i] = await (await conn).query("INSERT INTO tbl_vehicles (plate_number, owner, type, capacity) VALUES (?,?,?,?)", [plate_no, owner, type, capacity]);
+    req.flash('success', 'Vehicle successfully recorded!');
+    res.redirect('/dashboard/vehicles');
 
 });
 
 
-routerDashboard.post('/post-edit-vehicle', (req, res) => {
+routerDashboard.post('/post-edit-vehicle', async (req, res) => {
 
     let plate_no = req.body.plate_no;
     let owner = req.body.owner;
@@ -204,52 +181,63 @@ routerDashboard.post('/post-edit-vehicle', (req, res) => {
     let capacity = req.body.capacity;
     let id = req.body.id;
 
-    conn.query("UPDATE tbl_vehicles SET plate_number = ?, owner = ?, type = ?, capacity = ? WHERE id = ?", [plate_no, owner, type, capacity, id], async function (error, result) {
+    const [i] = await (await conn).query("UPDATE tbl_vehicles SET plate_number = ?, owner = ?, type = ?, capacity = ? WHERE id = ?", [plate_no, owner, type, capacity, id]);
 
-        if (error) throw error;
-        req.flash('success', 'Car successfully updated!');
-        res.redirect('/dashboard/vehicles');
-
-    });
+    req.flash('success', 'Car successfully updated!');
+    res.redirect('/dashboard/vehicles');
 
 });
-routerDashboard.get('/update-payment-mode', (req, res) => {
+
+
+routerDashboard.get('/update-payment-mode', async (req, res) => {
 
     let id = req.query.id;
     let status = req.query.newstatus;
 
-    conn.query("UPDATE tbl_payments_methods SET status= ? WHERE id = ?", [status, id], function (error, result) {
-        if (error) throw error;
-        req.flash('success', 'Payment mode successfully updated!');
-        res.redirect('/dashboard/payments');
+    const [u] = await (await conn).query("UPDATE tbl_payments_methods SET status= ? WHERE id = ?", [status, id]);
 
-    });
+    req.flash('success', 'Payment mode successfully updated!');
+    res.redirect('/dashboard/payments');
+
 });
 
-routerDashboard.get('/delete-payment-mode', (req, res) => {
+
+routerDashboard.get('/delete-payment-mode', async (req, res) => {
+    let id = req.query.id;
+    const [d] = await (await conn).query("DELETE FROM tbl_payments_methods WHERE id = ?", [id]);
+    req.flash('success', 'Payment mode successfully deleted!');
+    res.redirect('/dashboard/payments');
+
+});
+
+
+routerDashboard.get('/delete-car', async (req, res) => {
 
     let id = req.query.id;
+    const [d] = await (await conn).query("DELETE FROM tbl_vehicles WHERE id = ?", [id]);
 
-    conn.query("DELETE FROM tbl_payments_methods WHERE id = ?", [id], function (error, result) {
-        if (error) throw error;
-        req.flash('success', 'Payment mode successfully deleted!');
-        res.redirect('/dashboard/payments');
+    req.flash('success', 'Car successfully deleted!');
+    res.redirect('/dashboard/vehicles');
 
-    });
 });
 
 
-routerDashboard.get('/delete-car', (req, res) => {
 
-    let id = req.query.id;
 
-    conn.query("DELETE FROM tbl_vehicles WHERE id = ?", [id], function (error, result) {
-        if (error) throw error;
-        req.flash('success', 'Car successfully deleted!');
-        res.redirect('/dashboard/vehicles');
+//######################################
+// #####################################
+// #####################################
+// ##### workforce #####################
+// #####################################
+routerDashboard.get('/workforce', workforceController.workforceHome);
+const dailyWorkforceUpload = upload.fields([{ name: "contract" }, { name: "picture", maxCount: 1 }]);
+routerDashboard.post('/workforce/new-daily-workforce', dailyWorkforceUpload, workforceController.postDailyWorkforce);
+const permanentWorkforceUpload = upload.fields([{ name: "contract" }, { name: "picture", maxCount: 1 }]);
+routerDashboard.post('/workforce/new-permanent-workforce', dailyWorkforceUpload, workforceController.postPermanentWorkforce);
+routerDashboard.post('/new-department', workforceController.postNewDepartment);
+routerDashboard.get('/delete-department', workforceController.deleteDepartment);
+routerDashboard.post('/edit-department', workforceController.editDepartment);
 
-    });
-});
 
 
 

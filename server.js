@@ -26,17 +26,25 @@ app.use(async function(req,res,next){
 
     res.locals.session = req.session;
     var configs = [];
-    conn.query("SELECT * FROM tbl_configs", async function (error, config, fields) {
-        if (error) throw error;
+    // conn.query("SELECT * FROM tbl_configs", async function (error, config, fields) {
+    //     if (error) throw error;
 
-        for(var i in config){
-            configs[config[i].config_key] = config[i].value;
-        }
-        res.locals.configs = configs;
-        res.locals.message = req.flash();
-        next(); 
-    });
-    
+    //     for(var i in config){
+    //         configs[config[i].config_key] = config[i].value;
+    //     }
+    //     res.locals.configs = configs;
+    //     res.locals.message = req.flash();
+    //     next(); 
+    // });
+
+    const [config] = await (await conn).query("SELECT * FROM tbl_configs");
+
+    for(var i in config){
+        configs[config[i].config_key] = config[i].value;
+    }
+    res.locals.configs = configs;
+    res.locals.message = req.flash();
+    next();
 
 });
 

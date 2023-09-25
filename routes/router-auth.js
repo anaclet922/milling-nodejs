@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const conn = require('../database');
 
 router.get('', (req, res) => {
-    res.render('auth/login', {message: req.flash('error')});
+    res.render('auth/login', { message: req.flash('error') });
 })
 
 
@@ -20,29 +20,31 @@ router.post('/post-login', async (req, res) => {
     let password = req.body.password;
     // let hashedPassword = await bcrypt.hash(password, 8); // this 8 is hash salt
 
-    conn.query("SELECT * FROM tbl_users WHERE email = ?", [username], async function (error, user, fields) {
-        if (error) throw error;
-        if (user.length > 0) {
+    const [user] = await (await conn).query("SELECT * FROM tbl_users WHERE email = ?", [username]);
+    console.log(user);
+    console.log(user.length);
 
-            let hash = user[0].password;
+    if (user.length > 0) {
 
-            bcrypt.compare(password, hash).then(function (result) {
-                if (result == true) {
-                    console.log('Logged in!');
-                    req.session.loggedin = true;
-                    req.session.loggedInUser = user[0];
-                    res.redirect('/');
-                } else {
-                    req.flash('error', 'Incorrect credentials provided!');
-                    res.redirect('/auth')
-                }
-            });
+        let hash = user[0].password;
 
-        } else {
-            req.flash('error', 'Incorrect credentials provided!')
-            res.redirect('/auth')
-        }
-    });
+        bcrypt.compare(password, hash).then(function (result) {
+            if (result == true) {
+                console.log('Logged in!');
+                req.session.loggedin = true;
+                req.session.loggedInUser = user[0];
+                res.redirect('/');
+            } else {
+                req.flash('error', 'Incorrect credentials provided!');
+                res.redirect('/auth')
+            }
+        });
+
+    } else {
+        req.flash('error', 'Incorrect credentials provided!')
+        res.redirect('/auth')
+    }
+
 
 })
 
