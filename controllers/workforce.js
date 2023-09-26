@@ -15,6 +15,7 @@ const workforceHome = async (req, res) => {
 
     let page_data = {
         title: "Workforce",
+        currrentPath: "workforce",
         departments: departments,
         dailyWorkforces: dailyWorkforces,
         permanetWorkforces: permanetWorkforces
@@ -124,6 +125,12 @@ const editDepartment = async (req, res) => {
 };
 
 
+const deleteWorkforce = async (req, res) => {
+    let id = req.query.employee_id;
+    const [u] = await (await conn).query("DELETE FROM tbl_workforce WHERE id = ?", [id]);
+    req.flash('success', 'Employee successfully deleted!');
+    res.redirect('/dashboard/workforce');
+};
 
 
-module.exports = { workforceHome, postDailyWorkforce, postPermanentWorkforce, postNewDepartment, deleteDepartment, editDepartment };
+module.exports = { workforceHome, postDailyWorkforce, postPermanentWorkforce, postNewDepartment, deleteDepartment, editDepartment, deleteWorkforce };

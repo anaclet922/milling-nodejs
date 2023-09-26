@@ -11,7 +11,8 @@
   <!--navigation-->
   <ul class="metismenu" id="menu">
 
-    <li class="">
+
+    <li class="<%= currrentPath == '/' ? 'mm-active' : '' %>">
       <a href="/dashboard">
         <div class="parent-icon">
           <i class="fas fa-home"></i>
@@ -23,7 +24,7 @@
 
 
 
-    <li class="">
+    <li class="<%= currrentPath == 'activities' ? 'mm-active' : '' %>">
       <a href="/dashboard/activities">
         <div class="parent-icon">
           <i class="fas fa-bell"></i>
@@ -33,8 +34,16 @@
     </li>
 
 
+    <li class="<%= currrentPath == 'purchase' ? 'mm-active' : '' %>">
+      <a href="/dashboard/purchase">
+        <div class="parent-icon">
+          <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="menu-title">Purchase</div>
+      </a>
+    </li>
 
-    <li class="">
+    <li class="<%= currrentPath == 'milling' ? 'mm-active' : '' %>">
       <a href="/dashboard/milling">
         <div class="parent-icon">
           <i class="fas fa-industry"></i>
@@ -44,7 +53,7 @@
     </li>
 
 
-    <li class="">
+    <li class="<%= currrentPath == 'workforce' ? 'mm-active' : '' %>">
       <a href="/dashboard/workforce">
         <div class="parent-icon">
           <i class="fas fa-users"></i>
@@ -53,7 +62,7 @@
       </a>
     </li>
 
-    <li>
+    <li class="<%= currrentPath == 'inventory' ? 'mm-active' : '' %>">
       <a href="/dashboard/inventory">
         <div class="parent-icon">
           <i class="fas fa-boxes"></i>
@@ -63,7 +72,7 @@
     </li>
 
 
-    <li class="">
+    <li class="<%= currrentPath == 'sales' ? 'mm-active' : '' %>">
       <a href="/dashboard/sales">
         <div class="parent-icon">
           <i class="fas fa-store-alt"></i>
@@ -72,7 +81,7 @@
       </a>
     </li>
 
-    <li class="">
+    <li class="<%= currrentPath == 'payments' ? 'mm-active' : '' %>">
       <a href="/dashboard/payments">
         <div class="parent-icon">
           <i class="fas fa-money-bill"></i>
@@ -81,7 +90,7 @@
       </a>
     </li>
 
-    <li class="">
+    <li class="<%= currrentPath == 'vehicles' ? 'mm-active' : '' %>">
       <a href="/dashboard/vehicles">
         <div class="parent-icon">
           <i class="fas fa-car"></i>
@@ -92,7 +101,7 @@
 
 
 
-    <li class="">
+    <li class="<%= currrentPath == 'debts' ? 'mm-active' : '' %>">
       <a href="/dashboard/debts">
         <div class="parent-icon">
           <i class="fas fa-coins"></i>
@@ -102,7 +111,7 @@
     </li>
 
 
-    <li class="">
+    <li class="<%= currrentPath == 'expenses' ? 'mm-active' : '' %>">
       <a href="/dashboard/expenses">
         <div class="parent-icon">
           <i class="fas fa-outdent"></i>
@@ -111,7 +120,7 @@
       </a>
     </li>
 
-    <li class="">
+    <li class="<%= currrentPath == 'reports' ? 'mm-active' : '' %>">
       <a href="/dashboard/reports">
         <div class="parent-icon">
           <i class="fas fa-chart-bar"></i>
@@ -121,7 +130,7 @@
     </li>
 
 
-    <li>
+    <li class="<%= currrentPath == 'customers' ? 'mm-active' : '' %>">
       <a href="/dashboard/customers">
         <div class="parent-icon">
           <i class="fas fa-user-tie"></i>
@@ -132,7 +141,7 @@
 
 
 
-    <li>
+    <li class="<%= currrentPath == 'users' ? 'mm-active' : '' %>">
       <a href="/dashboard/users">
         <div class="parent-icon">
           <i class="fas fa-user-lock"></i>

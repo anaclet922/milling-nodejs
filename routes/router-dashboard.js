@@ -9,6 +9,7 @@ const upload = require('../upload');
 routerDashboard.use(express.urlencoded({ extended: true }));
 
 const workforceController = require('../controllers/workforce');
+const purchasesController = require('../controllers/purchase');
 
 routerDashboard.use(function (req, res, next) {
 
@@ -20,13 +21,17 @@ routerDashboard.use(function (req, res, next) {
 });
 
 routerDashboard.get('', (req, res) => {
-    res.locals.title = "Home";
-    res.render('dashboard/home');
+    let page_data = {
+        title: "Home",
+        currrentPath: "/"
+    };
+    res.render('dashboard/home', page_data);
 })
 
 routerDashboard.get('/activities', (req, res) => {
     let page_data = {
-        title: "Activities & Remiders"
+        title: "Activities & Remiders",
+        currrentPath: "activities"
     };
     res.render('dashboard/activities', page_data);
 })
@@ -34,14 +39,16 @@ routerDashboard.get('/activities', (req, res) => {
 
 routerDashboard.get('/reports', (req, res) => {
     let page_data = {
-        title: "Reports"
+        title: "Reports",
+        currrentPath: "reports"
     };
     res.render('dashboard/reports', page_data);
 })
 
 routerDashboard.get('/sales', (req, res) => {
     let page_data = {
-        title: "Sales"
+        title: "Sales",
+        currrentPath: "reports"
     };
     res.render('dashboard/sales', page_data);
 });
@@ -50,6 +57,7 @@ routerDashboard.get('/sales', (req, res) => {
 routerDashboard.get('/profile', (req, res) => {
     let page_data = {
         title: "Profile",
+        currrentPath: "profile",
         message: req.flash('error')
     };
     res.render('dashboard/profile', page_data);
@@ -64,6 +72,7 @@ routerDashboard.get('/payments', async (req, res) => {
 
     let page_data = {
         title: "Payments",
+        currrentPath: "payments",
         payment_modes: result
     };
     res.render('dashboard/payments', page_data);
@@ -81,6 +90,7 @@ routerDashboard.get('/vehicles', async (req, res) => {
 
     let page_data = {
         title: "Vehicles",
+        currrentPath: "vehicles",
         vehicles: result
     };
     res.render('dashboard/vehicles', page_data);
@@ -237,7 +247,18 @@ routerDashboard.post('/workforce/new-permanent-workforce', dailyWorkforceUpload,
 routerDashboard.post('/new-department', workforceController.postNewDepartment);
 routerDashboard.get('/delete-department', workforceController.deleteDepartment);
 routerDashboard.post('/edit-department', workforceController.editDepartment);
+routerDashboard.get('/delete-workforce', workforceController.deleteWorkforce);
 
+
+
+
+
+//######################################
+// #####################################
+// #####################################
+// ##### purchaces #####################
+// #####################################
+routerDashboard.get('/purchase', purchasesController.purchasesHome);
 
 
 
