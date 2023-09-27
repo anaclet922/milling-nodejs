@@ -21,8 +21,8 @@ router.post('/post-login', async (req, res) => {
     // let hashedPassword = await bcrypt.hash(password, 8); // this 8 is hash salt
 
     const [user] = await (await conn).query("SELECT * FROM tbl_users WHERE email = ?", [username]);
-    console.log(user);
-    console.log(user.length);
+    // console.log(user);
+    // console.log(user.length);
 
     if (user.length > 0) {
 

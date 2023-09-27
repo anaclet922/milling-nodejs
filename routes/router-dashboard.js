@@ -27,11 +27,16 @@ routerDashboard.use(function (req, res, next) {
 
 });
 
-routerDashboard.get('', (req, res) => {
+routerDashboard.get('', async (req, res) => {
+
+    const [maize_stock_object] = await (await conn).query("SELECT * FROM tbl_maize_stock");
+  
     let page_data = {
         title: "Home",
-        currrentPath: "/"
+        currrentPath: "/",
+        maize_stock: ((maize_stock_object.length > 0) ? maize_stock_object[0].quantity : 0)
     };
+    
     res.render('dashboard/home', page_data);
 })
 
