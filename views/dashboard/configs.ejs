@@ -1,0 +1,143 @@
+<%- include('../includes/dashboard-top') %>
+
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0 align-items-center">
+                            <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img"
+                                        class="md hydrated" aria-label="home outline"></ion-icon></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= locals.title %>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <!-- <div class="btn-group">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#new-daily-workforce-modal">New Record</button>
+                    </div> -->
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <br>
+            <br>
+            <br>
+
+            <div class="row">
+
+
+                <div class="col-md-6 col-lg-6">
+                    <div class="card radius-10 bg-success">
+                        <div class="card-body">
+                            <form action="/dashboard/configs/post-system-name" method="post">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="">System name</label>
+                                    <input class="form-control form-control-lg mb-3" type="text" name="name"
+                                        value="<%= locals.configs['system_name'] %>" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6 col-lg-6">
+                    <div class="card radius-10 bg-warning">
+                        <div class="card-body">
+                            <form action="/dashboard/configs/post-copyright-text" method="post">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="">Copyright Text</label>
+                                    <input class="form-control form-control-lg mb-3" type="text" name="copyright_text"
+                                        value="<%= locals.configs['copyright_text'] %>" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6 col-lg-6">
+                    <div class="card radius-10 bg-info">
+                        <div class="card-body">
+                            <form action="/dashboard/configs/post-new-logo" method="post" enctype="multipart/form-data">
+                                <img src="/system/<%= locals.configs['logo'] %>" class="img-fluid radius-10" alt="..."
+                                    id="logoPreview">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="">Choose new logo</label>
+                                    <input class="form-control form-control-lg mb-3" type="file" name="file" required
+                                        id="logoInput">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6 col-lg-6">
+                    <div class="card radius-10 bg-bronze">
+                        <div class="card-body">
+                            <form action="/dashboard/configs/post-new-favicon" method="post"
+                                enctype="multipart/form-data">
+                                <img src="/system/<%= locals.configs['favicon'] %>" class="img-fluid radius-10"
+                                    alt="..." id="faviconPreview">
+                                <div class="form-group col-md-12 col-lg-12">
+                                    <label for="">Choose new favicon</label>
+                                    <input class="form-control form-control-lg mb-3" type="file" name="file" required
+                                        id="faviconInput">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <script>
+        function readURL(input, id) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#' + id).attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#logoInput").change(function () {
+            readURL(this, 'logoPreview');
+        });
+
+        $("#faviconInput").change(function () {
+            readURL(this, 'faviconPreview');
+        });
+    </script>
+
+
+
+    <%- include('../includes/dashboard-foot') %>

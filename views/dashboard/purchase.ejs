@@ -21,7 +21,7 @@
                 <div class="ms-auto">
                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-daily-workforce-modal">Add new purchase</button>
+                            data-bs-target="#new-purchase-modal">New Purchase</button>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -51,94 +51,77 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="new-daily-workforce-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal fade" id="new-purchase-modal" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <form action="/dashboard/workforce/new-daily-workforce" method="post"
-                    enctype="multipart/form-data">
+                <form action="/dashboard/purchase/new" method="post" enctype="multipart/form-data">
                     <div class="modal-header">
-                        <h5 class="modal-title">New Daily workforce</h5>
+                        <h5 class="modal-title">New purchase</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
                     <div class="modal-body row">
-                        <div class="form-group col-md-6 col-lg-6">
-                            <label for="">First name</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
-                                name="first_name">
-                        </div>
 
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Last name</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
-                                name="last_name">
-                        </div>
-
-                        <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Gender</label>
-                            <select name="gender" id="" class="form-control form-control-lg mb-3">
-                                <option value="">Select gender</option>
-                                <option value="M">Male</option>
-                                <option value="F">Female</option>
+                            <label for="">Item Type</label>
+                            <select name="type" class="form-control form-control-lg mb-3">
+                                <option value="" selected>Select item type</option>
+                                <option value="maize">Maize</option>
+                                <option value="inventory">Inventory</option>
                             </select>
                         </div>
 
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Date of birth</label>
-                            <input class="form-control form-control-lg mb-3" type="date" placeholder="Year of birth"
-                                name="date_of_birth">
+                            <label for="">Item Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Item name"
+                                name="item_name" required>
                         </div>
+                      
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">NID</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID"
-                                name="nid">
+                            <label for="">Unit price</label>
+                            <input class="form-control form-control-lg mb-3" type="number" placeholder="Unit price"
+                                name="unit_price" required value="0">
                         </div>
+
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Phone number</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
-                                name="phone">
+                            <label for="">Quantity</label>
+                            <input class="form-control form-control-lg mb-3" type="number" placeholder="Quantity"
+                                name="quantity" required value="0">
                         </div>
+
+
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Department</label>
-                            <select name="department_id" id="" class="form-control form-control-lg mb-3">
-                                <option value="">Select Department</option>
-                                
-                            </select>
+                            <label for="">Total cost</label>
+                            <input class="form-control form-control-lg mb-3" type="number" placeholder="Total cost"
+                                name="total_cost" required value="0">
                         </div>
+
+
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Position</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Position"
-                                name="position">
+                            <label for="">Transport cost</label>
+                            <input class="form-control form-control-lg mb-3" type="number" placeholder="Transport cost" 
+                                name="transport_cost" required value="0">
                         </div>
+
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Start date/hiring date</label>
-                            <input class="form-control form-control-lg mb-3" type="date" placeholder="hired_date"
-                                name="hired_date">
+                            <label for="">Seller name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Seller name"
+                                name="seller" required>
                         </div>
+
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">End date</label>
-                            <input class="form-control form-control-lg mb-3" type="date" placeholder="hired_date"
-                                name="end_date">
+                            <label for="">Place of purchase</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Place of purchase"
+                                name="place_of_purchase" required>
                         </div>
+
+                        
+
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Contract</label>
-                            <input class="form-control form-control-lg mb-3" type="file" name="contract"
-                                accept="application/pdf">
+                            <label for="">Description</label>
+                            <textarea name="description" class="form-control"></textarea>
                         </div>
-                        <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Passport Photo</label>
-                            <input class="form-control form-control-lg mb-3" type="file" name="picture"
-                                accept="image/jpeg, image/png">
-                        </div>
-                        <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Username</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Username"
-                                name="username">
-                        </div>
-                        <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Password</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Password"
-                                name="password">
-                        </div>
+
 
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="">Note</label>
@@ -155,5 +138,22 @@
         </div>
     </div>
 
+
+
+    <script>
+
+        $(document).ready(function(){
+
+            $('input[name="unit_price"]').keyup(function(){
+                $('input[name="total_cost"]').val($('input[name="unit_price"]').val() * $('input[name="quantity"]').val());
+            });
+
+            $('input[name="quantity"]').keyup(function(){
+                $('input[name="total_cost"]').val($('input[name="unit_price"]').val() * $('input[name="quantity"]').val());
+            });
+
+        });
+
+    </script>
 
     <%- include('../includes/dashboard-foot') %>

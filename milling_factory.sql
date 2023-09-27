@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2023 at 04:09 PM
+-- Generation Time: Sep 27, 2023 at 04:20 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -75,7 +75,10 @@ CREATE TABLE `tbl_configs` (
 --
 
 INSERT INTO `tbl_configs` (`id`, `config_key`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'system_name', 'o', '2022-04-14 06:04:13', '2023-09-25 11:53:26');
+(1, 'system_name', 'Sys', '2022-04-14 06:04:13', '2023-09-27 13:08:41'),
+(36, 'copyright_text', 'postcopyrighttext', '2022-04-14 06:04:13', '2023-09-27 13:08:30'),
+(37, 'logo', '1695809724208-bee_fit.png', '2022-04-14 06:04:13', '2023-09-27 10:15:24'),
+(38, 'favicon', '1695819928810-bee_fit.png', '2022-04-14 06:04:13', '2023-09-27 13:05:28');
 
 -- --------------------------------------------------------
 
@@ -186,6 +189,18 @@ CREATE TABLE `tbl_inventory` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_maize_stock`
+--
+
+CREATE TABLE `tbl_maize_stock` (
+  `id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_milling`
 --
 
@@ -245,11 +260,27 @@ INSERT INTO `tbl_payments_methods` (`id`, `name`, `status`, `created_at`, `updat
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_permisions`
+--
+
+CREATE TABLE `tbl_permisions` (
+  `id` int(11) NOT NULL,
+  `workforce_id` int(11) NOT NULL,
+  `menu` int(11) NOT NULL,
+  `allowed` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_purchases`
 --
 
 CREATE TABLE `tbl_purchases` (
   `id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
   `item_name` varchar(512) NOT NULL,
   `description` text NOT NULL,
   `note` text NOT NULL,
@@ -301,6 +332,7 @@ CREATE TABLE `tbl_users` (
   `email` varchar(255) NOT NULL,
   `password` text NOT NULL,
   `active` varchar(1) NOT NULL DEFAULT 'Y',
+  `role` varchar(100) NOT NULL DEFAULT 'admin',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -309,8 +341,9 @@ CREATE TABLE `tbl_users` (
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`id`, `first_name`, `last_name`, `username`, `email`, `password`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'Anaclet', 'Ahishakiye', 'anaclet', 'anaclet@example.com', '$2b$08$eYVJvIYeID3YKOqh6tQQu.Xqqg.SN7X46Q4u1ldSmbq5eQQ4ZX4Na', 'Y', '2023-09-17 01:35:18', '2023-09-25 08:35:45');
+INSERT INTO `tbl_users` (`id`, `first_name`, `last_name`, `username`, `email`, `password`, `active`, `role`, `created_at`, `updated_at`) VALUES
+(1, 'Anaclet', 'Ahishakiye', 'anaclet', 'anaclet@example.com', '$2b$08$eYVJvIYeID3YKOqh6tQQu.Xqqg.SN7X46Q4u1ldSmbq5eQQ4ZX4Na', 'Y', 'admin', '2023-09-17 01:35:18', '2023-09-27 10:55:39'),
+(2, 'Anaclet', 'Ahishakiye', 'root', 'a.anaclet920@gmail.com', '$2b$08$4k1MM5TyY1ywgUmJIO/ffOt0SM/MLZaJvmxoDH7bOpqTkDIQGFLc2', 'N', 'admin', '2023-09-27 11:19:12', '2023-09-27 11:25:26');
 
 -- --------------------------------------------------------
 
@@ -466,6 +499,12 @@ ALTER TABLE `tbl_inventory`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_maize_stock`
+--
+ALTER TABLE `tbl_maize_stock`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_milling`
 --
 ALTER TABLE `tbl_milling`
@@ -484,6 +523,12 @@ ALTER TABLE `tbl_payments_methods`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_permisions`
+--
+ALTER TABLE `tbl_permisions`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_purchases`
 --
 ALTER TABLE `tbl_purchases`
@@ -499,7 +544,9 @@ ALTER TABLE `tbl_sales`
 -- Indexes for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `tbl_vehicles`
@@ -545,7 +592,7 @@ ALTER TABLE `tbl_bills`
 -- AUTO_INCREMENT for table `tbl_configs`
 --
 ALTER TABLE `tbl_configs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `tbl_customers`
@@ -584,6 +631,12 @@ ALTER TABLE `tbl_inventory`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tbl_maize_stock`
+--
+ALTER TABLE `tbl_maize_stock`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tbl_milling`
 --
 ALTER TABLE `tbl_milling`
@@ -602,6 +655,12 @@ ALTER TABLE `tbl_payments_methods`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `tbl_permisions`
+--
+ALTER TABLE `tbl_permisions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tbl_purchases`
 --
 ALTER TABLE `tbl_purchases`
@@ -617,7 +676,7 @@ ALTER TABLE `tbl_sales`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_vehicles`

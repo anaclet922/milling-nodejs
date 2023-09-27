@@ -1,0 +1,212 @@
+<%- include('../includes/dashboard-top') %>
+
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0 align-items-center">
+                            <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img"
+                                        class="md hydrated" aria-label="home outline"></ion-icon></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= locals.title %>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#new-admin-modal">New Admin</button>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <br>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav nav-tabs nav-primary" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon">
+                                            </div>
+                                            <div class="tab-title">Users Permission</div>
+                                        </div>
+                                    </a>
+                                </li>
+    
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon">
+                                            </div>
+                                            <div class="tab-title">Admins</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content py-3">
+                                <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
+                                    
+                                    
+                                    
+                                </div>
+                                <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+
+                                    <table id="systemUsers" class="table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Username</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Username</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+        
+                                            <% users.forEach((user, index)=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= index + 1 %>
+                                                    </td>
+                                                    <td>
+                                                        <%= user.first_name + ' ' + user.last_name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= user.username %>
+                                                    </td>
+                                                    <td>
+                                                        <%= user.email %>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-danger"><%= user.role %></span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-<%= user.active == 'Y' ? 'success': 'danger' %>"><%= user.active == 'Y' ? 'Active': 'Inactive' %></span>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" onclick="areYouSureToDelete(<%= user.id %>, '<%= user.active == 'Y' ? 'Deactivate': 'Activate' %>', '<%= user.active == 'Y' ? 'desactivate': 'activate' %>-admin')" class="btn btn-<%= user.active == 'Y' ? 'success': 'danger' %>"><%= user.active == 'Y' ? 'Deactivate': 'Activate' %></button>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+        
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="new-admin-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="/dashboard/new-admin" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Department</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group col-md-12">
+                            <label for="">First name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
+                                name="first_name">
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="">Last name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
+                                name="last_name">
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="">Username</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Username"
+                                name="username">
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="">Email</label>
+                            <input class="form-control form-control-lg mb-3" type="email" placeholder="Email"
+                                name="email">
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label for="">Password</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Password"
+                                name="password">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        function areYouSureToDelete(id, title, path) {
+            
+            Swal.fire({
+                title: 'Are you sure to '+ title +' this user?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = '/dashboard/' + path + '?id=' + id;
+                }
+            })
+        }
+    </script>
+
+
+    <%- include('../includes/dashboard-foot') %>

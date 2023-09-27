@@ -24,7 +24,7 @@ var options = {
             left: 14,
             blur: 4,
             opacity: .12,
-            color: "#923eb9"
+            color: "#007BFF"
         },
         sparkline: {
             enabled: !0
@@ -32,7 +32,7 @@ var options = {
     },
     markers: {
         size: 0,
-        colors: ["#923eb9"],
+        colors: ["#007BFF"],
         strokeColors: "#fff",
         strokeWidth: 2,
         hover: {
@@ -70,7 +70,7 @@ var options = {
 		  //stops: [0, 100]
 		}
 	  },
-    colors: ["#923eb9"],
+    colors: ["#007BFF"],
     tooltip: {
         theme: "dark",
         fixed: {
@@ -222,7 +222,7 @@ var options = {
             left: 14,
             blur: 4,
             opacity: .12,
-            color: "#923eb9"
+            color: "#007BFF"
         },
         sparkline: {
             enabled: !1
@@ -230,7 +230,7 @@ var options = {
     },
     markers: {
         size: 0,
-        colors: ["#923eb9"],
+        colors: ["#007BFF"],
         strokeColors: "#fff",
         strokeWidth: 2,
         hover: {

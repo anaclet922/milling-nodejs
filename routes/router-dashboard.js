@@ -10,6 +10,13 @@ routerDashboard.use(express.urlencoded({ extended: true }));
 
 const workforceController = require('../controllers/workforce');
 const purchasesController = require('../controllers/purchase');
+const millingController = require('../controllers/milling');
+const inventoryController = require('../controllers/inventory');
+const debtsController = require('../controllers/debts');
+const expensesController = require('../controllers/expenses');
+const customersController = require('../controllers/customers');
+const usersController = require('../controllers/users');
+const configsController = require('../controllers/configs');
 
 routerDashboard.use(function (req, res, next) {
 
@@ -259,6 +266,28 @@ routerDashboard.get('/delete-workforce', workforceController.deleteWorkforce);
 // ##### purchaces #####################
 // #####################################
 routerDashboard.get('/purchase', purchasesController.purchasesHome);
+routerDashboard.post('/purchase/new', purchasesController.newPurchase);
+routerDashboard.get('/milling', millingController.millingHome);
+routerDashboard.get('/inventory', inventoryController.inventoryHome);
+routerDashboard.get('/debts', debtsController.debtsHome);
+routerDashboard.get('/expenses', expensesController.expensesHome);
+routerDashboard.get('/customers', customersController.customersHome);
+
+
+routerDashboard.get('/users', usersController.usersHome);
+routerDashboard.get('/desactivate-admin', usersController.desactivateUser);
+routerDashboard.get('/activate-admin', usersController.activateUser);
+routerDashboard.post('/new-admin', usersController.newAdmin);
+
+routerDashboard.get('/configs', configsController.configsHome);
+routerDashboard.post('/configs/post-system-name', configsController.postSystemName);
+routerDashboard.post('/configs/post-copyright-text', configsController.postcopyrighttext);
+
+
+const logoUpload = upload.fields([{ name: "file", maxCount: 1 }]);
+routerDashboard.post('/configs/post-new-logo', logoUpload,configsController.postNewLogo);
+const faviconUpload = upload.fields([{ name: "file", maxCount: 1 }]);
+routerDashboard.post('/configs/post-new-favicon', faviconUpload, configsController.postNewFavicon);
 
 
 

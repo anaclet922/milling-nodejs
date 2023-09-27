@@ -44,7 +44,7 @@ $(function () {
 			type: 'gradient',
 			gradient: {
 				shade: 'light',
-				gradientToColors: ['#923eb9'],
+				gradientToColors: ['#007BFF'],
 				shadeIntensity: 1,
 				type: 'horizontal',
 				opacityFrom: 1,
@@ -54,14 +54,14 @@ $(function () {
 		},
 		markers: {
 			size: 4,
-			colors: ["#923eb9"],
+			colors: ["#007BFF"],
 			strokeColors: "#fff",
 			strokeWidth: 2,
 			hover: {
 				size: 7,
 			}
 		},
-		colors: ["#923eb9"],
+		colors: ["#007BFF"],
 		yaxis: {
 			title: {
 				text: 'Engagement',
@@ -93,7 +93,7 @@ $(function () {
 			curve: 'smooth',
 			width: 5
 		},
-		colors: ["#923eb9", '#18bb6b'],
+		colors: ["#007BFF", '#18bb6b'],
 		series: [{
 			name: "Music",
 			data: [1, 15, 56, 20, 33, 27, 15, 56, 20, 56]
@@ -160,7 +160,7 @@ $(function () {
 				show: true
 			},
 		},
-		colors: ["#923eb9", '#18bb6b'],
+		colors: ["#007BFF", '#18bb6b'],
 		title: {
 			text: 'Area Chart',
 			align: 'left',
@@ -227,7 +227,7 @@ $(function () {
 				fontSize: '14px'
 			}
 		},
-		colors: ["#6184ff", '#923eb9', '#c4d1ff'],
+		colors: ["#6184ff", '#007BFF', '#c4d1ff'],
 		xaxis: {
 			categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
 		},
@@ -425,7 +425,7 @@ $(function () {
 			height: 330,
 			type: 'pie',
 		},
-		colors: ["#923eb9", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
+		colors: ["#007BFF", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
 		labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
 		responsive: [{
 			breakpoint: 480,
@@ -451,7 +451,7 @@ $(function () {
 			height: 380,
 			type: 'donut',
 		},
-		colors: ["#923eb9", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
+		colors: ["#007BFF", "#f73757", "#18bb6b", "#32bfff", "#ffab4d"],
 		responsive: [{
 			breakpoint: 480,
 			options: {
@@ -491,7 +491,7 @@ $(function () {
 				top: 1
 			}
 		},
-		colors: ["#923eb9", "#f73757", "#18bb6b"],
+		colors: ["#007BFF", "#f73757", "#18bb6b"],
 		title: {
 			text: 'Radar Chart - Multi Series'
 		},
@@ -591,7 +591,7 @@ $(function () {
             }
           },
         },
-		colors: ["#923eb9"],
+		colors: ["#007BFF"],
         labels: ['Cricket'],
         };
 
@@ -629,7 +629,7 @@ $(function () {
             }
           }
         },
-		colors: ["#923eb9", "#f73757", "#18bb6b", "#32bfff"],
+		colors: ["#007BFF", "#f73757", "#18bb6b", "#32bfff"],
         labels: ['Apples', 'Oranges', 'Bananas', 'Berries'],
         };
 

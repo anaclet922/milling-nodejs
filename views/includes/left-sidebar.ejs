@@ -2,7 +2,7 @@
 <aside class="sidebar-wrapper" data-simplebar="true">
   <div class="sidebar-header">
     <div>
-      <img src="/assets/images/logo-icon-2.png" class="logo-icon" alt="logo icon">
+      <img src="/system/<%= locals.configs['logo'] %>" class="logo-icon" alt="logo icon">
     </div>
     <div>
       <h4 class="logo-text"><%= locals.configs['system_name'] %></h4>
@@ -139,17 +139,26 @@
       </a>
     </li>
 
-
+    <li class="menu-label">Users & Settings</li>
 
     <li class="<%= currrentPath == 'users' ? 'mm-active' : '' %>">
       <a href="/dashboard/users">
         <div class="parent-icon">
           <i class="fas fa-user-lock"></i>
         </div>
-        <div class="menu-title">Users</div>
+        <div class="menu-title">Permissions</div>
       </a>
     </li>
 
+
+    <li class="<%= currrentPath == 'configs' ? 'mm-active' : '' %>">
+      <a href="/dashboard/configs">
+        <div class="parent-icon">
+          <i class="fas fa-cogs"></i>
+        </div>
+        <div class="menu-title">configs</div>
+      </a>
+    </li>
 
 
 
