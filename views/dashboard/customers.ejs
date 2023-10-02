@@ -19,10 +19,10 @@
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <!-- <div class="btn-group">
+                    <div class="btn-group">
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-daily-workforce-modal">New Record</button>
-                    </div> -->
+                            data-bs-target="#new-customer-modal">New Customer</button>
+                    </div>
                 </div>
             </div>
             <!--end breadcrumb-->
@@ -36,6 +36,147 @@
                     <div class="card">
                         <div class="card-body">
                             
+                            <table id="systemUsers" class="table table-striped table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>NID</th>
+                                        <th>Phone</th>
+                                        <th>Location</th>
+                                        <th>About</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>NID</th>
+                                        <th>Phone</th>
+                                        <th>Location</th>
+                                        <th>About</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+
+                                    <% customers.forEach((customer, index)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= customer.first_name + ' ' + customer.last_name %>
+                                            </td>
+                                            <td>
+                                                <%= customer.id_no %>
+                                            </td>
+                                            <td>
+                                                <%= customer.phone %>
+                                            </td>
+                                            <td>
+                                                <%= customer.location %>
+                                            </td>
+                                            <td>
+                                                <%= customer.about %>
+                                            </td>
+                                            <td>
+                                                
+
+                                                
+                                                <div class="btn-group">
+                                                    <a href="javascript:;"
+                                                        class="btn btn-outline-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#edit-customer-<%= customer.id %>">
+                                                        Edit
+                                                    </a>
+                                                    <button type="button"
+                                                        class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                                                        data-bs-toggle="dropdown"> <span
+                                                            class="visually-hidden">Toggle
+                                                            Dropdown</span>
+                                                    </button>
+                                                    <div
+                                                        class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                                        <a class="dropdown-item" href="javascript:;"
+                                                            onclick="areYouSureToDelete(<%= customer.id %>)">Delete</a>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="modal fade" id="edit-customer-<%= customer.id %>" tabindex="-1" aria-hidden="true" style="display: none;">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                        <div class="modal-content">
+                                            
+                                                            <form action="/dashboard/customer/edit" method="post">
+                                            
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Edit Customer</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                            
+                                                                <div class="modal-body row">
+                                            
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">First Name</label>
+                                                                        <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
+                                                                            name="first_name" required value="<%= customer.first_name %>">
+                                                                    </div>
+                                            
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">Last Name</label>
+                                                                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
+                                                                            name="last_name" required value="<%= customer.last_name %>">
+                                                                    </div>
+                                            
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">NID/TIN</label>
+                                                                        <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID"
+                                                                            name="id_no" required value="<%= customer.id_no %>">
+                                                                    </div>
+                                            
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">Phone</label>
+                                                                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
+                                                                            name="phone" required value="<%= customer.phone %>">
+                                                                    </div>
+                                            
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">Location</label>
+                                                                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Location"
+                                                                            name="location" required value="<%= customer.location %>">
+                                                                    </div>
+                                            
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">About</label>
+                                                                        <textarea name="about" class="form-control"><%= customer.about %></textarea>
+                                                                    </div>
+                                            
+                                            
+                                            
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <input type="hidden" name="id" value="<%= customer.id %>">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                            
+
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+
+                                </tbody>
+                            </table>
+
+
                         </div>
                     </div>
                 </div>
@@ -50,6 +191,88 @@
 
 
 
+    
+    <!-- Modal -->
+    <div class="modal fade" id="new-customer-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
 
+                <form action="/dashboard/customer/new" method="post">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Customer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body row">
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">First Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
+                                name="first_name" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Last Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
+                                name="last_name" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">NID/TIN</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID"
+                                name="id_no" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Phone</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
+                                name="phone" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Location</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Location"
+                                name="location" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">About</label>
+                            <textarea name="about" class="form-control"></textarea>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    
+    <script>
+        function areYouSureToDelete(id) {
+            Swal.fire({
+                title: 'Are you sure to delete this customer?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = '/dashboard/customer/delete?id=' + id;
+                }
+            })
+        }
+    </script>
 
     <%- include('../includes/dashboard-foot') %>

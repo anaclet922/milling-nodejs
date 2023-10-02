@@ -276,7 +276,12 @@ routerDashboard.get('/milling', millingController.millingHome);
 routerDashboard.get('/inventory', inventoryController.inventoryHome);
 routerDashboard.get('/debts', debtsController.debtsHome);
 routerDashboard.get('/expenses', expensesController.expensesHome);
+
+
 routerDashboard.get('/customers', customersController.customersHome);
+routerDashboard.post('/customer/new', customersController.postNewCutomer);
+routerDashboard.post('/customer/edit', customersController.postEditCutomer);
+routerDashboard.get('/customer/delete', customersController.deleteCutomer);
 
 
 routerDashboard.get('/users', usersController.usersHome);
