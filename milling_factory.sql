@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 02, 2023 at 04:18 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 7.4.27
+-- Host: localhost
+-- Generation Time: Oct 03, 2023 at 06:23 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,7 +37,7 @@ CREATE TABLE `tbl_activities` (
   `color` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -54,7 +54,7 @@ CREATE TABLE `tbl_bills` (
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -68,7 +68,7 @@ CREATE TABLE `tbl_configs` (
   `value` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_configs`
@@ -96,7 +96,7 @@ CREATE TABLE `tbl_customers` (
   `location` varchar(512) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_customers`
@@ -113,13 +113,21 @@ INSERT INTO `tbl_customers` (`id`, `id_no`, `phone`, `first_name`, `last_name`, 
 
 CREATE TABLE `tbl_debts` (
   `id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `sale_id` int(11) NOT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `sale_id` int(11) DEFAULT NULL,
+  `purchase_id` int(11) DEFAULT NULL,
   `debited_amount` double NOT NULL,
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_debts`
+--
+
+INSERT INTO `tbl_debts` (`id`, `customer_id`, `sale_id`, `purchase_id`, `debited_amount`, `note`, `created_at`, `updated_at`) VALUES
+(1, NULL, NULL, 3, 450000, '', '2023-10-02 18:23:55', '2023-10-02 18:23:55');
 
 -- --------------------------------------------------------
 
@@ -132,7 +140,7 @@ CREATE TABLE `tbl_departments` (
   `title` varchar(512) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_departments`
@@ -158,7 +166,7 @@ CREATE TABLE `tbl_expenses` (
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -174,7 +182,7 @@ CREATE TABLE `tbl_forgot_password` (
   `active` varchar(1) NOT NULL DEFAULT 'Y',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -191,7 +199,16 @@ CREATE TABLE `tbl_inventory` (
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_inventory`
+--
+
+INSERT INTO `tbl_inventory` (`id`, `item_name`, `description`, `type`, `user_id`, `note`, `created_at`, `updated_at`) VALUES
+(1, 'Laptop', 'Laptop to use', 'Electronic', 1, 'Some notes', '2023-10-02 19:33:22', '2023-10-02 19:33:22'),
+(2, 'Laptop', 'Lapto', 'Electronic', 2, 'Is new', '2023-10-02 19:35:05', '2023-10-02 19:35:05'),
+(3, 'Office Chairs', '', 'Chair', 2, '', '2023-10-02 19:36:06', '2023-10-02 19:36:06');
 
 -- --------------------------------------------------------
 
@@ -203,7 +220,14 @@ CREATE TABLE `tbl_maize_stock` (
   `id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_maize_stock`
+--
+
+INSERT INTO `tbl_maize_stock` (`id`, `quantity`, `updated_at`) VALUES
+(1, 3500, '2023-10-02 18:23:55');
 
 -- --------------------------------------------------------
 
@@ -219,7 +243,7 @@ CREATE TABLE `tbl_milling` (
   `output_kg` double NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -237,7 +261,7 @@ CREATE TABLE `tbl_payments` (
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -251,7 +275,7 @@ CREATE TABLE `tbl_payments_methods` (
   `status` enum('ACTIVE','INACTIVE') NOT NULL DEFAULT 'ACTIVE',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_payments_methods`
@@ -261,8 +285,7 @@ INSERT INTO `tbl_payments_methods` (`id`, `name`, `status`, `created_at`, `updat
 (1, 'Mobile Money', 'ACTIVE', '2023-09-23 07:39:02', '2023-09-23 10:49:24'),
 (2, 'Cheque', 'ACTIVE', '2023-09-23 07:39:28', '2023-09-23 08:51:10'),
 (4, 'Credit/Debit Card	', 'ACTIVE', '2023-09-23 10:56:20', '2023-09-23 10:57:30'),
-(5, 'Bank Transfer', 'ACTIVE', '2023-09-23 10:56:45', '2023-09-23 10:56:45'),
-(6, 'Debt', 'ACTIVE', '2023-09-23 10:57:27', '2023-09-23 10:57:27');
+(5, 'Bank Transfer', 'ACTIVE', '2023-09-23 10:56:45', '2023-09-23 10:56:45');
 
 -- --------------------------------------------------------
 
@@ -277,7 +300,7 @@ CREATE TABLE `tbl_permisions` (
   `allowed` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -297,9 +320,21 @@ CREATE TABLE `tbl_purchases` (
   `transport_cost` double NOT NULL,
   `place_of_purchase` varchar(512) NOT NULL,
   `seller` varchar(512) NOT NULL,
+  `payment_method_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_purchases`
+--
+
+INSERT INTO `tbl_purchases` (`id`, `type`, `item_name`, `description`, `note`, `unit_price`, `quantity`, `total_price`, `transport_cost`, `place_of_purchase`, `seller`, `payment_method_id`, `created_at`, `updated_at`) VALUES
+(1, 'maize', 'Maize', 'Maize for milling', '', 480, 2000, 1010000, 50000, 'Kigali', 'Maize Co.', 5, '2023-10-02 17:16:04', '2023-10-02 17:47:22'),
+(2, 'maize', 'Maize Long Grain', 'Long grain maize', '', 520, 500, 275000, 15000, 'Kigali, Nyarugenge', 'Maize Co. ltd', 5, '2023-10-02 17:16:55', '2023-10-02 17:47:25'),
+(3, 'maize', 'Maize', 'Not paid product', '', 430, 1000, 450000, 20000, 'Kigali, Nyarugenge', 'Maize Co. ltd', 0, '2023-10-02 18:23:55', '2023-10-02 18:23:55'),
+(4, 'inventory', 'Laptop', 'Laptops', '', 500000, 2, 1000000, 0, 'Kigali, Nyarugenge', 'Dream Laptop ltd.', 2, '2023-10-02 18:57:47', '2023-10-02 18:57:47'),
+(5, 'inventory', 'Office Chairs', '', '', 300000, 5, 1500000, 0, 'Kigali, Nyarugenge', 'Office Fun ltd.', 4, '2023-10-02 19:35:51', '2023-10-02 19:35:51');
 
 -- --------------------------------------------------------
 
@@ -323,7 +358,7 @@ CREATE TABLE `tbl_sales` (
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -342,7 +377,7 @@ CREATE TABLE `tbl_users` (
   `role` varchar(100) NOT NULL DEFAULT 'admin',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_users`
@@ -350,7 +385,7 @@ CREATE TABLE `tbl_users` (
 
 INSERT INTO `tbl_users` (`id`, `first_name`, `last_name`, `username`, `email`, `password`, `active`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'Anaclet', 'Ahishakiye', 'anaclet', 'anaclet@example.com', '$2b$08$eYVJvIYeID3YKOqh6tQQu.Xqqg.SN7X46Q4u1ldSmbq5eQQ4ZX4Na', 'Y', 'admin', '2023-09-17 01:35:18', '2023-09-27 10:55:39'),
-(2, 'Anaclet', 'Ahishakiye', 'root', 'a.anaclet920@gmail.com', '$2b$08$4k1MM5TyY1ywgUmJIO/ffOt0SM/MLZaJvmxoDH7bOpqTkDIQGFLc2', 'N', 'admin', '2023-09-27 11:19:12', '2023-09-27 11:25:26');
+(2, 'John', 'Doe', 'root', 'a.anaclet920@gmail.com', '$2b$08$4k1MM5TyY1ywgUmJIO/ffOt0SM/MLZaJvmxoDH7bOpqTkDIQGFLc2', 'N', 'admin', '2023-09-27 11:19:12', '2023-10-02 19:34:46');
 
 -- --------------------------------------------------------
 
@@ -367,7 +402,7 @@ CREATE TABLE `tbl_vehicles` (
   `capacity` varchar(100) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_vehicles`
@@ -393,7 +428,7 @@ CREATE TABLE `tbl_vehicles_report` (
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -408,7 +443,7 @@ CREATE TABLE `tbl_warehouse` (
   `action` enum('IN','OUT') NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -436,7 +471,7 @@ CREATE TABLE `tbl_workforce` (
   `password` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_workforce`
@@ -444,7 +479,6 @@ CREATE TABLE `tbl_workforce` (
 
 INSERT INTO `tbl_workforce` (`id`, `type`, `first_name`, `last_name`, `gender`, `date_of_birth`, `nid`, `phone`, `department_id`, `position`, `note`, `hired_date`, `end_date`, `contract`, `picture`, `username`, `password`, `created_at`, `updated_at`) VALUES
 (1, 'DAILY', 'Anaclet', 'Ahishakiye', 'M', '2023-08-31', '1197980034115066', '0784354460', 2, 'Vice Chairman', 'Not about w', '2023-09-15', '2023-09-21', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', 'ifvikoyq', '$2b$08$kOBesJ9PTbozorUx7nls3e7Yx84JElTHyWzMkCLXrMWJ/Q722Z8Wq', '2023-09-25 10:11:06', '2023-09-25 10:11:06'),
-(2, 'DAILY', 'Isai', 'Anaclet', 'M', '2023-09-06', '1197980034115094', '+(250) 784 354 4460', NULL, 'Chairman.', '', '2023-09-23', '2023-09-21', '1695636780611-get_turikumwe_moto-2022-06-23.pdf', '1695636780613-start_logo.png', 'ifvikoyq', '$2b$08$Cp9WZrAR29wfk1RunaxzPOF9n9mnMIwlapu9L1hRzScF0hSMtGFt2', '2023-09-25 10:13:00', '2023-09-25 10:13:10'),
 (3, 'PERMANENT', 'Anaclet', 'Ahishakiye', 'M', '2023-08-30', '1199680020158063', '0784354460', 2, 'Accountant', '', '2023-09-01', 'N/A', '1695641538798-get_turikumwe_moto-2022-06-23.pdf', '1695641538834-start_logo.png', '93mt1eei', '$2b$08$bsfEdD6FQr9p.l3QJ6BqwOKTEI4thXQopTT7bChC/9YyDYLRrkr4u', '2023-09-25 11:32:18', '2023-09-25 11:32:18');
 
 --
@@ -611,7 +645,7 @@ ALTER TABLE `tbl_customers`
 -- AUTO_INCREMENT for table `tbl_debts`
 --
 ALTER TABLE `tbl_debts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_departments`
@@ -635,13 +669,13 @@ ALTER TABLE `tbl_forgot_password`
 -- AUTO_INCREMENT for table `tbl_inventory`
 --
 ALTER TABLE `tbl_inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_maize_stock`
 --
 ALTER TABLE `tbl_maize_stock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_milling`
@@ -671,7 +705,7 @@ ALTER TABLE `tbl_permisions`
 -- AUTO_INCREMENT for table `tbl_purchases`
 --
 ALTER TABLE `tbl_purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_sales`

@@ -45,6 +45,7 @@
                                         <th>Quantity</th>
                                         <th>Transport Cost</th>
                                         <th>Total Cost</th>
+                                        <th>Mode</th>
                                         <th>Date & Time</th>
                                     </tr>
                                 </thead>
@@ -71,7 +72,10 @@
                                                 <%= purchase.total_price.toLocaleString() %>
                                             </td>
                                             <td>
-                                                <%= purchase.created_at %>
+                                                <%= purchase.name == null ? 'Debt' : purchase.name %>
+                                            </td>
+                                            <td>
+                                                <%= purchase.creation_date.toLocaleString() %>
                                             </td>
 
                                         </tr>
@@ -86,6 +90,7 @@
                                         <th>Quantity</th>
                                         <th>Transport Cost</th>
                                         <th>Total Cost</th>
+                                        <th>Mode</th>
                                         <th>Date & Time</th>
                                     </tr>
                                 </tfoot>
@@ -142,7 +147,7 @@
                         </div>
 
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Quantity</label>
+                            <label for="" id="quantity-lable-id">Quantity</label>
                             <input class="form-control form-control-lg mb-3" type="number" placeholder="Quantity"
                                 name="quantity" required value="0">
                         </div>
@@ -173,6 +178,20 @@
                                 name="place_of_purchase" required>
                         </div>
 
+
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Payment Mode</label>
+                            <select name="payment_method_id" class="form-control form-control-lg mb-3" required>
+                                <option value="">Select Payment mode</option>
+                                <% modes.forEach((mode, index)=> { %>
+                                    <option value="<%= mode.id %>">
+                                        <%= mode.name %>
+                                    </option>
+                                    <% }) %>
+                                        <option value="debt">Debt</option>
+                            </select>
+                        </div>
 
 
                         <div class="form-group col-md-6 col-lg-6">
@@ -215,6 +234,15 @@
             $('input[name="transport_cost"]').keyup(function () {
                 let t = parseFloat($('input[name="unit_price"]').val() * $('input[name="quantity"]').val()) + parseFloat($('input[name="transport_cost"]').val());
                 $('input[name="total_price"]').val(parseFloat(t));
+            });
+
+
+            $('select[name="type"]').change(function () {
+                if ($('select[name="type"]').val() == 'maize') {
+                    $('#quantity-lable-id').html('Quantity in kg');
+                } else {
+                    $('#quantity-lable-id').html('Quantity');
+                }
             });
 
         });

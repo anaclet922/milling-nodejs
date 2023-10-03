@@ -21,7 +21,7 @@
                 <div class="ms-auto">
                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-daily-workforce-modal">New Record</button>
+                            data-bs-target="#new-inventory-modal">New Record</button>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,149 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            
+
+
+                            <ul class="nav nav-tabs nav-primary" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab"
+                                        aria-selected="true">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon">
+                                            </div>
+                                            <div class="tab-title">Inventory</div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab"
+                                        aria-selected="false" tabindex="-1">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon">
+                                            </div>
+                                            <div class="tab-title">Items</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content py-3">
+                                <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
+                                    
+
+                                    <table id="purchases" class="table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item name</th>
+                                                <th>Description</th>
+                                                <th>Note</th>
+                                                <th>User</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <% inventory_users.forEach((user, index)=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= index + 1 %>
+                                                    </td>
+                                                    <td>
+                                                        <%= user.item_name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= user.description %>
+                                                    </td>
+                                                    <td>
+                                                        <%= user.note %>
+                                                    </td>
+                                                    <td>
+                                                        <%= user.first_name + ' ' + user.last_name %>
+                                                    </td>
+                                                    <td>
+
+                                                    </td>
+
+                                                </tr>
+                                                <% }); %>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item name</th>
+                                                <th>Description</th>
+                                                <th>Note</th>
+                                                <th>User</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+                                </div>
+                                <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+
+
+                                    <table id="purchases" class="table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item name</th>
+                                                <th>Description</th>
+                                                <th>Quantity</th>
+                                                <th>Added at</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <% inventories.forEach((inventory, index)=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= index + 1 %>
+                                                    </td>
+                                                    <td>
+                                                        <%= inventory.item_name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= inventory.description %>
+                                                    </td>
+                                                    <td>
+                                                        <%= inventory.quantity.toLocaleString() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= inventory.created_at.toLocaleString() %>
+                                                    </td>
+
+                                                </tr>
+                                                <% }); %>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item name</th>
+                                                <th>Description</th>
+                                                <th>Quantity</th>
+                                                <th>Added at</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+
+
+                                </div>
+                                <div class="tab-pane fade" id="primarycontact" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-12 col-lg-12">
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -48,6 +190,73 @@
     </div>
 
 
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="new-inventory-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+                <form action="/dashboard/inventory/new" method="post">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">New</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body row">
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Item Name</label>
+                            <select name="item_name" class="form-control form-control-lg mb-3" required>
+                                <option value="" selected>Select item</option>
+                                <% inventories.forEach((inventory, index)=> { %>
+                                    <option value="<%= inventory.item_name %>">
+                                        <%= inventory.item_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Type</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="E.g.: Consumable...."
+                                name="type" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">User</label>
+                            <select name="user_id" class="form-control form-control-lg mb-3" required>
+                                <option value="" selected>Select user</option>
+                                <% users.forEach((user, index)=> { %>
+                                    <option value="<%= user.id %>">
+                                        <%= user.first_name + ' ' + user.last_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Description</label>
+                            <textarea name="description" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Note</label>
+                            <textarea name="note" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 

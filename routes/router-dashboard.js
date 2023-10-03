@@ -36,7 +36,7 @@ routerDashboard.get('', async (req, res) => {
         currrentPath: "/",
         maize_stock: ((maize_stock_object.length > 0) ? maize_stock_object[0].quantity : 0)
     };
-    
+     
     res.render('dashboard/home', page_data);
 })
 
@@ -273,7 +273,11 @@ routerDashboard.get('/delete-workforce', workforceController.deleteWorkforce);
 routerDashboard.get('/purchase', purchasesController.purchasesHome);
 routerDashboard.post('/purchase/new', purchasesController.newPurchase);
 routerDashboard.get('/milling', millingController.millingHome);
+
+
 routerDashboard.get('/inventory', inventoryController.inventoryHome);
+routerDashboard.post('/inventory/new', inventoryController.postNewInventory);
+
 routerDashboard.get('/debts', debtsController.debtsHome);
 routerDashboard.get('/expenses', expensesController.expensesHome);
 
