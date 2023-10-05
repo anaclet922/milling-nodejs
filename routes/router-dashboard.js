@@ -272,7 +272,10 @@ routerDashboard.get('/delete-workforce', workforceController.deleteWorkforce);
 // #####################################
 routerDashboard.get('/purchase', purchasesController.purchasesHome);
 routerDashboard.post('/purchase/new', purchasesController.newPurchase);
+
+
 routerDashboard.get('/milling', millingController.millingHome);
+routerDashboard.post('/milling/new', millingController.postNewMilling);
 
 
 routerDashboard.get('/inventory', inventoryController.inventoryHome);

@@ -76,10 +76,10 @@
                             <input type="hidden" name="technician_id" value="<%= locals.session.loggedInUser.id %>">
                         <% } %>
 
-                        <% if((locals.session.loggedInUser.role =='admin' || locals.session.loggedInUser.role=='manager') && users.length != 0){ %>
+                        <% if(locals.session.loggedInUser.role =='admin' || locals.session.loggedInUser.role=='manager'){ %>
                             <div class="form-group col-md-6 col-lg-6">
                                 <label for="">Technician</label>
-                                <select name="technician_id" id="" class="form-control-lg form-control mb-3">
+                                <select name="technician_id" id="" class="form-control-lg form-control mb-3" required>
                                     <option value="">Select Technician</option>
                                     <% users.forEach((user, index)=> { %>
                                         <option value="<%= user.id %>">
@@ -101,7 +101,7 @@
 
                                     <div class="form-group col-md-6 col-lg-6">
                                         <label for="">Output Kg</label>
-                                        <input type="number" name="input_kg" class="form-control-lg form-control mb-3"
+                                        <input type="number" name="output_kg" class="form-control-lg form-control mb-3"
                                             placeholder="Output Quantity" required>
                                     </div>
 
