@@ -53,11 +53,11 @@ const newPurchase = async (req, res) => {
     let purchase_id = u.insertId;
 
     if (type == 'maize') {
-        const [stock] = await (await conn).query("SELECT * FROM tbl_maize_stock");
+        const [stock] = await (await conn).query("SELECT * FROM tbl_stock_maize");
         if (stock.length) {
-            const [ii] = await (await conn).query("UPDATE tbl_maize_stock SET quantity = quantity + ?", [quantity]);
+            const [ii] = await (await conn).query("UPDATE tbl_stock_maize SET quantity = quantity + ?", [quantity]);
         } else {
-            const [ii] = await (await conn).query("INSERT INTO tbl_maize_stock (quantity) VALUES (?)", [quantity]);
+            const [ii] = await (await conn).query("INSERT INTO tbl_stock_maize (quantity) VALUES (?)", [quantity]);
         }
     }
 

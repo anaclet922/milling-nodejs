@@ -36,6 +36,61 @@
                     <div class="card">
                         <div class="card-body">
 
+
+
+
+                            <table id="purchases" class="table table-striped table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Milled at</th>
+                                        <th>Input/kg</th>
+                                        <th>Output Flour Quantity/kg</th>
+                                        <th>Output Branda Quantity/kg</th>
+                                        <th>Technician</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <% millings.forEach((milling, index)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= getFormatedDate(milling.milled_at) %>
+                                            </td>
+                                            <td>
+                                                <%= milling.input_kg.toLocaleString() %>
+                                            </td>
+                                            <td>
+                                                <%= milling.output_kg_flour.toLocaleString() %>
+                                            </td>
+                                            <td>
+                                                <%= milling.output_kg_branda.toLocaleString() %>
+                                            </td>
+                                            <td>
+                                                <%= milling.first_name + ' ' + milling.last_name %>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Milled at</th>
+                                        <th>Input/kg</th>
+                                        <th>Output Flour Quantity/kg</th>
+                                        <th>Output Branda Quantity/kg</th>
+                                        <th>Technician</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -100,8 +155,15 @@
                                     </div>
 
                                     <div class="form-group col-md-6 col-lg-6">
-                                        <label for="">Output Kg</label>
-                                        <input type="number" name="output_kg" class="form-control-lg form-control mb-3"
+                                        <label for="">Flour Output Kg</label>
+                                        <input type="number" name="output_kg_flour" class="form-control-lg form-control mb-3"
+                                            placeholder="Output Quantity" required>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Branda Output Kg</label>
+                                        <input type="number" name="output_kg_branda" class="form-control-lg form-control mb-3"
                                             placeholder="Output Quantity" required>
                                     </div>
 

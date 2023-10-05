@@ -213,20 +213,20 @@ INSERT INTO `tbl_inventory` (`id`, `item_name`, `description`, `type`, `user_id`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_maize_stock`
+-- Table structure for table `tbl_stock_maize`
 --
 
-CREATE TABLE `tbl_maize_stock` (
+CREATE TABLE `tbl_stock_maize` (
   `id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `tbl_maize_stock`
+-- Dumping data for table `tbl_stock_maize`
 --
 
-INSERT INTO `tbl_maize_stock` (`id`, `quantity`, `updated_at`) VALUES
+INSERT INTO `tbl_stock_maize` (`id`, `quantity`, `updated_at`) VALUES
 (1, 3500, '2023-10-02 18:23:55');
 
 -- --------------------------------------------------------
@@ -540,9 +540,9 @@ ALTER TABLE `tbl_inventory`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tbl_maize_stock`
+-- Indexes for table `tbl_stock_maize`
 --
-ALTER TABLE `tbl_maize_stock`
+ALTER TABLE `tbl_stock_maize`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -672,9 +672,9 @@ ALTER TABLE `tbl_inventory`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tbl_maize_stock`
+-- AUTO_INCREMENT for table `tbl_stock_maize`
 --
-ALTER TABLE `tbl_maize_stock`
+ALTER TABLE `tbl_stock_maize`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --

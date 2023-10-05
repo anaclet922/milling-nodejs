@@ -75,7 +75,7 @@
                                                 <%= purchase.name == null ? 'Debt' : purchase.name %>
                                             </td>
                                             <td>
-                                                <%= purchase.creation_date.toLocaleString() %>
+                                                <%= getFormatedDate(purchase.creation_date) %>
                                             </td>
 
                                         </tr>

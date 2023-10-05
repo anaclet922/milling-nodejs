@@ -18,18 +18,25 @@ const customersController = require('../controllers/customers');
 const usersController = require('../controllers/users');
 const configsController = require('../controllers/configs');
 
+
+const { getFormatedDate } = require('../helpers');
+
+
 routerDashboard.use(function (req, res, next) {
 
     if (!req.session.loggedin) {
         return res.redirect('/auth');
     }
+
+    res.locals.getFormatedDate = getFormatedDate;
+
     next();
 
 });
 
 routerDashboard.get('', async (req, res) => {
 
-    const [maize_stock_object] = await (await conn).query("SELECT * FROM tbl_maize_stock");
+    const [maize_stock_object] = await (await conn).query("SELECT * FROM tbl_stock_maize");
   
     let page_data = {
         title: "Home",
