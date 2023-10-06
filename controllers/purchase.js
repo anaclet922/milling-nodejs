@@ -11,8 +11,6 @@ const purchasesHome = async (req, res) => {
 
     const [modes] = await (await conn).query("SELECT * FROM tbl_payments_methods WHERE status = 'ACTIVE' ORDER BY id DESC");
 
-    console.log(purchases);
-
     let page_data = {
         title: "Purchase",
         currrentPath: "purchase",

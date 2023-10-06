@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 03, 2023 at 06:23 AM
+-- Generation Time: Oct 06, 2023 at 06:15 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -75,8 +75,8 @@ CREATE TABLE `tbl_configs` (
 --
 
 INSERT INTO `tbl_configs` (`id`, `config_key`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'system_name', 'Sys', '2022-04-14 06:04:13', '2023-09-27 13:08:41'),
-(36, 'copyright_text', 'postcopyrighttext', '2022-04-14 06:04:13', '2023-09-27 13:08:30'),
+(1, 'system_name', 'M', '2022-04-14 06:04:13', '2023-10-05 08:33:50'),
+(36, 'copyright_text', 'All right reserved.', '2022-04-14 06:04:13', '2023-10-05 08:33:41'),
 (37, 'logo', '1695809724208-bee_fit.png', '2022-04-14 06:04:13', '2023-09-27 10:15:24'),
 (38, 'favicon', '1695819928810-bee_fit.png', '2022-04-14 06:04:13', '2023-09-27 13:05:28');
 
@@ -213,25 +213,6 @@ INSERT INTO `tbl_inventory` (`id`, `item_name`, `description`, `type`, `user_id`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_stock_maize`
---
-
-CREATE TABLE `tbl_stock_maize` (
-  `id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_stock_maize`
---
-
-INSERT INTO `tbl_stock_maize` (`id`, `quantity`, `updated_at`) VALUES
-(1, 3500, '2023-10-02 18:23:55');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tbl_milling`
 --
 
@@ -240,10 +221,20 @@ CREATE TABLE `tbl_milling` (
   `milled_at` date NOT NULL,
   `technician_id` int(11) NOT NULL COMMENT 'workforce id',
   `input_kg` double NOT NULL,
-  `output_kg` double NOT NULL,
+  `output_kg_flour` double NOT NULL,
+  `output_kg_branda` double NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_milling`
+--
+
+INSERT INTO `tbl_milling` (`id`, `milled_at`, `technician_id`, `input_kg`, `output_kg_flour`, `output_kg_branda`, `created_at`, `updated_at`) VALUES
+(2, '2023-10-05', 3, 150, 100, 45, '2023-10-05 09:03:42', '2023-10-05 09:21:00'),
+(3, '2023-10-05', 1, 1000, 600, 350, '2023-10-05 09:12:37', '2023-10-05 09:21:04'),
+(4, '2023-10-06', 2, 400, 350, 30, '2023-10-05 09:38:47', '2023-10-05 09:38:47');
 
 -- --------------------------------------------------------
 
@@ -363,6 +354,63 @@ CREATE TABLE `tbl_sales` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_stock_branda`
+--
+
+CREATE TABLE `tbl_stock_branda` (
+  `id` int(11) NOT NULL,
+  `quantity` double NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_stock_branda`
+--
+
+INSERT INTO `tbl_stock_branda` (`id`, `quantity`, `updated_at`) VALUES
+(1, 380, '2023-10-05 09:38:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_stock_flour`
+--
+
+CREATE TABLE `tbl_stock_flour` (
+  `id` int(11) NOT NULL,
+  `quantity` double NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_stock_flour`
+--
+
+INSERT INTO `tbl_stock_flour` (`id`, `quantity`, `updated_at`) VALUES
+(1, 950, '2023-10-05 09:38:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_stock_maize`
+--
+
+CREATE TABLE `tbl_stock_maize` (
+  `id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_stock_maize`
+--
+
+INSERT INTO `tbl_stock_maize` (`id`, `quantity`, `updated_at`) VALUES
+(1, 1800, '2023-10-05 09:38:47');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_users`
 --
 
@@ -385,7 +433,7 @@ CREATE TABLE `tbl_users` (
 
 INSERT INTO `tbl_users` (`id`, `first_name`, `last_name`, `username`, `email`, `password`, `active`, `role`, `created_at`, `updated_at`) VALUES
 (1, 'Anaclet', 'Ahishakiye', 'anaclet', 'anaclet@example.com', '$2b$08$eYVJvIYeID3YKOqh6tQQu.Xqqg.SN7X46Q4u1ldSmbq5eQQ4ZX4Na', 'Y', 'admin', '2023-09-17 01:35:18', '2023-09-27 10:55:39'),
-(2, 'John', 'Doe', 'root', 'a.anaclet920@gmail.com', '$2b$08$4k1MM5TyY1ywgUmJIO/ffOt0SM/MLZaJvmxoDH7bOpqTkDIQGFLc2', 'N', 'admin', '2023-09-27 11:19:12', '2023-10-02 19:34:46');
+(2, 'John', 'Doe', 'root', 'a.anaclet920@gmail.com', '$2b$08$4k1MM5TyY1ywgUmJIO/ffOt0SM/MLZaJvmxoDH7bOpqTkDIQGFLc2', 'Y', 'technician', '2023-09-27 11:19:12', '2023-10-05 04:10:37');
 
 -- --------------------------------------------------------
 
@@ -540,12 +588,6 @@ ALTER TABLE `tbl_inventory`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tbl_stock_maize`
---
-ALTER TABLE `tbl_stock_maize`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `tbl_milling`
 --
 ALTER TABLE `tbl_milling`
@@ -579,6 +621,24 @@ ALTER TABLE `tbl_purchases`
 -- Indexes for table `tbl_sales`
 --
 ALTER TABLE `tbl_sales`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_stock_branda`
+--
+ALTER TABLE `tbl_stock_branda`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_stock_flour`
+--
+ALTER TABLE `tbl_stock_flour`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_stock_maize`
+--
+ALTER TABLE `tbl_stock_maize`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -672,16 +732,10 @@ ALTER TABLE `tbl_inventory`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tbl_stock_maize`
---
-ALTER TABLE `tbl_stock_maize`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `tbl_milling`
 --
 ALTER TABLE `tbl_milling`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_payments`
@@ -712,6 +766,24 @@ ALTER TABLE `tbl_purchases`
 --
 ALTER TABLE `tbl_sales`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbl_stock_branda`
+--
+ALTER TABLE `tbl_stock_branda`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tbl_stock_flour`
+--
+ALTER TABLE `tbl_stock_flour`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tbl_stock_maize`
+--
+ALTER TABLE `tbl_stock_maize`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_users`

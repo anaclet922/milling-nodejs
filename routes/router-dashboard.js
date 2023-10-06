@@ -17,6 +17,7 @@ const expensesController = require('../controllers/expenses');
 const customersController = require('../controllers/customers');
 const usersController = require('../controllers/users');
 const configsController = require('../controllers/configs');
+const activitiesController = require('../controllers/activities');
 
 
 const { getFormatedDate } = require('../helpers');
@@ -37,23 +38,23 @@ routerDashboard.use(function (req, res, next) {
 routerDashboard.get('', async (req, res) => {
 
     const [maize_stock_object] = await (await conn).query("SELECT * FROM tbl_stock_maize");
+    const [branda_stock_object] = await (await conn).query("SELECT * FROM tbl_stock_branda");
+    const [flour_stock_object] = await (await conn).query("SELECT * FROM tbl_stock_flour");
+    const [workforces_object] = await (await conn).query("SELECT COUNT(*) AS quantity FROM tbl_workforce");
   
     let page_data = {
         title: "Home",
         currrentPath: "/",
-        maize_stock: ((maize_stock_object.length > 0) ? maize_stock_object[0].quantity : 0)
+        maize_stock: ((maize_stock_object.length > 0) ? maize_stock_object[0].quantity : 0),
+        branda_stock: ((branda_stock_object.length > 0) ? branda_stock_object[0].quantity : 0),
+        flour_stock: ((flour_stock_object.length > 0) ? flour_stock_object[0].quantity : 0),
+        workforces: workforces_object[0].quantity
     };
      
     res.render('dashboard/home', page_data);
 })
 
-routerDashboard.get('/activities', (req, res) => {
-    let page_data = {
-        title: "Activities & Remiders",
-        currrentPath: "activities"
-    };
-    res.render('dashboard/activities', page_data);
-})
+routerDashboard.get('/activities', activitiesController.activitiesHome);
 
 
 routerDashboard.get('/reports', (req, res) => {
