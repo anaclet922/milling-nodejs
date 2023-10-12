@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 06, 2023 at 06:15 AM
+-- Generation Time: Oct 12, 2023 at 01:49 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -32,12 +32,22 @@ CREATE TABLE `tbl_activities` (
   `details` text NOT NULL,
   `title` varchar(255) NOT NULL,
   `reminder_time` datetime NOT NULL,
-  `priority` enum('HIGH','MEDIUM','LOW') NOT NULL,
-  `assignee` int(11) NOT NULL,
+  `priority` enum('HIGH','MEDIUM','LOW') NOT NULL DEFAULT 'MEDIUM',
+  `assignee` int(11) DEFAULT NULL,
   `color` varchar(50) NOT NULL,
+  `reminder_sent` enum('NOT_SENT','SENT') NOT NULL DEFAULT 'NOT_SENT',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_activities`
+--
+
+INSERT INTO `tbl_activities` (`id`, `details`, `title`, `reminder_time`, `priority`, `assignee`, `color`, `reminder_sent`, `created_at`, `updated_at`) VALUES
+(1, 'ds', 't', '2023-10-07 15:54:00', 'LOW', NULL, '#000000', 'NOT_SENT', '2023-10-07 13:54:36', '2023-10-07 13:54:36'),
+(2, 'deta', 'Test ti', '2023-10-17 06:58:00', 'LOW', 3, '#000000', 'NOT_SENT', '2023-10-07 13:55:33', '2023-10-07 13:55:33'),
+(3, 'Gusya ton imwe', 'gusya', '2023-10-09 12:12:00', 'HIGH', 1, '#000000', 'NOT_SENT', '2023-10-08 10:12:59', '2023-10-08 10:12:59');
 
 -- --------------------------------------------------------
 
@@ -208,7 +218,8 @@ CREATE TABLE `tbl_inventory` (
 INSERT INTO `tbl_inventory` (`id`, `item_name`, `description`, `type`, `user_id`, `note`, `created_at`, `updated_at`) VALUES
 (1, 'Laptop', 'Laptop to use', 'Electronic', 1, 'Some notes', '2023-10-02 19:33:22', '2023-10-02 19:33:22'),
 (2, 'Laptop', 'Lapto', 'Electronic', 2, 'Is new', '2023-10-02 19:35:05', '2023-10-02 19:35:05'),
-(3, 'Office Chairs', '', 'Chair', 2, '', '2023-10-02 19:36:06', '2023-10-02 19:36:06');
+(3, 'Office Chairs', '', 'Chair', 2, '', '2023-10-02 19:36:06', '2023-10-02 19:36:06'),
+(4, 'Office Chairs', 'intebe', 'consummable', 2, 'october 2023', '2023-10-08 09:51:17', '2023-10-08 09:51:17');
 
 -- --------------------------------------------------------
 
@@ -234,7 +245,8 @@ CREATE TABLE `tbl_milling` (
 INSERT INTO `tbl_milling` (`id`, `milled_at`, `technician_id`, `input_kg`, `output_kg_flour`, `output_kg_branda`, `created_at`, `updated_at`) VALUES
 (2, '2023-10-05', 3, 150, 100, 45, '2023-10-05 09:03:42', '2023-10-05 09:21:00'),
 (3, '2023-10-05', 1, 1000, 600, 350, '2023-10-05 09:12:37', '2023-10-05 09:21:04'),
-(4, '2023-10-06', 2, 400, 350, 30, '2023-10-05 09:38:47', '2023-10-05 09:38:47');
+(4, '2023-10-06', 2, 400, 350, 30, '2023-10-05 09:38:47', '2023-10-05 09:38:47'),
+(5, '2023-10-07', 3, 1000, 670, 180, '2023-10-08 10:19:54', '2023-10-08 10:19:54');
 
 -- --------------------------------------------------------
 
@@ -325,7 +337,8 @@ INSERT INTO `tbl_purchases` (`id`, `type`, `item_name`, `description`, `note`, `
 (2, 'maize', 'Maize Long Grain', 'Long grain maize', '', 520, 500, 275000, 15000, 'Kigali, Nyarugenge', 'Maize Co. ltd', 5, '2023-10-02 17:16:55', '2023-10-02 17:47:25'),
 (3, 'maize', 'Maize', 'Not paid product', '', 430, 1000, 450000, 20000, 'Kigali, Nyarugenge', 'Maize Co. ltd', 0, '2023-10-02 18:23:55', '2023-10-02 18:23:55'),
 (4, 'inventory', 'Laptop', 'Laptops', '', 500000, 2, 1000000, 0, 'Kigali, Nyarugenge', 'Dream Laptop ltd.', 2, '2023-10-02 18:57:47', '2023-10-02 18:57:47'),
-(5, 'inventory', 'Office Chairs', '', '', 300000, 5, 1500000, 0, 'Kigali, Nyarugenge', 'Office Fun ltd.', 4, '2023-10-02 19:35:51', '2023-10-02 19:35:51');
+(5, 'inventory', 'Office Chairs', '', '', 300000, 5, 1500000, 0, 'Kigali, Nyarugenge', 'Office Fun ltd.', 4, '2023-10-02 19:35:51', '2023-10-02 19:35:51'),
+(6, 'maize', 'Raw maize', '', '', 400, 1000, 445000, 45000, 'Bugesera', 'Kayishema', 5, '2023-10-08 10:17:00', '2023-10-08 10:17:00');
 
 -- --------------------------------------------------------
 
@@ -336,19 +349,21 @@ INSERT INTO `tbl_purchases` (`id`, `type`, `item_name`, `description`, `note`, `
 CREATE TABLE `tbl_sales` (
   `id` int(11) NOT NULL,
   `product_type` enum('FLUOR','BRANDA') NOT NULL,
-  `quantity` double NOT NULL,
-  `packaging_id` int(11) NOT NULL COMMENT 'packaging id',
-  `number` double NOT NULL COMMENT 'how many bag',
   `total_quantity` double NOT NULL,
   `seller_id` int(11) NOT NULL COMMENT 'workforce id',
   `customer_id` int(11) NOT NULL,
-  `paid_or_debt` enum('PAID','DEBT') NOT NULL DEFAULT 'PAID',
   `payment_method_id` varchar(100) DEFAULT NULL,
+  `paid_or_debt` enum('PAID','DEBT') NOT NULL DEFAULT 'PAID',
   `amount_paid` double NOT NULL,
   `amount_debited` double NOT NULL DEFAULT 0,
   `note` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `kg_5` int(11) NOT NULL DEFAULT 0 COMMENT 'packaging id',
+  `kg_10` int(11) NOT NULL DEFAULT 0,
+  `kg_20` int(11) NOT NULL DEFAULT 0,
+  `kg_25` int(11) NOT NULL DEFAULT 0,
+  `kg_custom` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -368,7 +383,7 @@ CREATE TABLE `tbl_stock_branda` (
 --
 
 INSERT INTO `tbl_stock_branda` (`id`, `quantity`, `updated_at`) VALUES
-(1, 380, '2023-10-05 09:38:47');
+(1, 560, '2023-10-08 10:19:54');
 
 -- --------------------------------------------------------
 
@@ -387,7 +402,7 @@ CREATE TABLE `tbl_stock_flour` (
 --
 
 INSERT INTO `tbl_stock_flour` (`id`, `quantity`, `updated_at`) VALUES
-(1, 950, '2023-10-05 09:38:47');
+(1, 1620, '2023-10-08 10:19:54');
 
 -- --------------------------------------------------------
 
@@ -406,7 +421,7 @@ CREATE TABLE `tbl_stock_maize` (
 --
 
 INSERT INTO `tbl_stock_maize` (`id`, `quantity`, `updated_at`) VALUES
-(1, 1800, '2023-10-05 09:38:47');
+(1, 1800, '2023-10-08 10:19:54');
 
 -- --------------------------------------------------------
 
@@ -517,6 +532,7 @@ CREATE TABLE `tbl_workforce` (
   `picture` text NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` text NOT NULL,
+  `active` varchar(1) NOT NULL DEFAULT 'Y',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -525,9 +541,9 @@ CREATE TABLE `tbl_workforce` (
 -- Dumping data for table `tbl_workforce`
 --
 
-INSERT INTO `tbl_workforce` (`id`, `type`, `first_name`, `last_name`, `gender`, `date_of_birth`, `nid`, `phone`, `department_id`, `position`, `note`, `hired_date`, `end_date`, `contract`, `picture`, `username`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'DAILY', 'Anaclet', 'Ahishakiye', 'M', '2023-08-31', '1197980034115066', '0784354460', 2, 'Vice Chairman', 'Not about w', '2023-09-15', '2023-09-21', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', 'ifvikoyq', '$2b$08$kOBesJ9PTbozorUx7nls3e7Yx84JElTHyWzMkCLXrMWJ/Q722Z8Wq', '2023-09-25 10:11:06', '2023-09-25 10:11:06'),
-(3, 'PERMANENT', 'Anaclet', 'Ahishakiye', 'M', '2023-08-30', '1199680020158063', '0784354460', 2, 'Accountant', '', '2023-09-01', 'N/A', '1695641538798-get_turikumwe_moto-2022-06-23.pdf', '1695641538834-start_logo.png', '93mt1eei', '$2b$08$bsfEdD6FQr9p.l3QJ6BqwOKTEI4thXQopTT7bChC/9YyDYLRrkr4u', '2023-09-25 11:32:18', '2023-09-25 11:32:18');
+INSERT INTO `tbl_workforce` (`id`, `type`, `first_name`, `last_name`, `gender`, `date_of_birth`, `nid`, `phone`, `department_id`, `position`, `note`, `hired_date`, `end_date`, `contract`, `picture`, `username`, `password`, `active`, `created_at`, `updated_at`) VALUES
+(1, 'DAILY', 'Anaclet', 'Ahishakiye', 'M', '2023-08-31', '1197980034115066', '0784354460', 2, 'Vice Chairman', 'Not about w', '2023-09-15', '2023-09-21', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', '1695636666053-get_turikumwe_moto-2022-06-23.pdf', 'ifvikoyq', '$2b$08$kOBesJ9PTbozorUx7nls3e7Yx84JElTHyWzMkCLXrMWJ/Q722Z8Wq', 'Y', '2023-09-25 10:11:06', '2023-09-25 10:11:06'),
+(3, 'PERMANENT', 'Anaclet', 'Ahishakiye', 'M', '2023-08-30', '1199680020158063', '0784354460', 2, 'Accountant', '', '2023-09-01', 'N/A', '1695641538798-get_turikumwe_moto-2022-06-23.pdf', '1695641538834-start_logo.png', '93mt1eei', '$2b$08$bsfEdD6FQr9p.l3QJ6BqwOKTEI4thXQopTT7bChC/9YyDYLRrkr4u', 'Y', '2023-09-25 11:32:18', '2023-09-25 11:32:18');
 
 --
 -- Indexes for dumped tables
@@ -681,7 +697,7 @@ ALTER TABLE `tbl_workforce`
 -- AUTO_INCREMENT for table `tbl_activities`
 --
 ALTER TABLE `tbl_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_bills`
@@ -729,13 +745,13 @@ ALTER TABLE `tbl_forgot_password`
 -- AUTO_INCREMENT for table `tbl_inventory`
 --
 ALTER TABLE `tbl_inventory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_milling`
 --
 ALTER TABLE `tbl_milling`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_payments`
@@ -747,7 +763,7 @@ ALTER TABLE `tbl_payments`
 -- AUTO_INCREMENT for table `tbl_payments_methods`
 --
 ALTER TABLE `tbl_payments_methods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_permisions`
@@ -759,7 +775,7 @@ ALTER TABLE `tbl_permisions`
 -- AUTO_INCREMENT for table `tbl_purchases`
 --
 ALTER TABLE `tbl_purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_sales`

@@ -18,6 +18,7 @@ const customersController = require('../controllers/customers');
 const usersController = require('../controllers/users');
 const configsController = require('../controllers/configs');
 const activitiesController = require('../controllers/activities');
+const salesController = require('../controllers/sales');
 
 
 const { getFormatedDate } = require('../helpers');
@@ -55,6 +56,7 @@ routerDashboard.get('', async (req, res) => {
 })
 
 routerDashboard.get('/activities', activitiesController.activitiesHome);
+routerDashboard.post('/activities/new', activitiesController.postNewReminder);
 
 
 routerDashboard.get('/reports', (req, res) => {
@@ -65,13 +67,15 @@ routerDashboard.get('/reports', (req, res) => {
     res.render('dashboard/reports', page_data);
 })
 
-routerDashboard.get('/sales', (req, res) => {
-    let page_data = {
-        title: "Sales",
-        currrentPath: "reports"
-    };
-    res.render('dashboard/sales', page_data);
-});
+
+
+
+
+
+routerDashboard.get('/sales', salesController.salesHome);
+routerDashboard.post('/sale/new', salesController.newSale);
+
+
 
 
 routerDashboard.get('/profile', (req, res) => {
@@ -166,7 +170,7 @@ routerDashboard.post('/post-new-payment-mode', async (req, res) => {
     let payment_mode = req.body.name;
     let status = req.body.status;
 
-    const [i] = await (await conn).query("INSERT INTO tbl_payments_methods (name, status) VALUES (?,?)");
+    const [i] = await (await conn).query("INSERT INTO tbl_payments_methods (name, status) VALUES (?,?)", [payment_mode, status]);
 
     req.flash('success', 'Payment mode successfully created!');
     res.redirect('/dashboard/payments');

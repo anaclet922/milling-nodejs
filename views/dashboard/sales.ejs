@@ -1,126 +1,284 @@
 <%- include('../includes/dashboard-top') %>
 
-<div class="page-content-wrapper">
+    <div class="page-content-wrapper">
 
-    <div class="page-content">
+        <div class="page-content">
 
-        <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Dashboard</div>
-            <div class="ps-3">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0 p-0 align-items-center">
-                        <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img" class="md hydrated" aria-label="home outline"></ion-icon></a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page"><%= locals.title %></li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="ms-auto">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#new-sale-modal">Record New Sale</button>
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0 align-items-center">
+                            <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img"
+                                        class="md hydrated" aria-label="home outline"></ion-icon></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= locals.title %>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#new-sale-modal">Record New Sale</button>
+                    </div>
                 </div>
             </div>
+            <!--end breadcrumb-->
+
+            <br>
+            <br>
+            <br>
+
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+
+
+                            <ul class="nav nav-tabs nav-primary" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab"
+                                        aria-selected="true">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon">
+                                            </div>
+                                            <div class="tab-title">All Sales</div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab"
+                                        aria-selected="false" tabindex="-1">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon">
+                                            </div>
+                                            <div class="tab-title">Flour Sales</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab"
+                                        aria-selected="false" tabindex="-1">
+                                        <div class="d-flex align-items-center">
+                                            <div class="tab-icon">
+                                            </div>
+                                            <div class="tab-title">Branda Sales</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content py-3">
+                                <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
+
+                                </div>
+                                <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+
+                                </div>
+                                <div class="tab-pane fade" id="primarycontact" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-md-12 col-lg-12">
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
-        <!--end breadcrumb-->
-
-        <br>
-        <br>
-        <br>
 
 
-        <div class="row">
-            <div class="col-md-12 col-lg-12">
-                <div class="card">
-                    <div class="card-body">
+    </div>
 
 
-                        <ul class="nav nav-tabs nav-primary" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
-                                    <div class="d-flex align-items-center">
-                                        <div class="tab-icon">
-                                        </div>
-                                        <div class="tab-title">All Sales</div>
-                                    </div>
-                                </a>
-                            </li>
 
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
-                                    <div class="d-flex align-items-center">
-                                        <div class="tab-icon">
-                                        </div>
-                                        <div class="tab-title">Flour Sales</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab" aria-selected="false" tabindex="-1">
-                                    <div class="d-flex align-items-center">
-                                        <div class="tab-icon">
-                                        </div>
-                                        <div class="tab-title">Branda Sales</div>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="tab-content py-3">
-                            <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
-                                <img src="assets/images/carousel/08.jpg" alt="" class="radius-10 mb-3 img-fluid">
-                                <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi.</p>
+    <!-- Modal -->
+    <div class="modal fade" id="new-sale-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="/dashboard/sale/new" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New sale</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row">
+
+                        <div class="form-group col-md-12 col-lg-12">
+                            <label for="">Type</label>
+                            <select class="form-control form-control-lg mb-3" name="product_type" required>
+                                <option value="">Select type</option>
+                                <option value="FLUOR">Flour</option>
+                                <option value="BRANDA">Branda</option>
+                            </select>
+                        </div>
+
+
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Unit Price</label>
+                            <input class="form-control form-control-lg mb-3" type="number"
+                                placeholder="Enter unit price" name="unit_price" required>
+                        </div>
+
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Payment Mode</label>
+                            <select name="payment_method_id" class="form-control form-control-lg mb-3" required>
+                                <option value="">Select Payment mode</option>
+                                <% modes.forEach((mode, index)=> { %>
+                                    <option value="<%= mode.id %>">
+                                        <%= mode.name %>
+                                    </option>
+                                    <% }) %>
+                                        <option value="debt">Debt</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-12 col-lg-12" style="display: none;" id="packaging-bags">
+                            <label for="">Bag Type</label>
+                            <div class="mb-3 row">
+                                <label for="" class="col-sm-4 col-form-label">5 kg</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-lg mb-3" name="kg_5"
+                                        value="0">
+                                </div>
                             </div>
-                            <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
-                                <img src="assets/images/carousel/07.jpg" alt="" class="radius-10 mb-3 img-fluid">
-                                <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+                            <div class="mb-3 row">
+                                <label for="" class="col-sm-4 col-form-label">10 kg</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-lg mb-3" name="kg_10"
+                                        value="0">
+                                </div>
                             </div>
-                            <div class="tab-pane fade" id="primarycontact" role="tabpanel">
-                                <div class="row">
-                                    <div class="col-md-12 col-lg-12">
-
-
-                                    </div>
+                            <div class="mb-3 row">
+                                <label for="" class="col-sm-4 col-form-label">20 kg</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-lg mb-3" name="kg_20"
+                                        value="0">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="" class="col-sm-4 col-form-label">25 kg</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-lg mb-3" name="kg_25"
+                                        value="0">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="" class="col-sm-4 col-form-label">Other Packaging</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-lg mb-3" name="kg_custom"
+                                        value="0">
                                 </div>
                             </div>
                         </div>
 
-                        
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Total Quantity/kg</label>
+                            <input class="form-control form-control-lg mb-3" type="number" placeholder="Total Quantity"
+                                name="total_quantity" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Total Price</label>
+                            <input class="form-control form-control-lg mb-3" type="number" placeholder="Total Price"
+                                name="amount" required readonly="readonly">
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Customer</label>
+                            <select name="customer_id" class="form-control form-control-lg mb-3" required>
+                                <option value="">Select Payment mode</option>
+                                <% customers.forEach((customer, index)=> { %>
+                                    <option value="<%= customer.id %>">
+                                        <%= customer.first_name + ' ' + customer.last_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+
+                        <% if(users.length==0){ %>
+                            <input type="hidden" name="seller_id" value="<%= locals.session.loggedInUser.id %>">
+                            <% } %>
+
+                                <% if(locals.session.loggedInUser.role=='admin' ||
+                                    locals.session.loggedInUser.role=='manager' ){ %>
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Seller</label>
+                                        <select name="seller_id" id="" class="form-control-lg form-control mb-3"
+                                            required>
+                                            <option value="">Select Seller</option>
+                                            <% users.forEach((user, index)=> { %>
+                                                <option value="<%= user.id %>">
+                                                    <%= user.first_name + ' ' + user.last_name %>
+                                                </option>
+                                                <% }); %>
+                                        </select>
+                                    </div>
+                                    <% }else{ %>
+                                        <input type="hidden" name="seller_id"
+                                            value="<%= locals.session.loggedInUser.id %>">
+                                        <% } %>
+
+
+                                            <div class="form-group col-md-12 col-lg-12">
+                                                <label for="">Note</label>
+                                                <textarea name="note" class="form-control form-control-lg"></textarea>
+                                            </div>
+
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
-
-        
     </div>
 
 
-</div>
+
+    <script>
+
+        $(document).ready(function () {
 
 
+            $('select[name="product_type"]').change(function () {
 
-<!-- Modal -->
-<div class="modal fade" id="new-sale-modal" tabindex="-1" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form action="" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title">New sale</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+                if ($('select[name="product_type"]').val() == 'FLUOR') {
+                    $('#packaging-bags').show();
+                } else {
+                    $('#packaging-bags').hide();
+                }
 
-                    <input class="form-control form-control-lg mb-3" type="text" placeholder="Department name" name="title">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            });
 
 
+            $('input[name="total_quantity"]').keyup(function () {
+                calcTotalAmount();
+            });
+            $('input[name="unit_price"]').keyup(function () {
+                calcTotalAmount();
+            });
 
 
-<%- include('../includes/dashboard-foot') %>
+        });
+
+        function calcTotalAmount() {
+            let quantity = $('input[name="total_quantity"]').val();
+            let unit_price = $('input[name="unit_price"]').val();
+            $('input[name="amount"]').val(quantity * unit_price);
+        }
+    </script>
+
+    <%- include('../includes/dashboard-foot') %>

@@ -70,7 +70,7 @@
                                                 <%= milling.output_kg_branda.toLocaleString() %>
                                             </td>
                                             <td>
-                                                <%= milling.first_name + ' ' + milling.last_name %>
+                                                <%= milling.first_name ? (milling.first_name + ' ' + milling.last_name) : 'Not Specified' %>
                                             </td>
                                         </tr>
                                         <% }); %>

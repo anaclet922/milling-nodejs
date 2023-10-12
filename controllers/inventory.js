@@ -8,7 +8,7 @@ const upload = require('../upload');
 const inventoryHome = async (req, res) => {
 
     const [inventories] = await (await conn).query("SELECT * FROM tbl_purchases WHERE type = 'inventory' ORDER BY id DESC");
-    const [users] = await (await conn).query("SELECT * FROM tbl_users ORDER BY id DESC");
+    const [users] = await (await conn).query("SELECT * FROM tbl_workforce ORDER BY id DESC");
     const [inventory_users] = await (await conn).query("SELECT tbl_inventory.id as inventory_id, tbl_inventory.*, tbl_users.* FROM tbl_inventory LEFT JOIN tbl_users ON tbl_inventory.user_id = tbl_users.id ORDER BY tbl_inventory.id DESC");
 
     let page_data = {
