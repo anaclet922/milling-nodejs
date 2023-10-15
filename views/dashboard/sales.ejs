@@ -104,7 +104,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="new-sale-modal" tabindex="-1" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <form action="/dashboard/sale/new" method="post">
                     <div class="modal-header">
@@ -198,7 +198,7 @@
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="">Customer</label>
                             <select name="customer_id" class="form-control form-control-lg mb-3" required>
-                                <option value="">Select Payment mode</option>
+                                <option value="">Select Payment Customer</option>
                                 <% customers.forEach((customer, index)=> { %>
                                     <option value="<%= customer.id %>">
                                         <%= customer.first_name + ' ' + customer.last_name %>
