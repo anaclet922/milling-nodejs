@@ -38,7 +38,7 @@ const newAdmin = async (req, res) => {
 
     let first_name = req.body.first_name;
     let last_name = req.body.last_name;
-    let email = req.body.email;
+    let email = req.body.email; 
     let username = req.body.username;
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);

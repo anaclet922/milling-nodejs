@@ -57,6 +57,8 @@ routerDashboard.get('', async (req, res) => {
 
 routerDashboard.get('/activities', activitiesController.activitiesHome);
 routerDashboard.post('/activities/new', activitiesController.postNewReminder);
+routerDashboard.get('/delete-activity', activitiesController.deleteActivity);
+routerDashboard.post('/activities/edit', activitiesController.editActivity);
 
 
 routerDashboard.get('/reports', (req, res) => {
@@ -284,10 +286,13 @@ routerDashboard.get('/delete-workforce', workforceController.deleteWorkforce);
 // #####################################
 routerDashboard.get('/purchase', purchasesController.purchasesHome);
 routerDashboard.post('/purchase/new', purchasesController.newPurchase);
+routerDashboard.get('/delete-purchase', purchasesController.deletePurchase);
+routerDashboard.post('/purchase/edit', purchasesController.editPurchase);
 
 
 routerDashboard.get('/milling', millingController.millingHome);
 routerDashboard.post('/milling/new', millingController.postNewMilling);
+routerDashboard.get('/delete-milling', millingController.deleteMilling);
 
 
 routerDashboard.get('/inventory', inventoryController.inventoryHome);

@@ -44,5 +44,29 @@ const postNewMilling = async (req, res) => {
 
 };
 
+const deleteMilling = async (req, res) => {
 
-module.exports = { millingHome, postNewMilling };
+    let id = req.query.id;
+
+    const [milling] = await (await conn).query("SELECT * FROM tbl_milling WHERE id = ?", [id]);
+
+    if (milling.length) {
+
+        let flour_quantity = milling[0].output_kg_flour;
+        let branda_quantity = milling[0].output_kg_branda;
+
+        const [f] = await (await conn).query("UPDATE tbl_stock_flour SET quantity = quantity - ?", [flour_quantity]);
+        const [b] = await (await conn).query("UPDATE tbl_stock_branda SET quantity = quantity - ?", [branda_quantity]);
+        
+        const [deleted] = await (await conn).query("DELETE FROM tbl_milling WHERE id = ?", [id]);
+        req.flash('success', 'Successfully deleted!');
+        res.redirect('/dashboard/milling');
+
+    } else {
+        req.flash('error', 'Milling recorded not found!');
+        res.redirect('/dashboard/milling');
+    }
+
+};
+
+module.exports = { millingHome, postNewMilling, deleteMilling };
