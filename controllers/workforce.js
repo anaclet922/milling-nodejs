@@ -61,12 +61,12 @@ const postDailyWorkforce = async (req, res) => {
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-      if(req.files.contract[0] != undefined){
+      if(req.files.contract[0] !== undefined){
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     }
 
-    if(req.files.picture[0] != undefined){
+    if(req.files.picture[0] !== undefined){
         let picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
     }
@@ -112,12 +112,12 @@ const postPermanentWorkforce = async (req, res) => {
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-    if(req.files.contract[0] != undefined){
+    if(req.files.contract[0] !== undefined){
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     }
 
-    if(req.files.picture[0] != undefined){
+    if(req.files.picture[0] !== undefined){
         let picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
     }
@@ -199,14 +199,14 @@ const editDailyWorkforce = async (req, res) => {
 
     const [workforce] = await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [workforce_id]);
     
-    if(req.files.contract[0] != undefined){
+    if(req.files.contract[0] !== undefined){
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     }else{
         contract = workforce[0].contract;
     }
 
-    if(req.files.picture[0] != undefined){
+    if(req.files.picture[0] !== undefined){
         let picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
     }else{
@@ -263,14 +263,14 @@ const editPermanentWorkforce = async (req, res) => {
 
     const [workforce] = await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [workforce_id]);
     
-    if(req.files.contract[0] != undefined){
+    if(req.files.contract[0] !== undefined){
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     }else{
         contract = workforce[0].contract;
     }
 
-    if(req.files.picture[0] != undefined){
+    if(req.files.picture[0] !== undefined){
         let picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
     }else{
