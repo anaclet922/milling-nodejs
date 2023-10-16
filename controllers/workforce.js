@@ -1,6 +1,7 @@
 
 const conn = require('../database');
 var mv = require('mv');
+const bcrypt = require('bcrypt');
 const upload = require('../upload');
 
 
@@ -49,7 +50,7 @@ const postDailyWorkforce = async (req, res) => {
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-    if(req.files.contract){
+      if(req.files.contract){
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     }else{
