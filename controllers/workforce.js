@@ -13,6 +13,8 @@ const workforceHome = async (req, res) => {
 
     const [permanetWorkforces] = await (await conn).query("SELECT tbl_workforce.id as workforce_id, tbl_workforce.*, tbl_departments.* FROM tbl_workforce LEFT JOIN tbl_departments ON tbl_workforce.department_id = tbl_departments.id WHERE tbl_workforce.type = 'PERMANENT'");
 
+    console.log(dailyWorkforces);
+
     let page_data = {
         title: "Workforce",
         currrentPath: "workforce",
@@ -132,5 +134,107 @@ const deleteWorkforce = async (req, res) => {
     res.redirect('/dashboard/workforce');
 };
 
+const editDailyWorkforce = async (req, res) => {
 
-module.exports = { workforceHome, postDailyWorkforce, postPermanentWorkforce, postNewDepartment, deleteDepartment, editDepartment, deleteWorkforce };
+    let type = 'DAILY';
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+    let gender = req.body.gender;
+    let date_of_birth = req.body.date_of_birth;
+    let nid = req.body.nid;
+    let phone = req.body.phone;
+    let department_id = req.body.department_id;
+    let position = req.body.position;
+    let note = req.body.note;
+    let hired_date = req.body.hired_date;
+    let end_date = req.body.end_date;
+    let contract = '';
+    let picture = '';
+    let username = req.body.username;
+    let password = req.body.password;
+    let hashedPassword = '';
+
+    let workforce_id = req.body.workforce_id;
+
+    const [workforce] = await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [workforce_id]);
+    
+    if(req.files.contract){
+        contract = req.files.contract[0].filename;
+        mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
+    }else{
+        contract = workforce[0].contract;
+    }
+
+    if(req.files.picture){
+        let picture = req.files.picture[0].filename;
+        mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    }else{
+        picture = workforce[0].picture;
+    }
+
+    if(req.body.password != ''){
+        hashedPassword = await bcrypt.hash(password, 8);
+    }else{
+        hashedPassword = workforce[0].password;
+    }
+    
+    const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
+
+    req.flash('success', 'Workforce successfully updated!');
+    res.redirect('/dashboard/workforce');
+
+};
+
+const editPermanentWorkforce = async (req, res) => {
+
+
+    let type = 'PERMANENT';
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+    let gender = req.body.gender;
+    let date_of_birth = req.body.date_of_birth;
+    let nid = req.body.nid;
+    let phone = req.body.phone;
+    let department_id = req.body.department_id;
+    let position = req.body.position;
+    let note = req.body.note;
+    let hired_date = req.body.hired_date;
+    let end_date = req.body.end_date;
+    let contract = '';
+    let picture = '';
+    let username = req.body.username;
+    let password = req.body.password;
+    let hashedPassword = '';
+
+    let workforce_id = req.body.workforce_id;
+
+    const [workforce] = await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [workforce_id]);
+    
+    if(req.files.contract){
+        contract = req.files.contract[0].filename;
+        mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
+    }else{
+        contract = workforce[0].contract;
+    }
+
+    if(req.files.picture){
+        let picture = req.files.picture[0].filename;
+        mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    }else{
+        picture = workforce[0].picture;
+    }
+
+    if(req.body.password != ''){
+        hashedPassword = await bcrypt.hash(password, 8);
+    }else{
+        hashedPassword = workforce[0].password;
+    }
+    
+    const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
+
+    req.flash('success', 'Workforce successfully updated!');
+    res.redirect('/dashboard/workforce');
+
+};
+
+module.exports = { workforceHome, postDailyWorkforce, postPermanentWorkforce, postNewDepartment, deleteDepartment, editDepartment, deleteWorkforce, editPermanentWorkforce, editDailyWorkforce };

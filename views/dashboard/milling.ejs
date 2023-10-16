@@ -112,7 +112,7 @@
                                                                     <div class="form-group col-md-6 col-lg-6">
                                                                         <label for="">Date</label>
                                                                         <input type="date" name="milled_at" class="form-control-lg form-control mb-3"
-                                                                            placeholder="Milled at">
+                                                                            placeholder="Milled at" value="<%= milling.milled_at.toISOString().slice(0, 10).replace('T', ' ') %>">
                                                                     </div>
                                             
                                                                              
@@ -126,7 +126,7 @@
                                                                             <select name="technician_id" id="" class="form-control-lg form-control mb-3" required>
                                                                                 <option value="">Select Technician</option>
                                                                                 <% users.forEach((user, index)=> { %>
-                                                                                    <option value="<%= user.id %>">
+                                                                                    <option value="<%= user.id %>" <%= milling.technician_id == user.id ? 'selected' : '' %>>
                                                                                         <%= user.first_name + ' ' + user.last_name %>
                                                                                     </option>
                                                                                     <% }); %>
@@ -140,24 +140,25 @@
                                                                                 <div class="form-group col-md-6 col-lg-6">
                                                                                     <label for="">Input Kg</label>
                                                                                     <input type="number" name="input_kg" class="form-control-lg form-control mb-3"
-                                                                                        placeholder="Input Quantity" required>
+                                                                                        placeholder="Input Quantity" required value="<%= milling.input_kg %>">
                                                                                 </div>
                                             
                                                                                 <div class="form-group col-md-6 col-lg-6">
                                                                                     <label for="">Flour Output Kg</label>
                                                                                     <input type="number" name="output_kg_flour" class="form-control-lg form-control mb-3"
-                                                                                        placeholder="Output Quantity" required>
+                                                                                        placeholder="Output Quantity" required value="<%= milling.output_kg_flour %>">
                                                                                 </div>
                                             
                                             
                                                                                 <div class="form-group col-md-6 col-lg-6">
                                                                                     <label for="">Branda Output Kg</label>
                                                                                     <input type="number" name="output_kg_branda" class="form-control-lg form-control mb-3"
-                                                                                        placeholder="Output Quantity" required>
+                                                                                        placeholder="Output Quantity" required value="<%= milling.output_kg_branda %>">
                                                                                 </div>
                                             
                                                                 </div>
                                                                 <div class="modal-footer">
+                                                                    <input type="hidden" name="milling_id" value="<%= milling.milling_id %>">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                                 </div>

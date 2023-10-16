@@ -19,6 +19,7 @@ const usersController = require('../controllers/users');
 const configsController = require('../controllers/configs');
 const activitiesController = require('../controllers/activities');
 const salesController = require('../controllers/sales');
+const stockController = require('../controllers/stock');
 
 
 const { getFormatedDate } = require('../helpers');
@@ -274,6 +275,10 @@ routerDashboard.post('/new-department', workforceController.postNewDepartment);
 routerDashboard.get('/delete-department', workforceController.deleteDepartment);
 routerDashboard.post('/edit-department', workforceController.editDepartment);
 routerDashboard.get('/delete-workforce', workforceController.deleteWorkforce);
+const dailyWorkforceUpload1 = upload.fields([{ name: "contract" }, { name: "picture", maxCount: 1 }]);
+routerDashboard.post('/workforce/edit-permanent-workforce', dailyWorkforceUpload1, workforceController.editPermanentWorkforce);
+const permanentWorkforceUpload1 = upload.fields([{ name: "contract" }, { name: "picture", maxCount: 1 }]);
+routerDashboard.post('/workforce/edit-daily-workforce', permanentWorkforceUpload1, workforceController.editDailyWorkforce);
 
 
 
@@ -293,10 +298,12 @@ routerDashboard.post('/purchase/edit', purchasesController.editPurchase);
 routerDashboard.get('/milling', millingController.millingHome);
 routerDashboard.post('/milling/new', millingController.postNewMilling);
 routerDashboard.get('/delete-milling', millingController.deleteMilling);
-
+routerDashboard.post('/milling/edit', millingController.editMilling);
 
 routerDashboard.get('/inventory', inventoryController.inventoryHome);
 routerDashboard.post('/inventory/new', inventoryController.postNewInventory);
+routerDashboard.get('/delete-inventory', inventoryController.deleteInventory);
+routerDashboard.post('/inventory/edit', inventoryController.editInventory);
 
 routerDashboard.get('/debts', debtsController.debtsHome);
 routerDashboard.get('/expenses', expensesController.expensesHome);
@@ -324,6 +331,7 @@ const faviconUpload = upload.fields([{ name: "file", maxCount: 1 }]);
 routerDashboard.post('/configs/post-new-favicon', faviconUpload, configsController.postNewFavicon);
 
 
+routerDashboard.get('/stock', stockController.stockHome);
 
 module.exports = routerDashboard
 

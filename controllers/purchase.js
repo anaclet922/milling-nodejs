@@ -82,6 +82,8 @@ const deletePurchase = async (req, res) => {
         }
 
         const [deleted] = await (await conn).query("DELETE FROM tbl_purchases WHERE id = ?", [purchase_id]);
+        const [deletedDebt] = await (await conn).query("DELETE FROM tbl_debts WHERE purchase_id = ?", [purchase_id]);
+
         req.flash('success', 'Successfully deleted!');
         res.redirect('/dashboard/purchase');
 
