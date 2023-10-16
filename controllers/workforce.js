@@ -41,14 +41,27 @@ const postDailyWorkforce = async (req, res) => {
     let note = req.body.note;
     let hired_date = req.body.hired_date;
     let end_date = req.body.end_date;
-    let contract = req.files.contract[0].filename;
-    let picture = req.files.picture[0].filename;
+    let contract = '';
+    let picture = '';
     let username = req.body.username;
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
 
-    mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
-    mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
+    // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    if(req.files.contract){
+        contract = req.files.contract[0].filename;
+        mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
+    }else{
+        contract = workforce[0].contract;
+    }
+
+    if(req.files.picture){
+        let picture = req.files.picture[0].filename;
+        mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    }else{
+        picture = workforce[0].picture;
+    }
 
     const [i] = await (await conn).query("INSERT INTO tbl_workforce (type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword]);
 
@@ -72,14 +85,27 @@ const postPermanentWorkforce = async (req, res) => {
     let note = req.body.note;
     let hired_date = req.body.hired_date;
     let end_date = req.body.end_date;
-    let contract = req.files.contract[0].filename;
-    let picture = req.files.picture[0].filename;
+    let contract = '';
+    let picture = '';
     let username = req.body.username;
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
 
-    mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
-    mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
+    // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    if(req.files.contract){
+        contract = req.files.contract[0].filename;
+        mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
+    }else{
+        contract = workforce[0].contract;
+    }
+
+    if(req.files.picture){
+        let picture = req.files.picture[0].filename;
+        mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
+    }else{
+        picture = workforce[0].picture;
+    }
 
     const [i] = await (await conn).query("INSERT INTO tbl_workforce (type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword]);
 
