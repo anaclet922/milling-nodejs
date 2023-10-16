@@ -48,6 +48,17 @@ const postDailyWorkforce = async (req, res) => {
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
 
+    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    if(nid_check.length){
+        req.flash('error', 'Workforce with same NID exists!');
+        return res.redirect('/dashboard/workforce');
+    }
+    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    if(username_check.length){
+        req.flash('error', 'Workforce with same username exists!');
+        return res.redirect('/dashboard/workforce');
+    }
+
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
       if(req.files.contract){
@@ -87,6 +98,17 @@ const postPermanentWorkforce = async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
+
+    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    if(nid_check.length){
+        req.flash('error', 'Workforce with same NID exists!');
+        return res.redirect('/dashboard/workforce');
+    }
+    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    if(username_check.length){
+        req.flash('error', 'Workforce with same username exists!');
+        return res.redirect('/dashboard/workforce');
+    }
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
@@ -196,6 +218,17 @@ const editDailyWorkforce = async (req, res) => {
     }else{
         hashedPassword = workforce[0].password;
     }
+
+    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    if(nid_check.length){
+        req.flash('error', 'Workforce with same NID exists!');
+        return res.redirect('/dashboard/workforce');
+    }
+    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    if(username_check.length){
+        req.flash('error', 'Workforce with same username exists!');
+        return res.redirect('/dashboard/workforce');
+    }
     
     const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
 
@@ -247,6 +280,17 @@ const editPermanentWorkforce = async (req, res) => {
         hashedPassword = await bcrypt.hash(password, 8);
     }else{
         hashedPassword = workforce[0].password;
+    }
+    
+    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    if(nid_check.length){
+        req.flash('error', 'Workforce with same NID exists!');
+        return res.redirect('/dashboard/workforce');
+    }
+    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    if(username_check.length){
+        req.flash('error', 'Workforce with same username exists!');
+        return res.redirect('/dashboard/workforce');
     }
     
     const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
