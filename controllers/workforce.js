@@ -219,12 +219,13 @@ const editDailyWorkforce = async (req, res) => {
         hashedPassword = workforce[0].password;
     }
 
-    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
+     
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]); 
     if(nid_check.length){
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);  
     if(username_check.length){
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
@@ -282,12 +283,12 @@ const editPermanentWorkforce = async (req, res) => {
         hashedPassword = workforce[0].password;
     }
     
-    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]); 
     if(nid_check.length){
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);  
     if(username_check.length){
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
