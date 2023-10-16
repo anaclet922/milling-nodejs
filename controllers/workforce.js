@@ -48,26 +48,26 @@ const postDailyWorkforce = async (req, res) => {
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
 
-    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
-    if(nid_check.length){
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]);
+    if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
-    if(username_check.length){
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);
+    if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
     }
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-      if(req.files.contract[0] !== undefined){
+    if (req.files.contract !== undefined) {
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     }
 
-    if(req.files.picture[0] !== undefined){
-        let picture = req.files.picture[0].filename;
+    if (req.files.picture !== undefined) {
+        picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
     }
 
@@ -99,26 +99,26 @@ const postPermanentWorkforce = async (req, res) => {
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
 
-    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
-    if(nid_check.length){
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]);
+    if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
-    if(username_check.length){
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);
+    if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
     }
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     // mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-    if(req.files.contract[0] !== undefined){
+    if (req.files.contract !== undefined) {
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
     }
 
-    if(req.files.picture[0] !== undefined){
-        let picture = req.files.picture[0].filename;
+    if (req.files.picture !== undefined) {
+        picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
     }
 
@@ -198,39 +198,46 @@ const editDailyWorkforce = async (req, res) => {
     let workforce_id = req.body.workforce_id;
 
     const [workforce] = await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [workforce_id]);
-    
-    if(req.files.contract[0] !== undefined){
+
+
+    console.log(req.files);
+
+    if (req.files.contract !== undefined) {
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
-    }else{
+    } else {
         contract = workforce[0].contract;
     }
 
-    if(req.files.picture[0] !== undefined){
-        let picture = req.files.picture[0].filename;
+    if (req.files.picture !== undefined) {
+        picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-    }else{
+    } else {
         picture = workforce[0].picture;
     }
 
-    if(req.body.password != ''){
+    if (req.body.password != '') {
         hashedPassword = await bcrypt.hash(password, 8);
-    }else{
+    } else {
         hashedPassword = workforce[0].password;
     }
 
-     
-    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]); 
-    if(nid_check.length){
+
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]);
+    if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);  
-    if(username_check.length){
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);
+    if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
     }
-    
+
+
+    console.log('picture: ');
+    console.log(picture);
+
     const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
 
     req.flash('success', 'Workforce successfully updated!');
@@ -262,34 +269,34 @@ const editPermanentWorkforce = async (req, res) => {
     let workforce_id = req.body.workforce_id;
 
     const [workforce] = await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [workforce_id]);
-    
-    if(req.files.contract[0] !== undefined){
+
+    if (req.files.contract !== undefined) {
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
-    }else{
+    } else {
         contract = workforce[0].contract;
     }
 
-    if(req.files.picture[0] !== undefined){
-        let picture = req.files.picture[0].filename;
+    if (req.files.picture !== undefined) {
+        picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-    }else{
+    } else {
         picture = workforce[0].picture;
     }
 
-    if(req.body.password != ''){
+    if (req.body.password != '') {
         hashedPassword = await bcrypt.hash(password, 8);
-    }else{
+    } else {
         hashedPassword = workforce[0].password;
     }
-    
-    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]); 
-    if(nid_check.length){
+
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]);
+    if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);  
-    if(username_check.length){
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);
+    if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
     }

@@ -20,6 +20,7 @@ const configsController = require('../controllers/configs');
 const activitiesController = require('../controllers/activities');
 const salesController = require('../controllers/sales');
 const stockController = require('../controllers/stock');
+const paymentController = require('../controllers/payments');
 
 
 const { getFormatedDate } = require('../helpers');
@@ -89,41 +90,6 @@ routerDashboard.get('/profile', (req, res) => {
     };
     res.render('dashboard/profile', page_data);
 });
-
-
-routerDashboard.get('/payments', async (req, res) => {
-
-    let payment_modes = [];
-
-    const [result] = await (await conn).query("SELECT * FROM tbl_payments_methods");
-
-    let page_data = {
-        title: "Payments",
-        currrentPath: "payments",
-        payment_modes: result
-    };
-    res.render('dashboard/payments', page_data);
-
-});
-
-
-
-
-routerDashboard.get('/vehicles', async (req, res) => {
-
-    let payment_modes = [];
-
-    const [result] = await (await conn).query("SELECT * FROM tbl_vehicles");
-
-    let page_data = {
-        title: "Vehicles",
-        currrentPath: "vehicles",
-        vehicles: result
-    };
-    res.render('dashboard/vehicles', page_data);
-});
-
-
 routerDashboard.post('/post-change-password', async (req, res) => {
 
     let current_password = req.body.currentPassword;
@@ -168,34 +134,20 @@ routerDashboard.post('/post-change-password', async (req, res) => {
 
 
 
-routerDashboard.post('/post-new-payment-mode', async (req, res) => {
 
-    let payment_mode = req.body.name;
-    let status = req.body.status;
+routerDashboard.get('/vehicles', async (req, res) => {
 
-    const [i] = await (await conn).query("INSERT INTO tbl_payments_methods (name, status) VALUES (?,?)", [payment_mode, status]);
+    let payment_modes = [];
 
-    req.flash('success', 'Payment mode successfully created!');
-    res.redirect('/dashboard/payments');
+    const [result] = await (await conn).query("SELECT * FROM tbl_vehicles");
 
+    let page_data = {
+        title: "Vehicles",
+        currrentPath: "vehicles",
+        vehicles: result
+    };
+    res.render('dashboard/vehicles', page_data);
 });
-
-
-
-routerDashboard.post('/post-edit-payment-mode', async (req, res) => {
-
-    let payment_mode = req.body.name;
-    let status = req.body.status;
-    let id = req.body.id;
-
-    const [i] = await (await conn).query("UPDATE tbl_payments_methods SET name = ?, status = ? WHERE id = ?", [payment_mode, status, id]);
-
-    req.flash('success', 'Payment mode successfully updated!');
-    res.redirect('/dashboard/payments');
-
-});
-
-
 routerDashboard.post('/post-new-vehicle', async (req, res) => {
 
     let plate_no = req.body.plate_no;
@@ -208,8 +160,6 @@ routerDashboard.post('/post-new-vehicle', async (req, res) => {
     res.redirect('/dashboard/vehicles');
 
 });
-
-
 routerDashboard.post('/post-edit-vehicle', async (req, res) => {
 
     let plate_no = req.body.plate_no;
@@ -224,30 +174,6 @@ routerDashboard.post('/post-edit-vehicle', async (req, res) => {
     res.redirect('/dashboard/vehicles');
 
 });
-
-
-routerDashboard.get('/update-payment-mode', async (req, res) => {
-
-    let id = req.query.id;
-    let status = req.query.newstatus;
-
-    const [u] = await (await conn).query("UPDATE tbl_payments_methods SET status= ? WHERE id = ?", [status, id]);
-
-    req.flash('success', 'Payment mode successfully updated!');
-    res.redirect('/dashboard/payments');
-
-});
-
-
-routerDashboard.get('/delete-payment-mode', async (req, res) => {
-    let id = req.query.id;
-    const [d] = await (await conn).query("DELETE FROM tbl_payments_methods WHERE id = ?", [id]);
-    req.flash('success', 'Payment mode successfully deleted!');
-    res.redirect('/dashboard/payments');
-
-});
-
-
 routerDashboard.get('/delete-car', async (req, res) => {
 
     let id = req.query.id;
@@ -257,6 +183,10 @@ routerDashboard.get('/delete-car', async (req, res) => {
     res.redirect('/dashboard/vehicles');
 
 });
+
+
+
+
 
 
 
@@ -306,6 +236,8 @@ routerDashboard.get('/delete-inventory', inventoryController.deleteInventory);
 routerDashboard.post('/inventory/edit', inventoryController.editInventory);
 
 routerDashboard.get('/debts', debtsController.debtsHome);
+routerDashboard.post('/debt-paid', debtsController.paidDebt);
+
 routerDashboard.get('/expenses', expensesController.expensesHome);
 
 
@@ -330,8 +262,16 @@ routerDashboard.post('/configs/post-new-logo', logoUpload,configsController.post
 const faviconUpload = upload.fields([{ name: "file", maxCount: 1 }]);
 routerDashboard.post('/configs/post-new-favicon', faviconUpload, configsController.postNewFavicon);
 
-
 routerDashboard.get('/stock', stockController.stockHome);
+
+
+
+routerDashboard.get('/payments', paymentController.paymentHome);
+routerDashboard.get('/update-payment-mode', paymentController.updatePaymentMode);
+routerDashboard.get('/delete-payment-mode', paymentController.deletePaymentMode);
+routerDashboard.post('/post-new-payment-mode', paymentController.postNewPaymentMode);
+routerDashboard.post('/post-edit-payment-mode', paymentController.postEditPaymentMode);
+
 
 module.exports = routerDashboard
 

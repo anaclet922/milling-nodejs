@@ -40,11 +40,11 @@ const newSale = async (req, res) => {
     let amount_paid = req.body.payment_method_id != 'debt' ? req.body.amount : 0;
     let amount_debited = req.body.payment_method_id == 'debt' ? req.body.amount : 0;
     let note = req.body.note;
-    let kg_5 = req.body.kg_5;
-    let kg_10 = req.body.kg_10;
-    let kg_20 = req.body.kg_20;
-    let kg_25 = req.body.kg_25;
-    let kg_custom = req.body.kg_custom;
+    let kg_5 = req.body.kg_5 == '' ? 0 : req.body.kg_5;
+    let kg_10 = req.body.kg_10 == '' ? 0 : req.body.kg_10;
+    let kg_20 = req.body.kg_20 == '' ? 0 : req.body.kg_20;
+    let kg_25 = req.body.kg_25 == '' ? 0 : req.body.kg_25;
+    let kg_custom = req.body.kg_custom == '' ? 0 : req.body.kg_custom;
 
     let flour_stock_check = stock_flour[0]['quantity'] >= total_quantity;
     let branda_stock_check = stock_branda[0]['quantity'] >= total_quantity;
@@ -67,6 +67,8 @@ const newSale = async (req, res) => {
 
     if (paid_or_debt == 'DEBT') {
         const [d] = await (await conn).query("INSERT INTO tbl_debts (customer_id, sale_id, debited_amount, note) VALUES (?,?,?,?)", [customer_id, sale_id, amount_debited, note]);
+    } else {
+        const [payment] = await (await conn).query("INSERT INTO tbl_payments (customer_id, sale_id, amount_paid, method_of_payment, user_id, note) VALUES (?,?,?,?,?,?)", [customer_id, sale_id, amount_paid, payment_method_id, seller_id, note]);
     }
 
     req.flash('success', 'New sale successfully recorded!');
