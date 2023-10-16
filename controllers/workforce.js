@@ -48,12 +48,12 @@ const postDailyWorkforce = async (req, res) => {
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
 
-    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
     if(nid_check.length){
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
     if(username_check.length){
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
@@ -99,12 +99,12 @@ const postPermanentWorkforce = async (req, res) => {
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
 
-    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
     if(nid_check.length){
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
     if(username_check.length){
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
@@ -219,12 +219,12 @@ const editDailyWorkforce = async (req, res) => {
         hashedPassword = workforce[0].password;
     }
 
-    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
     if(nid_check.length){
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
     if(username_check.length){
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
@@ -282,17 +282,17 @@ const editPermanentWorkforce = async (req, res) => {
         hashedPassword = workforce[0].password;
     }
     
-    const [nid_check] = await (await conn).query("SELECT * tbl_workforce nid = ?", [nid]); 
+    const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]); 
     if(nid_check.length){
         req.flash('error', 'Workforce with same NID exists!');
         return res.redirect('/dashboard/workforce');
     }
-    const [username_check] = await (await conn).query("SELECT * tbl_workforce username = ?", [username]);  
+    const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);  
     if(username_check.length){
         req.flash('error', 'Workforce with same username exists!');
         return res.redirect('/dashboard/workforce');
     }
-    
+
     const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
 
     req.flash('success', 'Workforce successfully updated!');
