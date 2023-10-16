@@ -53,15 +53,11 @@ const postDailyWorkforce = async (req, res) => {
       if(req.files.contract){
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
-    }else{
-        contract = workforce[0].contract;
     }
 
     if(req.files.picture){
         let picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-    }else{
-        picture = workforce[0].picture;
     }
 
     const [i] = await (await conn).query("INSERT INTO tbl_workforce (type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword]);
@@ -97,15 +93,11 @@ const postPermanentWorkforce = async (req, res) => {
     if(req.files.contract){
         contract = req.files.contract[0].filename;
         mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
-    }else{
-        contract = workforce[0].contract;
     }
 
     if(req.files.picture){
         let picture = req.files.picture[0].filename;
         mv('./uploads/' + picture, './uploads/pictures/' + picture, { mkdirp: true }, function (err) { });
-    }else{
-        picture = workforce[0].picture;
     }
 
     const [i] = await (await conn).query("INSERT INTO tbl_workforce (type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword]);
