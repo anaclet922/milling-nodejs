@@ -104,13 +104,13 @@
                                                 <%= sale.product_type %>
                                             </td>
                                             <td>
-                                                <%= sale.total_quantity %>
+                                                <%= sale.total_quantity.toLocaleString() %>
                                             </td>
                                             <td>
-                                                <%= sale.unit_price %>
+                                                <%= sale.unit_price.toLocaleString() %>
                                             </td>
                                             <td>
-                                                <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited : sale.amount_paid %>
+                                                <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited.toLocaleString() : sale.amount_paid.toLocaleString() %>
                                             </td>
                                             <td>
                                                 <span class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>"><%= sale.paid_or_debt == 'DEBT' ? 'Debt' : 'Paid' %></span>
@@ -171,13 +171,13 @@
                                                         <%= sale.first_name + ' ' + sale.last_name %>
                                                     </td>
                                                     <td>
-                                                        <%= sale.total_quantity %>
+                                                        <%= sale.total_quantity.toLocaleString() %>
                                                     </td>
                                                     <td>
-                                                        <%= sale.unit_price %>
+                                                        <%= sale.unit_price.toLocaleString() %>
                                                     </td>
                                                     <td>
-                                                        <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited : sale.amount_paid %>
+                                                        <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited.toLocaleString() : sale.amount_paid.toLocaleString() %>
                                                     </td>
                                                     <td>
                                                         <span class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>"><%= sale.paid_or_debt == 'DEBT' ? 'Debt' : 'Paid' %></span>
@@ -236,13 +236,13 @@
                                                                 <%= sale.first_name + ' ' + sale.last_name %>
                                                             </td>
                                                             <td>
-                                                                <%= sale.total_quantity %>
+                                                                <%= sale.total_quantity.toLocaleString() %>
                                                             </td>
                                                             <td>
-                                                                <%= sale.unit_price %>
+                                                                <%= sale.unit_price.toLocaleString() %>
                                                             </td>
                                                             <td>
-                                                                <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited : sale.amount_paid %>
+                                                                <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited.toLocaleString() : sale.amount_paid.toLocaleString() %>
                                                             </td>
                                                             <td>
                                                                 <span class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>"><%= sale.paid_or_debt == 'DEBT' ? 'Debt' : 'Paid' %></span>
@@ -252,7 +252,7 @@
                                                             </td>
                                                             <td>
                                                                
-                                                                
+
 
                                                             </td>
                 

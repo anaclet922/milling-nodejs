@@ -240,6 +240,8 @@ routerDashboard.post('/debt-paid', debtsController.paidDebt);
 
 routerDashboard.get('/expenses', expensesController.expensesHome);
 routerDashboard.post('/expense/new', expensesController.expensesNew);
+routerDashboard.get('/expenses/delete', expensesController.expensesDelete);
+routerDashboard.post('/expense/edit', expensesController.expensesEdit);
 
 
 routerDashboard.get('/customers', customersController.customersHome);
