@@ -239,6 +239,7 @@ routerDashboard.get('/debts', debtsController.debtsHome);
 routerDashboard.post('/debt-paid', debtsController.paidDebt);
 
 routerDashboard.get('/expenses', expensesController.expensesHome);
+routerDashboard.post('/expense/new', expensesController.expensesNew);
 
 
 routerDashboard.get('/customers', customersController.customersHome);

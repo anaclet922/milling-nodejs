@@ -19,10 +19,10 @@
                     </nav>
                 </div>
                 <div class="ms-auto">
-                    <!-- <div class="btn-group">
+                    <div class="btn-group">
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-daily-workforce-modal">New Record</button>
-                    </div> -->
+                            data-bs-target="#new-expenses-modal"><i class="fas fa-plus"></i> New Record</button>
+                    </div>
                 </div>
             </div>
             <!--end breadcrumb-->
@@ -35,7 +35,62 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            
+
+
+                            <table id="sales" class="table table-striped table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Sender Quantity</th>
+                                        <th>Note</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <% expenses.forEach((expense, index)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= expense.description %>
+                                            </td>
+                                            <td>
+                                                <%= expense.amount %>
+                                            </td>
+                                            <td>
+                                                <%= expense.sender.first_name + ' ' + expense.sender.last_name %>
+                                            </td>
+                                            <td>
+                                                <%= expense.note %>
+                                            </td>
+                                            <td>
+                                               
+                                            </td>
+
+                                        </tr>
+                                        <% }); %>
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Sender Quantity</th>
+                                        <th>Note</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -49,6 +104,59 @@
 
 
 
+    <div class="modal fade" id="new-expenses-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="/dashboard/expense/new" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Expense</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row">
+
+                        <div class="col-md-12">
+
+                            <div class="form-group mb-3 row">
+                                <label for="">Description</label>
+                                <input type="text" name="description" class="form-control form-control-lg" placeholder="Description " required/>
+                            </div>
+
+                            <div class="form-group mb-3 row">
+                                <label for="">Total Price</label>
+                                <input class="form-control form-control-lg mb-3" type="number" placeholder="Amount"
+                                    name="amount" required>
+                            </div>
+
+                            <div class="form-group mb-3 row">
+                                <label for="">Seller</label>
+                                <select name="sender" id="" class="form-control-lg form-control mb-3" required>
+                                    <option value="">Select Seller</option>
+                                    <% users.forEach((user, index)=> { %>
+                                        <option value="<%= user.id %>">
+                                            <%= user.first_name + ' ' + user.last_name %>
+                                        </option>
+                                        <% }); %>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group mb-3 row">
+                                <label for="">Note</label>
+                                <textarea name="note" class="form-control form-control-lg"></textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 
