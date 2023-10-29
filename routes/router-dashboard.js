@@ -78,6 +78,8 @@ routerDashboard.get('/reports', (req, res) => {
 
 routerDashboard.get('/sales', salesController.salesHome);
 routerDashboard.post('/sale/new', salesController.newSale);
+routerDashboard.get('/sale/delete', salesController.saleDelete);
+routerDashboard.post('/sale/edit', salesController.saleEdit);
 
 
 

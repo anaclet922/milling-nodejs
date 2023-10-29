@@ -74,72 +74,333 @@
                             <div class="tab-content py-3">
                                 <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
 
-                                         
 
-                            <table id="sales" class="table table-striped table-bordered" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer</th>
-                                        <th>Type</th>
-                                        <th>Total Quantity</th>
-                                        <th>Unit Price</th>
-                                        <th>Amount</th>
-                                        <th>Debt/Paid</th>
-                                        <th>Date</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                    <% sales.forEach((sale, index)=> { %>
-                                        <tr>
-                                            <td>
-                                                <%= index + 1 %>
-                                            </td>
-                                            <td>
-                                                <%= sale.first_name + ' ' + sale.last_name %>
-                                            </td>
-                                            <td>
-                                                <%= sale.product_type %>
-                                            </td>
-                                            <td>
-                                                <%= sale.total_quantity.toLocaleString() %>
-                                            </td>
-                                            <td>
-                                                <%= sale.unit_price.toLocaleString() %>
-                                            </td>
-                                            <td>
-                                                <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited.toLocaleString() : sale.amount_paid.toLocaleString() %>
-                                            </td>
-                                            <td>
-                                                <span class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>"><%= sale.paid_or_debt == 'DEBT' ? 'Debt' : 'Paid' %></span>
-                                            </td>
-                                            <td>
-                                                <%= sale.sale_at.toLocaleString() %>
-                                            </td>
-                                            <td>
-                                               
-                                            </td>
+                                    <table id="sales" class="table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Customer</th>
+                                                <th>Type</th>
+                                                <th>Total Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Amount</th>
+                                                <th>Debt/Paid</th>
+                                                <th>Date</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                        </tr>
-                                        <% }); %>
+                                            <% sales.forEach((sale, index)=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= index + 1 %>
+                                                    </td>
+                                                    <td>
+                                                        <%= sale.first_name + ' ' + sale.last_name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= sale.product_type %>
+                                                    </td>
+                                                    <td>
+                                                        <%= sale.total_quantity.toLocaleString() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= sale.unit_price.toLocaleString() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= sale.paid_or_debt=='DEBT' ?
+                                                            sale.amount_debited.toLocaleString() :
+                                                            sale.amount_paid.toLocaleString() %>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>">
+                                                            <%= sale.paid_or_debt=='DEBT' ? 'Debt' : 'Paid' %>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <%= sale.sale_at.toLocaleString() %>
+                                                    </td>
+                                                    <td>
 
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer</th>
-                                        <th>Type</th>
-                                        <th>Total Quantity</th>
-                                        <th>Unit Price</th>
-                                        <th>Amount</th>
-                                        <th>Debt/Paid</th>
-                                        <th>Date</th>
-                                        <th></th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                                        <div class="btn-group">
+                                                            <a href="javascript:;" class="btn btn-outline-primary"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#edit-all-sale-<%= sale.sale_id %>">
+                                                                <i class="fas fa-pencil-alt"></i>
+                                                            </a>
+                                                            <button type="button"
+                                                                class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                                                                data-bs-toggle="dropdown"> <span
+                                                                    class="visually-hidden">Toggle
+                                                                    Dropdown</span>
+                                                            </button>
+                                                            <div
+                                                                class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    onclick="areYouSureToDelete(<%= sale.sale_id %>)">Delete</a>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="modal fade" id="edit-all-sale-<%= sale.sale_id %>"
+                                                            tabindex="-1" aria-hidden="true" style="display: none;">
+                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                                <div class="modal-content">
+                                                                    <form action="/dashboard/sale/edit" method="post">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Edit sale</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body row">
+
+                                                                            <div class="form-group col-md-12 col-lg-12">
+                                                                                <label for="">Type</label>
+                                                                                <select
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    name="product_type" required>
+                                                                                    <option value="">Select type
+                                                                                    </option>
+                                                                                    <option value="FLUOR"
+                                                                                        <%= sale.product_type=='FLOUR'
+                                                                                        ? 'selected' : '' %>>Flour
+                                                                                    </option>
+                                                                                    <option value="BRANDA"
+                                                                                        <%=sale.product_type=='BRANDA'
+                                                                                        ? 'selected' : '' %>>Branda
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+
+
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Unit Price</label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="number"
+                                                                                    placeholder="Enter unit price"
+                                                                                    name="unit_price" required
+                                                                                    value="<%= sale.unit_price %>">
+                                                                            </div>
+
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Payment Mode</label>
+                                                                                <select name="payment_method_id"
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
+                                                                                    <option value="">Select Payment mode
+                                                                                    </option>
+                                                                                    <% modes.forEach((mode, index)=> {
+                                                                                        %>
+                                                                                        <option value="<%= mode.id %>"
+                                                                                            <%=sale.payment_method_id==mode.id
+                                                                                            ? 'selected' : '' %>>
+                                                                                            <%= mode.name %>
+                                                                                        </option>
+                                                                                        <% }) %>
+                                                                                            <option value="debt"
+                                                                                                <%=sale.payment_method_id=='debt'
+                                                                                                ? 'selected' : '' %>
+                                                                                                >Debt</option>
+                                                                                </select>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-12 col-lg-12"
+                                                                                style="display: none;"
+                                                                                id="packaging-bags">
+                                                                                <label for="">Bag Type</label>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">5
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_5"
+                                                                                            value="<%= sale.kg_5 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">10
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_10"
+                                                                                            value="<%= sale.kg_10 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">20
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_20"
+                                                                                            value="<%= sale.kg_20 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">25
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_25"
+                                                                                            value="<%= sale.kg_25 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">Other
+                                                                                        Packaging</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_custom"
+                                                                                            value="<%= sale.kg_custom %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Total Quantity/kg</label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="number"
+                                                                                    placeholder="Total Quantity"
+                                                                                    name="total_quantity" required
+                                                                                    value="<%= sale.total_quantity %>">
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Total Price</label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="number"
+                                                                                    placeholder="Total Price"
+                                                                                    name="amount" required
+                                                                                    readonly="readonly"
+                                                                                    value="<%= sale.payment_method_id == 'debt' ? sale.amount_debited : sale.amount_paid %>">
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Customer</label>
+                                                                                <select name="customer_id"
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
+                                                                                    <option value="">Select Customer
+                                                                                    </option>
+                                                                                    <% customers.forEach((customer,
+                                                                                        index)=> { %>
+                                                                                        <option
+                                                                                            value="<%= customer.id %>"
+                                                                                            <%=sale.customer_id==customer.id
+                                                                                            ? 'selected' : '' %>>
+                                                                                            <%= customer.first_name
+                                                                                                + ' ' +
+                                                                                                customer.last_name %>
+                                                                                        </option>
+                                                                                        <% }) %>
+                                                                                </select>
+                                                                            </div>
+
+                                                                            <% if(users.length==0){ %>
+                                                                                <input type="hidden" name="seller_id"
+                                                                                    value="<%= locals.session.loggedInUser.id %>">
+                                                                                <% } %>
+
+                                                                                    <% if(locals.session.loggedInUser.role=='admin'
+                                                                                        ||
+                                                                                        locals.session.loggedInUser.role=='manager'
+                                                                                        ){ %>
+                                                                                        <div
+                                                                                            class="form-group col-md-6 col-lg-6">
+                                                                                            <label for="">Seller</label>
+                                                                                            <select name="seller_id"
+                                                                                                id=""
+                                                                                                class="form-control-lg form-control mb-3"
+                                                                                                required>
+                                                                                                <option value="">Select
+                                                                                                    Seller</option>
+                                                                                                <% users.forEach((user,
+                                                                                                    index)=> { %>
+                                                                                                    <option
+                                                                                                        value="<%= user.id %>"
+                                                                                                        <%=sale.seller_id==user.id
+                                                                                                        ? 'selected'
+                                                                                                        : '' %>>
+                                                                                                        <%= user.first_name
+                                                                                                            + ' ' +
+                                                                                                            user.last_name
+                                                                                                            %>
+                                                                                                    </option>
+                                                                                                    <% }); %>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <% }else{ %>
+                                                                                            <input type="hidden"
+                                                                                                name="seller_id"
+                                                                                                value="<%= locals.session.loggedInUser.id %>">
+                                                                                            <% } %>
+
+
+                                                                                                <div
+                                                                                                    class="form-group col-md-12 col-lg-12">
+                                                                                                    <label
+                                                                                                        for="">Note</label>
+                                                                                                    <textarea
+                                                                                                        name="note"
+                                                                                                        class="form-control form-control-lg"><%= sale.note %></textarea>
+                                                                                                </div>
+
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <input type="hidden" name="sale_id"
+                                                                                value="<%= sale.sale_id %>">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Submit</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                    </td>
+
+                                                </tr>
+                                                <% }); %>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Customer</th>
+                                                <th>Type</th>
+                                                <th>Total Quantity</th>
+                                                <th>Unit Price</th>
+                                                <th>Amount</th>
+                                                <th>Debt/Paid</th>
+                                                <th>Date</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
 
 
 
@@ -161,7 +422,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-        
+
                                             <% sales.forEach((sale, index)=> { if(sale.product_type == 'FLUOR'){ %>
                                                 <tr>
                                                     <td>
@@ -177,21 +438,284 @@
                                                         <%= sale.unit_price.toLocaleString() %>
                                                     </td>
                                                     <td>
-                                                        <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited.toLocaleString() : sale.amount_paid.toLocaleString() %>
+                                                        <%= sale.paid_or_debt=='DEBT' ?
+                                                            sale.amount_debited.toLocaleString() :
+                                                            sale.amount_paid.toLocaleString() %>
                                                     </td>
                                                     <td>
-                                                        <span class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>"><%= sale.paid_or_debt == 'DEBT' ? 'Debt' : 'Paid' %></span>
+                                                        <span
+                                                            class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>">
+                                                            <%= sale.paid_or_debt=='DEBT' ? 'Debt' : 'Paid' %>
+                                                        </span>
                                                     </td>
                                                     <td>
                                                         <%= sale.sale_at.toLocaleString() %>
                                                     </td>
                                                     <td>
-                                                       
+
+                                                        <div class="btn-group">
+                                                            <a href="javascript:;" class="btn btn-outline-primary"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#edit-flour-sale-<%= sale.sale_id %>">
+                                                                <i class="fas fa-pencil-alt"></i>
+                                                            </a>
+                                                            <button type="button"
+                                                                class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                                                                data-bs-toggle="dropdown"> <span
+                                                                    class="visually-hidden">Toggle
+                                                                    Dropdown</span>
+                                                            </button>
+                                                            <div
+                                                                class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    onclick="areYouSureToDelete(<%= sale.sale_id %>)">Delete</a>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <div class="modal fade" id="edit-flour-sale-<%= sale.sale_id %>"
+                                                            tabindex="-1" aria-hidden="true" style="display: none;">
+                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                                <div class="modal-content">
+                                                                    <form action="/dashboard/sale/edit" method="post">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Edit sale</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body row">
+
+                                                                            <div class="form-group col-md-12 col-lg-12">
+                                                                                <label for="">Type</label>
+                                                                                <select
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    name="product_type" required>
+                                                                                    <option value="">Select type
+                                                                                    </option>
+                                                                                    <option value="FLUOR"
+                                                                                        <%=sale.product_type=='FLOUR'
+                                                                                        ? 'selected' : '' %>>Flour
+                                                                                    </option>
+                                                                                    <option value="BRANDA"
+                                                                                        <%=sale.product_type=='BRANDA'
+                                                                                        ? 'selected' : '' %>>Branda
+                                                                                    </option>
+                                                                                </select>
+                                                                            </div>
+
+
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Unit Price</label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="number"
+                                                                                    placeholder="Enter unit price"
+                                                                                    name="unit_price" required
+                                                                                    value="<%= sale.unit_price %>">
+                                                                            </div>
+
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Payment Mode</label>
+                                                                                <select name="payment_method_id"
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
+                                                                                    <option value="">Select Payment mode
+                                                                                    </option>
+                                                                                    <% modes.forEach((mode, index)=> {
+                                                                                        %>
+                                                                                        <option value="<%= mode.id %>"
+                                                                                            <%=sale.payment_method_id==mode.id
+                                                                                            ? 'selected' : '' %>>
+                                                                                            <%= mode.name %>
+                                                                                        </option>
+                                                                                        <% }) %>
+                                                                                            <option value="debt"
+                                                                                                <%=sale.payment_method_id=='debt'
+                                                                                                ? 'selected' : '' %>
+                                                                                                >Debt</option>
+                                                                                </select>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-12 col-lg-12"
+                                                                                style="display: none;"
+                                                                                id="packaging-bags">
+                                                                                <label for="">Bag Type</label>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">5
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_5"
+                                                                                            value="<%= sale.kg_5 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">10
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_10"
+                                                                                            value="<%= sale.kg_10 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">20
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_20"
+                                                                                            value="<%= sale.kg_20 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">25
+                                                                                        kg</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_25"
+                                                                                            value="<%= sale.kg_25 %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="mb-3 row">
+                                                                                    <label for=""
+                                                                                        class="col-sm-4 col-form-label">Other
+                                                                                        Packaging</label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <input type="number"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="kg_custom"
+                                                                                            value="<%= sale.kg_custom %>">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Total Quantity/kg</label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="number"
+                                                                                    placeholder="Total Quantity"
+                                                                                    name="total_quantity" required
+                                                                                    value="<%= sale.total_quantity %>">
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Total Price</label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="number"
+                                                                                    placeholder="Total Price"
+                                                                                    name="amount" required
+                                                                                    readonly="readonly"
+                                                                                    value="<%= sale.payment_method_id == 'debt' ? sale.amount_debited : sale.amount_paid %>">
+                                                                            </div>
+
+                                                                            <div class="form-group col-md-6 col-lg-6">
+                                                                                <label for="">Customer</label>
+                                                                                <select name="customer_id"
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
+                                                                                    <option value="">Select Customer
+                                                                                    </option>
+                                                                                    <% customers.forEach((customer,
+                                                                                        index)=> { %>
+                                                                                        <option
+                                                                                            value="<%= customer.id %>"
+                                                                                            <%=sale.customer_id==customer.id
+                                                                                            ? 'selected' : '' %>>
+                                                                                            <%= customer.first_name
+                                                                                                + ' ' +
+                                                                                                customer.last_name %>
+                                                                                        </option>
+                                                                                        <% }) %>
+                                                                                </select>
+                                                                            </div>
+
+                                                                            <% if(users.length==0){ %>
+                                                                                <input type="hidden" name="seller_id"
+                                                                                    value="<%= locals.session.loggedInUser.id %>">
+                                                                                <% } %>
+
+                                                                                    <% if(locals.session.loggedInUser.role=='admin'
+                                                                                        ||
+                                                                                        locals.session.loggedInUser.role=='manager'
+                                                                                        ){ %>
+                                                                                        <div
+                                                                                            class="form-group col-md-6 col-lg-6">
+                                                                                            <label for="">Seller</label>
+                                                                                            <select name="seller_id"
+                                                                                                id=""
+                                                                                                class="form-control-lg form-control mb-3"
+                                                                                                required>
+                                                                                                <option value="">Select
+                                                                                                    Seller</option>
+                                                                                                <% users.forEach((user,
+                                                                                                    index)=> { %>
+                                                                                                    <option
+                                                                                                        value="<%= user.id %>"
+                                                                                                        <%=sale.seller_id==user.id
+                                                                                                        ? 'selected'
+                                                                                                        : '' %>>
+                                                                                                        <%= user.first_name
+                                                                                                            + ' ' +
+                                                                                                            user.last_name
+                                                                                                            %>
+                                                                                                    </option>
+                                                                                                    <% }); %>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <% }else{ %>
+                                                                                            <input type="hidden"
+                                                                                                name="seller_id"
+                                                                                                value="<%= locals.session.loggedInUser.id %>">
+                                                                                            <% } %>
+
+
+                                                                                                <div
+                                                                                                    class="form-group col-md-12 col-lg-12">
+                                                                                                    <label
+                                                                                                        for="">Note</label>
+                                                                                                    <textarea
+                                                                                                        name="note"
+                                                                                                        class="form-control form-control-lg"><%= sale.note %></textarea>
+                                                                                                </div>
+
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <input type="hidden" name="sale_id"
+                                                                                value="<%= sale.sale_id %>">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Submit</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
                                                     </td>
-        
+
                                                 </tr>
                                                 <% }}); %>
-        
+
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -212,7 +736,8 @@
                                     <div class="row">
                                         <div class="col-md-12 col-lg-12">
 
-                                            <table id="sales-branda" class="table table-striped table-bordered" width="100%">
+                                            <table id="sales-branda" class="table table-striped table-bordered"
+                                                width="100%">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -226,8 +751,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                
-                                                    <% sales.forEach((sale, index)=> { if(sale.product_type == 'BRANDA'){ %>
+
+                                                    <% sales.forEach((sale, index)=> { if(sale.product_type ==
+                                                        'BRANDA'){ %>
                                                         <tr>
                                                             <td>
                                                                 <%= index + 1 %>
@@ -242,23 +768,314 @@
                                                                 <%= sale.unit_price.toLocaleString() %>
                                                             </td>
                                                             <td>
-                                                                <%= sale.paid_or_debt == 'DEBT' ? sale.amount_debited.toLocaleString() : sale.amount_paid.toLocaleString() %>
+                                                                <%= sale.paid_or_debt=='DEBT' ?
+                                                                    sale.amount_debited.toLocaleString() :
+                                                                    sale.amount_paid.toLocaleString() %>
                                                             </td>
                                                             <td>
-                                                                <span class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>"><%= sale.paid_or_debt == 'DEBT' ? 'Debt' : 'Paid' %></span>
+                                                                <span
+                                                                    class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>">
+                                                                    <%= sale.paid_or_debt=='DEBT' ? 'Debt' : 'Paid' %>
+                                                                </span>
                                                             </td>
                                                             <td>
                                                                 <%= sale.sale_at.toLocaleString() %>
                                                             </td>
                                                             <td>
-                                                               
+
+                                                                <div class="btn-group">
+                                                                    <a href="javascript:;"
+                                                                        class="btn btn-outline-primary"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#edit-branda-sale-<%= sale.sale_id %>">
+                                                                        <i class="fas fa-pencil-alt"></i>
+                                                                    </a>
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                                                                        data-bs-toggle="dropdown"> <span
+                                                                            class="visually-hidden">Toggle
+                                                                            Dropdown</span>
+                                                                    </button>
+                                                                    <div
+                                                                        class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                                                        <a class="dropdown-item" href="javascript:;"
+                                                                            onclick="areYouSureToDelete(<%= sale.sale_id %>)">Delete</a>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                                <div class="modal fade"
+                                                                    id="edit-branda-sale-<%= sale.sale_id %>" tabindex="-1"
+                                                                    aria-hidden="true" style="display: none;">
+                                                                    <div
+                                                                        class="modal-dialog modal-dialog-centered modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <form action="/dashboard/sale/edit"
+                                                                                method="post">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title">Edit sale
+                                                                                    </h5>
+                                                                                    <button type="button"
+                                                                                        class="btn-close"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body row">
+
+                                                                                    <div
+                                                                                        class="form-group col-md-12 col-lg-12">
+                                                                                        <label for="">Type</label>
+                                                                                        <select
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            name="product_type"
+                                                                                            required>
+                                                                                            <option value="">Select type
+                                                                                            </option>
+                                                                                            <option value="FLUOR"
+                                                                                                <%=sale.product_type=='FLOUR'
+                                                                                                ? 'selected' : '' %>
+                                                                                                 >Flour</option>
+                                                                                            <option value="BRANDA"
+                                                                                                <%=sale.product_type=='BRANDA'
+                                                                                                ? 'selected' : '' %>
+                                                                                                 >Branda</option>
+                                                                                        </select>
+                                                                                    </div>
+
+
+
+                                                                                    <div
+                                                                                        class="form-group col-md-6 col-lg-6">
+                                                                                        <label for="">Unit Price</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="number"
+                                                                                            placeholder="Enter unit price"
+                                                                                            name="unit_price" required
+                                                                                            value="<%= sale.unit_price %>">
+                                                                                    </div>
+
+
+                                                                                    <div
+                                                                                        class="form-group col-md-6 col-lg-6">
+                                                                                        <label for="">Payment
+                                                                                            Mode</label>
+                                                                                        <select name="payment_method_id"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            required>
+                                                                                            <option value="">Select
+                                                                                                Payment mode</option>
+                                                                                            <% modes.forEach((mode,
+                                                                                                index)=> { %>
+                                                                                                <option
+                                                                                                    value="<%= mode.id %>"
+                                                                                                    <%=sale.payment_method_id==mode.id
+                                                                                                    ? 'selected' : '' %>
+                                                                                                    >
+                                                                                                    <%= mode.name %>
+                                                                                                </option>
+                                                                                                <% }) %>
+                                                                                                    <option value="debt"
+                                                                                                        <%=sale.payment_method_id=='debt'
+                                                                                                        ? 'selected'
+                                                                                                        : '' %>>Debt
+                                                                                                    </option>
+                                                                                        </select>
+                                                                                    </div>
+
+                                                                                    <div class="form-group col-md-12 col-lg-12"
+                                                                                        style="display: none;"
+                                                                                        id="packaging-bags">
+                                                                                        <label for="">Bag Type</label>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for=""
+                                                                                                class="col-sm-4 col-form-label">5
+                                                                                                kg</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number"
+                                                                                                    class="form-control form-control-lg mb-3"
+                                                                                                    name="kg_5"
+                                                                                                    value="<%= sale.kg_5 %>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for=""
+                                                                                                class="col-sm-4 col-form-label">10
+                                                                                                kg</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number"
+                                                                                                    class="form-control form-control-lg mb-3"
+                                                                                                    name="kg_10"
+                                                                                                    value="<%= sale.kg_10 %>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for=""
+                                                                                                class="col-sm-4 col-form-label">20
+                                                                                                kg</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number"
+                                                                                                    class="form-control form-control-lg mb-3"
+                                                                                                    name="kg_20"
+                                                                                                    value="<%= sale.kg_20 %>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for=""
+                                                                                                class="col-sm-4 col-form-label">25
+                                                                                                kg</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number"
+                                                                                                    class="form-control form-control-lg mb-3"
+                                                                                                    name="kg_25"
+                                                                                                    value="<%= sale.kg_25 %>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for=""
+                                                                                                class="col-sm-4 col-form-label">Other
+                                                                                                Packaging</label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <input type="number"
+                                                                                                    class="form-control form-control-lg mb-3"
+                                                                                                    name="kg_custom"
+                                                                                                    value="<%= sale.kg_custom %>">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div
+                                                                                        class="form-group col-md-6 col-lg-6">
+                                                                                        <label for="">Total
+                                                                                            Quantity/kg</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="number"
+                                                                                            placeholder="Total Quantity"
+                                                                                            name="total_quantity"
+                                                                                            required
+                                                                                            value="<%= sale.total_quantity %>">
+                                                                                    </div>
+
+                                                                                    <div
+                                                                                        class="form-group col-md-6 col-lg-6">
+                                                                                        <label for="">Total
+                                                                                            Price</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="number"
+                                                                                            placeholder="Total Price"
+                                                                                            name="amount" required
+                                                                                            readonly="readonly"
+                                                                                            value="<%= sale.payment_method_id == 'debt' ? sale.amount_debited : sale.amount_paid %>">
+                                                                                    </div>
+
+                                                                                    <div
+                                                                                        class="form-group col-md-6 col-lg-6">
+                                                                                        <label for="">Customer</label>
+                                                                                        <select name="customer_id"
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            required>
+                                                                                            <option value="">Select
+                                                                                                Customer</option>
+                                                                                            <% customers.forEach((customer,
+                                                                                                index)=> { %>
+                                                                                                <option
+                                                                                                    value="<%= customer.id %>"
+                                                                                                    <%=sale.customer_id==customer.id
+                                                                                                    ? 'selected' : '' %>
+                                                                                                    >
+                                                                                                    <%= customer.first_name
+                                                                                                        + ' ' +
+                                                                                                        customer.last_name
+                                                                                                        %>
+                                                                                                </option>
+                                                                                                <% }) %>
+                                                                                        </select>
+                                                                                    </div>
+
+                                                                                    <% if(users.length==0){ %>
+                                                                                        <input type="hidden"
+                                                                                            name="seller_id"
+                                                                                            value="<%= locals.session.loggedInUser.id %>">
+                                                                                        <% } %>
+
+                                                                                            <% if(locals.session.loggedInUser.role=='admin'
+                                                                                                ||
+                                                                                                locals.session.loggedInUser.role=='manager'
+                                                                                                ){ %>
+                                                                                                <div
+                                                                                                    class="form-group col-md-6 col-lg-6">
+                                                                                                    <label
+                                                                                                        for="">Seller</label>
+                                                                                                    <select
+                                                                                                        name="seller_id"
+                                                                                                        id=""
+                                                                                                        class="form-control-lg form-control mb-3"
+                                                                                                        required>
+                                                                                                        <option
+                                                                                                            value="">
+                                                                                                            Select
+                                                                                                            Seller
+                                                                                                        </option>
+                                                                                                        <% users.forEach((user,
+                                                                                                            index)=> {
+                                                                                                            %>
+                                                                                                            <option
+                                                                                                                value="<%= user.id %>"
+                                                                                                                <%=sale.seller_id==user.id
+                                                                                                                ? 'selected'
+                                                                                                                : '' %>>
+                                                                                                                <%= user.first_name
+                                                                                                                    + ' '
+                                                                                                                    +
+                                                                                                                    user.last_name
+                                                                                                                    %>
+                                                                                                            </option>
+                                                                                                            <% }); %>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <% }else{ %>
+                                                                                                    <input type="hidden"
+                                                                                                        name="seller_id"
+                                                                                                        value="<%= locals.session.loggedInUser.id %>">
+                                                                                                    <% } %>
+
+
+                                                                                                        <div
+                                                                                                            class="form-group col-md-12 col-lg-12">
+                                                                                                            <label
+                                                                                                                for="">Note</label>
+                                                                                                            <textarea
+                                                                                                                name="note"
+                                                                                                                class="form-control form-control-lg"><%= sale.note %></textarea>
+                                                                                                        </div>
+
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <input type="hidden" name="sale_id"
+                                                                                        value="<%= sale.sale_id %>">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-secondary"
+                                                                                        data-bs-dismiss="modal">Close</button>
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-primary">Submit</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
 
 
                                                             </td>
-                
+
                                                         </tr>
                                                         <% }}); %>
-                
+
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
@@ -305,7 +1122,7 @@
                     <div class="modal-body row">
 
                         <div class="form-group col-md-12 col-lg-12">
-                             <label for="">Type</label>
+                            <label for="">Type</label>
                             <select class="form-control form-control-lg mb-3" name="product_type" required>
                                 <option value="">Select type</option>
                                 <option value="FLUOR">Flour</option>
@@ -469,6 +1286,22 @@
             let quantity = $('input[name="total_quantity"]').val();
             let unit_price = $('input[name="unit_price"]').val();
             $('input[name="amount"]').val(quantity * unit_price);
+        }
+
+        function areYouSureToDelete(id) {
+            Swal.fire({
+                title: 'Are you sure to delete?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = '/dashboard/sale/delete?id=' + id;
+                }
+            })
         }
     </script>
 
