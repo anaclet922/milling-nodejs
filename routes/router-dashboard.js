@@ -114,10 +114,10 @@ routerDashboard.post('/post-change-password', async (req, res) => {
 
                 hashedPassword = await bcrypt.hash(new_password, 8);
 
-                conn.query("UPDATE tbl_users SET password = ? WHERE email = ?", [hashedPassword, req.session.loggedInUser.email], function (error, result, fields) {
+                const [user] = await (await conn).query("UPDATE tbl_users SET password = ? WHERE email = ?", [hashedPassword, req.session.loggedInUser.email]); 
                     req.flash('success', 'Password updated!');
                     res.redirect('/dashboard/profile');
-                });
+                
 
             } else {
                 req.flash('error', 'Incorrect password provided!');
