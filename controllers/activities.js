@@ -3,15 +3,27 @@ const conn = require('../database');
 var mv = require('mv');
 const upload = require('../upload');
 
-
+const { getUserById } = require('../helpers');
 
 const activitiesHome = async (req, res) => {
 
     const [workforces] = await (await conn).query("SELECT * FROM tbl_workforce");
     const [activities] = await (await conn).query("SELECT tbl_activities.id as activity_id, tbl_activities.created_at as  activity_created_at, tbl_activities.*, tbl_workforce.* FROM tbl_activities LEFT JOIN tbl_workforce ON tbl_workforce.id = tbl_activities.assignee ORDER BY tbl_activities.id DESC");
-    
-    
 
+
+    // activities.forEach(async (activity, index) => {
+    //     let n = await getUserById(activity.created_by);
+    //     activity.created_by_name = n;
+    //     activities[index] = activity;
+    // });
+    for (let index = 0; index < activities.length; index++) {
+        let activity = activities[index];
+        let n = await getUserById(activity.created_by);
+        activity.created_by_name = n;
+        activities[index] = activity;
+    }
+    
+    console.log(activities);
     let page_data = {
         title: "Activities & Remiders",
         currrentPath: "activities",
@@ -23,15 +35,16 @@ const activitiesHome = async (req, res) => {
 
 const postNewReminder = async (req, res) => {
 
-  
-    let  title = req.body.title;
+
+    let title = req.body.title;
     let details = req.body.details ? req.body.details : null;
     let reminder_time = req.body.reminder_time;
     let color = req.body.color ? req.body.color : null;
     let priority = req.body.priority;
     let assignee = req.body.assignee ? req.body.assignee : null;
+    let created_by = req.session.loggedInUser.id
 
-    const [i] = await (await conn).query("INSERT INTO tbl_activities (details, title, reminder_time, priority, assignee, color) VALUES (?,?,?,?,?,?)", [details, title, reminder_time, priority,assignee,color]);
+    const [i] = await (await conn).query("INSERT INTO tbl_activities (details, title, reminder_time, priority, assignee, created_by, color) VALUES (?,?,?,?,?,?,?)", [details, title, reminder_time, priority, assignee, created_by, color]);
 
     req.flash('success', 'Activity recorded successfully!');
     res.redirect('/dashboard/activities');
@@ -50,7 +63,7 @@ const deleteActivity = async (req, res) => {
 
 const editActivity = async (req, res) => {
 
-    let  title = req.body.title;
+    let title = req.body.title;
     let details = req.body.details ? req.body.details : null;
     let reminder_time = req.body.reminder_time;
     let color = req.body.color ? req.body.color : null;
@@ -59,7 +72,7 @@ const editActivity = async (req, res) => {
 
     let id = req.body.activity_id;
 
-    const [i] = await (await conn).query("UPDATE tbl_activities SET details = ?, title = ?, reminder_time = ?, priority = ?, assignee = ?, color = ? WHERE id = ?", [details, title, reminder_time, priority,assignee,color, id]);
+    const [i] = await (await conn).query("UPDATE tbl_activities SET details = ?, title = ?, reminder_time = ?, priority = ?, assignee = ?, color = ? WHERE id = ?", [details, title, reminder_time, priority, assignee, color, id]);
 
     req.flash('success', 'Activity updated successfully!');
     res.redirect('/dashboard/activities');

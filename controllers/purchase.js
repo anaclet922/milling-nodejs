@@ -8,14 +8,23 @@ const upload = require('../upload');
 const purchasesHome = async (req, res) => {
 
     const [purchases] = await (await conn).query("SELECT tbl_purchases.id as puchase_id, tbl_purchases.created_at as creation_date, tbl_purchases.*, tbl_payments_methods.* FROM tbl_purchases LEFT JOIN tbl_payments_methods ON tbl_payments_methods.id = tbl_purchases.payment_method_id ORDER BY tbl_purchases.id DESC");
-
+    const [sellers] = await (await conn).query("SELECT * FROM tbl_sellers ORDER BY id DESC");
     const [modes] = await (await conn).query("SELECT * FROM tbl_payments_methods WHERE status = 'ACTIVE' ORDER BY id DESC");
+
+    for (let index = 0; index < purchases.length; index++) {
+        let purchase = purchases[index];
+        let n = await getSellerById(purchase.seller);
+        purchase.seller_name = n;
+        purchases[index] = purchase;
+    }
+    
 
     let page_data = {
         title: "Purchase",
         currrentPath: "purchase",
         purchases: purchases,
-        modes: modes
+        modes: modes,
+        sellers: sellers
     };
 
     res.render('dashboard/purchase', page_data);

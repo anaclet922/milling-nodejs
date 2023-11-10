@@ -14,7 +14,6 @@ const workforceHome = async (req, res) => {
 
     const [permanetWorkforces] = await (await conn).query("SELECT tbl_workforce.id as workforce_id, tbl_workforce.*, tbl_departments.* FROM tbl_workforce LEFT JOIN tbl_departments ON tbl_workforce.department_id = tbl_departments.id WHERE tbl_workforce.type = 'PERMANENT'");
 
-    console.log(dailyWorkforces);
 
     let page_data = {
         title: "Workforce",
@@ -51,12 +50,12 @@ const postDailyWorkforce = async (req, res) => {
     const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]);
     if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=dailyw');
     }
     const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);
     if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=dailyw');
     }
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
@@ -74,7 +73,7 @@ const postDailyWorkforce = async (req, res) => {
     const [i] = await (await conn).query("INSERT INTO tbl_workforce (type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword]);
 
     req.flash('success', 'New Workforce successfully created!');
-    res.redirect('/dashboard/workforce');
+    res.redirect('/dashboard/workforce?tab=dailyw');
 
 };
 
@@ -102,12 +101,12 @@ const postPermanentWorkforce = async (req, res) => {
     const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]);
     if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=permanet');
     }
     const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ?", [username]);
     if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=permanet');
     }
 
     // mv('./uploads/' + contract, './uploads/contracts/' + contract, { mkdirp: true }, function (err) { });
@@ -125,7 +124,7 @@ const postPermanentWorkforce = async (req, res) => {
     const [i] = await (await conn).query("INSERT INTO tbl_workforce (type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword]);
 
     req.flash('success', 'New Workforce successfully created!');
-    res.redirect('/dashboard/workforce');
+    res.redirect('/dashboard/workforce?tab=permanet');
 
 };
 
@@ -134,10 +133,17 @@ const postNewDepartment = async (req, res) => {
 
     let title = req.body.title;
 
+    const [title_check] = await (await conn).query("SELECT * FROM tbl_departments WHERE title = ?", [title]);
+
+    if (title_check.length) {
+        req.flash('error', 'Department of same name exists!');
+        return res.redirect('/dashboard/workforce');
+    }
+
     const [i] = await (await conn).query("INSERT INTO tbl_departments (title) VALUES (?)", [title]);
 
     req.flash('success', 'Department successfully created!');
-    res.redirect('/dashboard/workforce');
+    res.redirect('/dashboard/workforce?tab=department');
 
 };
 
@@ -145,12 +151,12 @@ const postNewDepartment = async (req, res) => {
 const deleteDepartment = async (req, res) => {
 
     let department_id = req.query.department_id;
-    console.log('department_id', department_id);
+    console.log(req.query);
     const [d] = await (await conn).query("DELETE FROM tbl_departments WHERE id = ?", [department_id]);
 
     const [u] = await (await conn).query("UPDATE tbl_workforce SET department_id = NULL WHERE department_id = ?", [department_id])
     req.flash('success', 'Department successfully deleted!');
-    res.redirect('/dashboard/workforce');
+    res.redirect('/dashboard/workforce?tab=department');
 
 };
 
@@ -163,7 +169,7 @@ const editDepartment = async (req, res) => {
     const [u] = await (await conn).query("UPDATE tbl_departments SET title= ? WHERE id = ?", [title, id]);
 
     req.flash('success', 'Department successfully updated!');
-    res.redirect('/dashboard/workforce');
+    res.redirect('/dashboard/workforce?tab=department');
 
 };
 
@@ -226,12 +232,12 @@ const editDailyWorkforce = async (req, res) => {
     const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]);
     if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=dailyw');
     }
     const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);
     if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=dailyw');
     }
 
 
@@ -241,7 +247,7 @@ const editDailyWorkforce = async (req, res) => {
     const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
 
     req.flash('success', 'Workforce successfully updated!');
-    res.redirect('/dashboard/workforce');
+    res.redirect('/dashboard/workforce?tab=dailyw');
 
 };
 
@@ -293,18 +299,18 @@ const editPermanentWorkforce = async (req, res) => {
     const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ? AND id != ?", [nid, workforce_id]);
     if (nid_check.length) {
         req.flash('error', 'Workforce with same NID exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=permanet');
     }
     const [username_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE username = ? AND id != ?", [username, workforce_id]);
     if (username_check.length) {
         req.flash('error', 'Workforce with same username exists!');
-        return res.redirect('/dashboard/workforce');
+        return res.redirect('/dashboard/workforce?tab=permanet');
     }
 
     const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
 
     req.flash('success', 'Workforce successfully updated!');
-    res.redirect('/dashboard/workforce');
+    res.redirect('/dashboard/workforce?tab=permanet');
 
 };
 

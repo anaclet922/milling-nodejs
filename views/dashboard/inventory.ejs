@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                      <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -89,7 +89,7 @@
                                                         <%= user.description %>
                                                     </td>
                                                     <td>
-                                                        <%= user.note %>
+                                                        <%= user.inventory_node %>
                                                     </td>
                                                     <td>
                                                         <%= user.first_name + ' ' + user.last_name %>
@@ -134,14 +134,16 @@
                                                     
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Item Name</label>
-                                                                                <select name="item_name" class="form-control form-control-lg mb-3" required>
+                                                                                <!-- <select name="item_name" class="form-control form-control-lg mb-3" required>
                                                                                     <option value="" selected>Select item</option>
                                                                                     <% inventories.forEach((inventory, index)=> { %>
                                                                                         <option value="<%= inventory.item_name %>" <%= user.item_name == inventory.item_name ? 'selected' : '' %>>
                                                                                             <%= inventory.item_name %>
                                                                                         </option>
                                                                                         <% }) %>
-                                                                                </select>
+                                                                                </select> -->
+                                                                                <input class="form-control form-control-lg mb-3" type="text"
+                                                                                placeholder="E.g.: Laptop, Paper...." name="item_name" required value="<%= user.item_name %>">
                                                                             </div>
                                                     
                                                                             <div class="form-group col-md-6 col-lg-6">
@@ -169,7 +171,7 @@
                                                     
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Note</label>
-                                                                                <textarea name="note" class="form-control"><%= user.note %></textarea>
+                                                                                <textarea name="note" class="form-control"><%= user.inventory_node %></textarea>
                                                                             </div>
                                                     
                                                                         </div>
@@ -300,14 +302,16 @@
 
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="">Item Name</label>
-                            <select name="item_name" class="form-control form-control-lg mb-3" required>
+                            <!-- <select name="item_name" class="form-control form-control-lg mb-3" required>
                                 <option value="" selected>Select item</option>
                                 <% inventories.forEach((inventory, index)=> { %>
                                     <option value="<%= inventory.item_name %>">
                                         <%= inventory.item_name %>
                                     </option>
                                     <% }) %>
-                            </select>
+                            </select> -->
+                            <input class="form-control form-control-lg mb-3" type="text"
+                            placeholder="E.g.: Laptop, Paper...." name="item_name" required>
                         </div>
 
                         <div class="form-group col-md-6 col-lg-6">

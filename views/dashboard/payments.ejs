@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -37,7 +37,7 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs nav-primary" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab"
+                                    <a class="nav-link active payments-tab" data-bs-toggle="tab" href="#primaryhome" role="tab"
                                         aria-selected="true">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon">
@@ -48,7 +48,7 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab"
+                                    <a class="nav-link payment-mode-tab" data-bs-toggle="tab" href="#primaryprofile" role="tab"
                                         aria-selected="false" tabindex="-1">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon">
@@ -60,65 +60,66 @@
                             </ul>
                             <div class="tab-content py-3">
                                 <div class="tab-pane fade active show" id="primaryhome" role="tabpanel">
-                                    
 
-                            <table id="purchases" class="table table-striped table-bordered" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer</th>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Total Paid</th>
-                                        <th>Method</th>
-                                        <th>Paid at</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                    <% payments.forEach((payment, index)=> { %>
-                                        <tr>
-                                            <td>
-                                                <%= index + 1 %>
-                                            </td>
-                                            <td>
-                                                <%= payment.customer.first_name + ' ' + payment.customer.last_name %>
-                                            </td>
-                                            <td>
-                                                <%= payment.sale.product_type %>
-                                            </td>
-                                            <td>
-                                                <%= payment.sale.total_quantity.toLocaleString() %>
-                                            </td>
-                                            <td>
-                                                <%= payment.amount_paid.toLocaleString() %>
-                                            </td>
-                                            <td>
-                                                <%= payment.paymentMode.name %>
-                                            </td>
-                                            <td>
-                                                <%= payment.created_at.toLocaleString() %>
-                                            </td>
-                                           
+                                    <table id="purchases" class="table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Customer</th>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Total Paid</th>
+                                                <th>Method</th>
+                                                <th>Paid at</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                        </tr>
-                                        <% }); %>
+                                            <% payments.forEach((payment, index)=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= index + 1 %>
+                                                    </td>
+                                                    <td>
+                                                        <%= payment.customer.first_name + ' ' +
+                                                            payment.customer.last_name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= payment.sale ? payment.sale.product_type : '' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= payment.sale ? payment.sale.total_quantity.toLocaleString() : '' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= payment.amount_paid.toLocaleString() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= payment.paymentMode.name %>
+                                                    </td>
+                                                    <td>
+                                                        <%= payment.created_at.toLocaleString() %>
+                                                    </td>
 
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Customer</th>
-                                        <th>Product</th>
-                                        <th>Quantity</th>
-                                        <th>Total Paid</th>
-                                        <th>Method</th>
-                                        <th>Paid at</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
 
-                                    
+                                                </tr>
+                                                <% }); %>
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Customer</th>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Total Paid</th>
+                                                <th>Method</th>
+                                                <th>Paid at</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+
                                 </div>
                                 <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
 
@@ -331,6 +332,25 @@
                 }
             })
         }
+
+
+        $(document).ready(function () {
+
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('tab')) {
+                let tab = urlParams.get('tab');
+                if (tab == 'payment-mode-tab') {
+                    setTimeout(function () {
+                        $(".payment-mode-tab")[0].click();
+                    }, 1000);
+                } else if (tab == 'payments-tab') {
+                    setTimeout(function () {
+                        $(".payments-tab")[0].click();
+                    }, 500);
+                }
+            }
+
+        });
     </script>
 
 

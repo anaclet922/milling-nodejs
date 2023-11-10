@@ -12,6 +12,13 @@ $(function () {
         var sales = $('#sales').DataTable();
         var salesFlour = $('#sales-flour').DataTable();
         var salesBranda = $('#sales-branda').DataTable();
+
+
+        
+        var dailyReport = $('#daily-report').DataTable();
+        var monthlyReport = $('#monthly-report').DataTable();
+        var weeklyReport = $('#weekly-report').DataTable();
+        var customReport = $('#custom-report').DataTable();
         
     });
 

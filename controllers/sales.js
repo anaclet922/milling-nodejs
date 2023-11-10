@@ -41,6 +41,7 @@ const newSale = async (req, res) => {
     let paid_or_debt = req.body.payment_method_id == 'debt' ? 'DEBT' : 'PAID';
     let amount_paid = req.body.payment_method_id != 'debt' ? req.body.amount : 0;
     let amount_debited = req.body.payment_method_id == 'debt' ? req.body.amount : 0;
+    let discount = req.body.discount;
     let note = req.body.note;
     let kg_5 = req.body.kg_5 == '' ? 0 : req.body.kg_5;
     let kg_10 = req.body.kg_10 == '' ? 0 : req.body.kg_10;
@@ -63,7 +64,7 @@ const newSale = async (req, res) => {
     }
 
 
-    const [i] = await (await conn).query("INSERT INTO tbl_sales (product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, note, kg_5, kg_10, kg_20, kg_25, kg_custom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, note, kg_5, kg_10, kg_20, kg_25, kg_custom]);
+    const [i] = await (await conn).query("INSERT INTO tbl_sales (product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, discount, note, kg_5, kg_10, kg_20, kg_25, kg_custom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, discount, note, kg_5, kg_10, kg_20, kg_25, kg_custom]);
 
     let sale_id = i.insertId;
 
@@ -149,6 +150,7 @@ const saleEdit = async (req, res) => {
     let paid_or_debt = req.body.payment_method_id == 'debt' ? 'DEBT' : 'PAID';
     let amount_paid = req.body.payment_method_id != 'debt' ? req.body.amount : 0;
     let amount_debited = req.body.payment_method_id == 'debt' ? req.body.amount : 0;
+    let discount = req.body.discount;
     let note = req.body.note;
     let kg_5 = req.body.kg_5 == '' ? 0 : req.body.kg_5;
     let kg_10 = req.body.kg_10 == '' ? 0 : req.body.kg_10;
@@ -171,7 +173,7 @@ const saleEdit = async (req, res) => {
     }
 
 
-    const [i] = await (await conn).query("UPDATE tbl_sales SET product_type = ?, unit_price = ?, total_quantity = ?, seller_id = ?, customer_id = ?, payment_method_id = ?, paid_or_debt = ?, amount_paid = ?, amount_debited = ?, note = ?, kg_5 = ?, kg_10 = ?, kg_20 = ?, kg_25 = ?, kg_custom = ? WHERE id = ?", [product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, note, kg_5, kg_10, kg_20, kg_25, kg_custom, sale_id]);
+    const [i] = await (await conn).query("UPDATE tbl_sales SET product_type = ?, unit_price = ?, total_quantity = ?, seller_id = ?, customer_id = ?, payment_method_id = ?, paid_or_debt = ?, amount_paid = ?, amount_debited = ?, discount = ?, note = ?, kg_5 = ?, kg_10 = ?, kg_20 = ?, kg_25 = ?, kg_custom = ? WHERE id = ?", [product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, discount, note, kg_5, kg_10, kg_20, kg_25, kg_custom, sale_id]);
 
     if (paid_or_debt == 'DEBT') {
         const [d] = await (await conn).query("INSERT INTO tbl_debts (customer_id, sale_id, debited_amount, note) VALUES (?,?,?,?)", [customer_id, sale_id, amount_debited, note]);

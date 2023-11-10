@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -21,7 +21,7 @@
                 <div class="ms-auto">
                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-admin-modal">New Admin</button>
+                            data-bs-target="#new-admin-modal">New Login</button>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <ul class="nav nav-tabs nav-primary" role="tablist">
+                            <!-- <ul class="nav nav-tabs nav-primary" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab" aria-selected="true">
                                         <div class="d-flex align-items-center">
@@ -63,64 +63,72 @@
                                     
                                     
                                 </div>
-                                <div class="tab-pane fade" id="primaryprofile" role="tabpanel">
+                                <div class="tab-pane fade" id="primaryprofile" role="tabpanel"> -->
 
-                                    <table id="systemUsers" class="table table-striped table-bordered" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Name</th>
-                                                <th>Username</th>
-                                                <th>Email</th>
-                                                <th>Role</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Name</th>
-                                                <th>Username</th>
-                                                <th>Email</th>
-                                                <th>Role</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </tfoot>
-                                        <tbody>
-        
-                                            <% users.forEach((user, index)=> { %>
-                                                <tr>
-                                                    <td>
-                                                        <%= index + 1 %>
-                                                    </td>
-                                                    <td>
-                                                        <%= user.first_name + ' ' + user.last_name %>
-                                                    </td>
-                                                    <td>
-                                                        <%= user.username %>
-                                                    </td>
-                                                    <td>
-                                                        <%= user.email %>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-danger"><%= user.role %></span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge bg-<%= user.active == 'Y' ? 'success': 'danger' %>"><%= user.active == 'Y' ? 'Active': 'Inactive' %></span>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" onclick="areYouSureToDelete(<%= user.id %>, '<%= user.active == 'Y' ? 'Deactivate': 'Activate' %>', '<%= user.active == 'Y' ? 'desactivate': 'activate' %>-admin')" class="btn btn-<%= user.active == 'Y' ? 'success': 'danger' %>"><%= user.active == 'Y' ? 'Deactivate': 'Activate' %></button>
-                                                    </td>
-                                                </tr>
-                                                <% }); %>
-        
-                                        </tbody>
-                                    </table>
+                            <table id="systemUsers" class="table table-striped table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
 
-                                </div>
-                            </div>
+                                    <% users.forEach((user, index)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= user.first_name + ' ' + user.last_name %>
+                                            </td>
+                                            <td>
+                                                <%= user.username %>
+                                            </td>
+                                            <td>
+                                                <%= user.email %>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">
+                                                    <%= user.role %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-<%= user.active == 'Y' ? 'success': 'danger' %>">
+                                                    <%= user.active=='Y' ? 'Active' : 'Inactive' %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button type="button"
+                                                    onclick="areYouSureToDelete(<%= user.id %>, '<%= user.active == 'Y' ? 'Deactivate': 'Activate' %>', '<%= user.active == 'Y' ? 'desactivate': 'activate' %>-admin')"
+                                                    class="btn btn-<%= user.active == 'Y' ? 'success': 'danger' %>">
+                                                    <%= user.active=='Y' ? 'Deactivate' : 'Activate' %>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+
+                                </tbody>
+                            </table>
+
+                            <!-- </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -134,25 +142,50 @@
     </div>
 
 
-    
+
 
     <!-- Modal -->
     <div class="modal fade" id="new-admin-modal" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form action="/dashboard/new-admin" method="post">
+                <form action="/dashboard/new-user" method="post">
                     <div class="modal-header">
                         <h5 class="modal-title">New Department</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group col-md-12">
-                            <label for="">First name</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
-                                name="first_name">
+
+                        <div class="form-group">
+                            <label for="">Workforce</label>
+                            <select name="workforce_id" id="" class="form-control-lg form-control mb-3" required>
+                                <option value="">
+                                    Select Workforce (Only Permanents)</option>
+                                <% permanetWorkforces.forEach((user, index)=> { %>
+                                    <option value="<%= user.id %>">
+                                        <%= user.first_name + ' ' + user.last_name %>
+                                    </option>
+                                    <% }); %>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Role</label>
+                            <select name="role" id="" class="form-control-lg form-control mb-3" required>
+                                <option value="">Select Role</option>
+                                <option value="technician">Technician</option>
+                                <option value="seller">Seller</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
                         </div>
 
                         <div class="form-group col-md-12">
+                            <label for="">Specify Email</label>
+                            <input class="form-control form-control-lg mb-3" type="email" placeholder="Email"
+                                name="email" required>
+                        </div>
+
+                        <!-- <div class="form-group col-md-12">
                             <label for="">Last name</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
                                 name="last_name">
@@ -174,7 +207,7 @@
                             <label for="">Password</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Password"
                                 name="password">
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="modal-footer">
@@ -191,9 +224,9 @@
 
     <script>
         function areYouSureToDelete(id, title, path) {
-            
+
             Swal.fire({
-                title: 'Are you sure to '+ title +' this user?',
+                title: 'Are you sure to ' + title + ' this user?',
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,

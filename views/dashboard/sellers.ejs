@@ -21,7 +21,7 @@
                 <div class="ms-auto">
                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-customer-modal">New Customer</button>
+                            data-bs-target="#new-seller-modal">New seller</button>
                     </div>
                 </div>
             </div>
@@ -61,25 +61,25 @@
                                 </tfoot>
                                 <tbody>
 
-                                    <% customers.forEach((customer, index)=> { %>
+                                    <% sellers.forEach((seller, index)=> { %>
                                         <tr>
                                             <td>
                                                 <%= index + 1 %>
                                             </td>
                                             <td>
-                                                <%= customer.first_name + ' ' + customer.last_name %>
+                                                <%= seller.first_name + ' ' + seller.last_name %>
                                             </td>
                                             <td>
-                                                <%= customer.id_no %>
+                                                <%= seller.id_no %>
                                             </td>
                                             <td>
-                                                <%= customer.phone %>
+                                                <%= seller.phone %>
                                             </td>
                                             <td>
-                                                <%= customer.location %>
+                                                <%= seller.location %>
                                             </td>
                                             <td>
-                                                <%= customer.about %>
+                                                <%= seller.about %>
                                             </td>
                                             <td>
                                                 
@@ -89,7 +89,7 @@
                                                     <a href="javascript:;"
                                                         class="btn btn-outline-primary"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#edit-customer-<%= customer.id %>">
+                                                        data-bs-target="#edit-seller-<%= seller.id %>">
                                                         <i class="fas fa-pencil-alt"></i>
                                                     </a>
                                                     <button type="button"
@@ -101,64 +101,64 @@
                                                     <div
                                                         class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
                                                         <a class="dropdown-item" href="javascript:;"
-                                                            onclick="areYouSureToDelete(<%= customer.id %>)">Delete</a>
+                                                            onclick="areYouSureToDelete(<%= seller.id %>)">Delete</a>
                                                     </div>
                                                 </div>
 
 
-                                                <div class="modal fade" id="edit-customer-<%= customer.id %>" tabindex="-1" aria-hidden="true" style="display: none;">
+                                                <div class="modal fade" id="edit-seller-<%= seller.id %>" tabindex="-1" aria-hidden="true" style="display: none;">
                                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                                         <div class="modal-content">
                                             
-                                                            <form action="/dashboard/customer/edit" method="post">
+                                                            <form action="/dashboard/seller/edit" method="post">
                                             
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title">Edit Customer</h5>
+                                                                    <h5 class="modal-title">Edit seller</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                             
                                                                 <div class="modal-body row">
                                             
                                                                     <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Customer Name</label>
+                                                                        <label for="">First Name</label>
                                                                         <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
-                                                                            name="first_name" required value="<%= customer.first_name %>">
+                                                                            name="first_name" required value="<%= seller.first_name %>">
                                                                     </div>
                                             
-                                                                    <!-- <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Last Name</label> -->
-                                                                        <input class="form-control form-control-lg mb-3" type="hidden" placeholder="Last name"
-                                                                            name="last_name" value="<%= customer.last_name %>">
-                                                                    <!-- </div> -->
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">Last Name</label>
+                                                                        <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
+                                                                            name="last_name" required value="<%= seller.last_name %>">
+                                                                    </div>
                                             
                                                                     <div class="form-group col-md-6 col-lg-6">
                                                                         <label for="">NID/TIN</label>
                                                                         <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID"
-                                                                            name="id_no" required value="<%= customer.id_no %>">
+                                                                            name="id_no" required value="<%= seller.id_no %>">
                                                                     </div>
                                             
                                                                     <div class="form-group col-md-6 col-lg-6">
                                                                         <label for="">Phone</label>
                                                                         <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
-                                                                            name="phone" required value="<%= customer.phone %>">
+                                                                            name="phone" required value="<%= seller.phone %>">
                                                                     </div>
                                             
                                                                     <div class="form-group col-md-6 col-lg-6">
                                                                         <label for="">Location</label>
                                                                         <input class="form-control form-control-lg mb-3" type="text" placeholder="Location"
-                                                                            name="location" required value="<%= customer.location %>">
+                                                                            name="location" required value="<%= seller.location %>">
                                                                     </div>
                                             
                                                                     <div class="form-group col-md-6 col-lg-6">
                                                                         <label for="">About</label>
-                                                                        <textarea name="about" class="form-control"><%= customer.about %></textarea>
+                                                                        <textarea name="about" class="form-control"><%= seller.about %></textarea>
                                                                     </div>
                                             
                                             
                                             
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <input type="hidden" name="id" value="<%= customer.id %>">
+                                                                    <input type="hidden" name="id" value="<%= seller.id %>">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                                     <button type="submit" class="btn btn-primary">Submit</button>
                                                                 </div>
@@ -193,30 +193,30 @@
 
     
     <!-- Modal -->
-    <div class="modal fade" id="new-customer-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal fade" id="new-seller-modal" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
 
-                <form action="/dashboard/customer/new" method="post">
+                <form action="/dashboard/seller/new" method="post">
 
                     <div class="modal-header">
-                        <h5 class="modal-title">New Customer</h5>
+                        <h5 class="modal-title">New seller</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body row">
 
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Customer Name</label>
+                            <label for="">First Name</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
                                 name="first_name" required>
                         </div>
 
-                        <!-- <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Last Name</label> -->
-                            <input class="form-control form-control-lg mb-3" type="hidden" placeholder="Last name"
-                                name="last_name" value="">
-                        <!-- </div> -->
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Last Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
+                                name="last_name" required>
+                        </div>
 
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="">NID/TIN</label>
@@ -260,7 +260,7 @@
     <script>
         function areYouSureToDelete(id) {
             Swal.fire({
-                title: 'Are you sure to delete this customer?',
+                title: 'Are you sure to delete this seller?',
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -269,7 +269,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    location.href = '/dashboard/customer/delete?id=' + id;
+                    location.href = '/dashboard/seller/delete?id=' + id;
                 }
             })
         }

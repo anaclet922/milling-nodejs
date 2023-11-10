@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                      <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -42,8 +42,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Description</th>
-                                        <th>Amount</th>
-                                        <th>Sender Quantity</th>
+                                        <th>Amount  (RWF)</th>
+                                        <th>Sender</th>
                                         <th>Note</th>
                                         <th></th>
                                     </tr>
@@ -59,7 +59,7 @@
                                                 <%= expense.description %>
                                             </td>
                                             <td>
-                                                <%= expense.amount %>
+                                                <%= expense.amount.toLocaleString() %>
                                             </td>
                                             <td>
                                                 <%= expense.sender_names %>
@@ -69,6 +69,8 @@
                                             </td>
                                             <td>
 
+                                                <% if((Math.abs(new Date() - new Date(expense.created_at)) / 36e5)
+                                                <=locals.configs['allow_edit_before_hours']) { %>
 
                                                 <div class="btn-group">
                                                     <a href="javascript:;" class="btn btn-outline-primary"
@@ -122,11 +124,11 @@
                                                                         </div>
 
                                                                         <div class="form-group mb-3 row">
-                                                                            <label for="">Seller</label>
+                                                                            <label for="">Person In Charge</label>
                                                                             <select name="sender" id=""
                                                                                 class="form-control-lg form-control mb-3"
                                                                                 required>
-                                                                                <option value="">Select Seller</option>
+                                                                                <option value="">Select Person In Charge</option>
                                                                                 <% users.forEach((user, index)=> { %>
                                                                                     <option value="<%= user.id %>"
                                                                                         <%=expense.sender==user.id
@@ -160,7 +162,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
+ <% } %>
 
                                             </td>
 
@@ -172,8 +174,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Description</th>
-                                        <th>Amount</th>
-                                        <th>Sender Quantity</th>
+                                        <th>Amount (RWF)</th>
+                                        <th>Sender</th>
                                         <th>Note</th>
                                         <th></th>
                                     </tr>
@@ -222,9 +224,9 @@
                             </div>
 
                             <div class="form-group mb-3 row">
-                                <label for="">Seller</label>
+                                <label for="">Person In Charge</label>
                                 <select name="sender" id="" class="form-control-lg form-control mb-3" required>
-                                    <option value="">Select Seller</option>
+                                    <option value="">Select Person In Charge</option>
                                     <% users.forEach((user, index)=> { %>
                                         <option value="<%= user.id %>">
                                             <%= user.first_name + ' ' + user.last_name %>

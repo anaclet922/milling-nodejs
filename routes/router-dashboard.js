@@ -15,6 +15,7 @@ const inventoryController = require('../controllers/inventory');
 const debtsController = require('../controllers/debts');
 const expensesController = require('../controllers/expenses');
 const customersController = require('../controllers/customers');
+const sellersController = require('../controllers/sellers');
 const usersController = require('../controllers/users');
 const configsController = require('../controllers/configs');
 const activitiesController = require('../controllers/activities');
@@ -23,7 +24,7 @@ const stockController = require('../controllers/stock');
 const paymentController = require('../controllers/payments');
 
 
-const { getFormatedDate } = require('../helpers');
+const { getFormatedDate, getUserById, getMonday, getSunday, getFirstDayMonth, getLastDayMonth } = require('../helpers');
 
 
 routerDashboard.use(function (req, res, next) {
@@ -44,7 +45,7 @@ routerDashboard.get('', async (req, res) => {
     const [branda_stock_object] = await (await conn).query("SELECT * FROM tbl_stock_branda");
     const [flour_stock_object] = await (await conn).query("SELECT * FROM tbl_stock_flour");
     const [workforces_object] = await (await conn).query("SELECT COUNT(*) AS quantity FROM tbl_workforce");
-  
+
     let page_data = {
         title: "Home",
         currrentPath: "/",
@@ -53,7 +54,7 @@ routerDashboard.get('', async (req, res) => {
         flour_stock: ((flour_stock_object.length > 0) ? flour_stock_object[0].quantity : 0),
         workforces: workforces_object[0].quantity
     };
-     
+
     res.render('dashboard/home', page_data);
 })
 
@@ -63,11 +64,112 @@ routerDashboard.get('/delete-activity', activitiesController.deleteActivity);
 routerDashboard.post('/activities/edit', activitiesController.editActivity);
 
 
-routerDashboard.get('/reports', (req, res) => {
+routerDashboard.get('/reports', async (req, res) => {
+
+    let today_date = new Date();
+    let today = `${today_date.getFullYear()}-${(today_date.getMonth() + 1).toString().padStart(2, "0")}-${today_date.getDate().toString().padStart(2, "0")}`
+
+    const [total_purchase_today] = await (await conn).query("SELECT sum(total_price) AS amount FROM tbl_purchases WHERE created_at LIKE ?", [today + '%']);
+    const [total_expenses_today] = await (await conn).query("SELECT sum(amount) AS amount FROM tbl_expenses WHERE created_at LIKE ?", [today + '%']);
+    const [total_vehicle_today] = await (await conn).query("SELECT sum(expense_amount) AS amount FROM tbl_vehicles_report WHERE created_at LIKE ?", [today + '%']);
+    const [total_sale_debt_today] = await (await conn).query("SELECT sum(amount_debited) AS amount FROM tbl_sales WHERE paid_or_debt = 'DEBT' AND created_at LIKE ?", [today + '%']);
+    const [total_sale_paid_today] = await (await conn).query("SELECT sum(amount_paid) AS amount FROM tbl_sales WHERE paid_or_debt = 'PAID' AND created_at LIKE ?", [today + '%']);
+    const [total_debt_today] = await (await conn).query("SELECT sum(debited_amount) AS amount FROM tbl_debts WHERE created_at LIKE ?", [today + '%']);
+
+    let daily = {
+        total_purchase_today: total_purchase_today[0].amount ? total_purchase_today[0].amount : 0,
+        total_expenses_today: total_expenses_today[0].amount ? total_expenses_today[0].amount : 0,
+        total_vehicle_today: total_vehicle_today[0].amount ? total_vehicle_today[0].amount : 0,
+        total_sale_debt_today: total_sale_debt_today[0].amount ? total_sale_debt_today[0].amount : 0,
+        total_sale_paid_today: total_sale_paid_today[0].amount ? total_sale_paid_today[0].amount : 0,
+        total_debt_today: total_debt_today[0].amount ? total_debt_today[0].amount : 0
+    }
+
+
+
+    let monday = getMonday(new Date());
+    let sunday = getSunday(new Date());
+
+
+
+    const [total_purchase_week] = await (await conn).query("SELECT sum(total_price) AS amount FROM tbl_purchases WHERE created_at BETWEEN ? AND ?", [monday, sunday]);
+    const [total_expenses_week] = await (await conn).query("SELECT sum(amount) AS amount FROM tbl_expenses WHERE created_at BETWEEN ? AND ?", [monday, sunday]);
+    const [total_vehicle_week] = await (await conn).query("SELECT sum(expense_amount) AS amount FROM tbl_vehicles_report WHERE created_at BETWEEN ? AND ?", [monday, sunday]);
+    const [total_sale_debt_week] = await (await conn).query("SELECT sum(amount_debited) AS amount FROM tbl_sales WHERE paid_or_debt = 'DEBT' AND created_at BETWEEN ? AND ?", [monday, sunday]);
+    const [total_sale_paid_week] = await (await conn).query("SELECT sum(amount_paid) AS amount FROM tbl_sales WHERE paid_or_debt = 'PAID' AND created_at BETWEEN ? AND ?", [monday, sunday]);
+    const [total_debt_week] = await (await conn).query("SELECT sum(debited_amount) AS amount FROM tbl_debts WHERE created_at BETWEEN ? AND ?", [monday, sunday]);
+
+    let weekly = {
+        total_purchase_week: total_purchase_week[0].amount ? total_purchase_week[0].amount : 0,
+        total_expenses_week: total_expenses_week[0].amount ? total_expenses_week[0].amount : 0,
+        total_vehicle_week: total_vehicle_week[0].amount ? total_vehicle_week[0].amount : 0,
+        total_sale_debt_week: total_sale_debt_week[0].amount ? total_sale_debt_week[0].amount : 0,
+        total_sale_paid_week: total_sale_paid_week[0].amount ? total_sale_paid_week[0].amount : 0,
+        total_debt_week: total_debt_week[0].amount ? total_debt_week[0].amount : 0
+    }
+
+
+    let firstDateMonth = getFirstDayMonth();
+    let lastDateMonth = getLastDayMonth();
+
+
+
+
+
+    const [total_purchase_month] = await (await conn).query("SELECT sum(total_price) AS amount FROM tbl_purchases WHERE created_at BETWEEN ? AND ?", [firstDateMonth, lastDateMonth]);
+    const [total_expenses_month] = await (await conn).query("SELECT sum(amount) AS amount FROM tbl_expenses WHERE created_at BETWEEN ? AND ?", [firstDateMonth, lastDateMonth]);
+    const [total_vehicle_month] = await (await conn).query("SELECT sum(expense_amount) AS amount FROM tbl_vehicles_report WHERE created_at BETWEEN ? AND ?", [firstDateMonth, lastDateMonth]);
+    const [total_sale_debt_month] = await (await conn).query("SELECT sum(amount_debited) AS amount FROM tbl_sales WHERE paid_or_debt = 'DEBT' AND created_at BETWEEN ? AND ?", [firstDateMonth, lastDateMonth]);
+    const [total_sale_paid_month] = await (await conn).query("SELECT sum(amount_paid) AS amount FROM tbl_sales WHERE paid_or_debt = 'PAID' AND created_at BETWEEN ? AND ?", [firstDateMonth, lastDateMonth]);
+    const [total_debt_month] = await (await conn).query("SELECT sum(debited_amount) AS amount FROM tbl_debts WHERE created_at BETWEEN ? AND ?", [firstDateMonth, lastDateMonth]);
+
+    let monthly = {
+        total_purchase_month: total_purchase_month[0].amount ? total_purchase_month[0].amount : 0,
+        total_expenses_month: total_expenses_month[0].amount ? total_expenses_month[0].amount : 0,
+        total_vehicle_month: total_vehicle_month[0].amount ? total_vehicle_month[0].amount : 0,
+        total_sale_debt_month: total_sale_debt_month[0].amount ? total_sale_debt_month[0].amount : 0,
+        total_sale_paid_month: total_sale_paid_month[0].amount ? total_sale_paid_month[0].amount : 0,
+        total_debt_month: total_debt_month[0].amount ? total_debt_month[0].amount : 0
+    }
+
+    var custom = {
+        total_purchase_custom: 0,
+        total_expenses_custom: 0,
+        total_vehicle_custom: 0,
+        total_sale_debt_custom: 0,
+        total_sale_paid_custom: 0,
+        total_debt_custom: 0
+    };
+
+    if (req.query.custom) {
+        let start = req.query.start;
+        let end = req.query.end;
+
+        const [total_purchase_custom] = await (await conn).query("SELECT sum(total_price) AS amount FROM tbl_purchases WHERE created_at BETWEEN ? AND ?", [start, end]);
+        const [total_expenses_custom] = await (await conn).query("SELECT sum(amount) AS amount FROM tbl_expenses WHERE created_at BETWEEN ? AND ?", [start, end]);
+        const [total_vehicle_custom] = await (await conn).query("SELECT sum(expense_amount) AS amount FROM tbl_vehicles_report WHERE created_at BETWEEN ? AND ?", [start, end]);
+        const [total_sale_debt_custom] = await (await conn).query("SELECT sum(amount_debited) AS amount FROM tbl_sales WHERE paid_or_debt = 'DEBT' AND created_at BETWEEN ? AND ?", [start, end]);
+        const [total_sale_paid_custom] = await (await conn).query("SELECT sum(amount_paid) AS amount FROM tbl_sales WHERE paid_or_debt = 'PAID' AND created_at BETWEEN ? AND ?", [start, end]);
+        const [total_debt_custom] = await (await conn).query("SELECT sum(debited_amount) AS amount FROM tbl_debts WHERE created_at BETWEEN ? AND ?", [start, end]);
+
+        custom.total_purchase_custom = total_purchase_custom[0].amount ? total_purchase_custom[0].amount : 0;
+        custom.total_expenses_custom = total_expenses_custom[0].amount ? total_expenses_custom[0].amount : 0;
+        custom.total_vehicle_custom = total_vehicle_custom[0].amount ? total_vehicle_custom[0].amount : 0;
+        custom.total_sale_debt_custom = total_sale_debt_custom[0].amount ? total_sale_debt_custom[0].amount : 0;
+        custom.total_sale_paid_custom = total_sale_paid_custom[0].amount ? total_sale_paid_custom[0].amount : 0;
+        custom.total_debt_custom = total_debt_custom[0].amount ? total_debt_custom[0].amount : 0;
+
+    }
+
     let page_data = {
         title: "Reports",
-        currrentPath: "reports"
+        currrentPath: "reports",
+        daily: daily,
+        weekly: weekly,
+        monthly: monthly,
+        cuctom: custom
     };
+
     res.render('dashboard/reports', page_data);
 })
 
@@ -114,10 +216,10 @@ routerDashboard.post('/post-change-password', async (req, res) => {
 
                 hashedPassword = await bcrypt.hash(new_password, 8);
 
-                const [user] = await (await conn).query("UPDATE tbl_users SET password = ? WHERE email = ?", [hashedPassword, req.session.loggedInUser.email]); 
-                    req.flash('success', 'Password updated!');
-                    res.redirect('/dashboard/profile');
-                
+                const [user] = await (await conn).query("UPDATE tbl_users SET password = ? WHERE email = ?", [hashedPassword, req.session.loggedInUser.email]);
+                req.flash('success', 'Password updated!');
+                res.redirect('/dashboard/profile');
+
 
             } else {
                 req.flash('error', 'Incorrect password provided!');
@@ -136,17 +238,35 @@ routerDashboard.post('/post-change-password', async (req, res) => {
 
 
 
-
+//######################################
+// #####################################
+// #####################################
+// ##### Vehicles #####################
+// #####################################
 routerDashboard.get('/vehicles', async (req, res) => {
 
     let payment_modes = [];
-
+    const [users] = await (await conn).query("SELECT * FROM tbl_workforce WHERE type = 'PERMANENT'");
     const [result] = await (await conn).query("SELECT * FROM tbl_vehicles");
+    const [reports] = await (await conn).query("SELECT * FROM tbl_vehicles_report ORDER BY created_at DESC");
+
+
+    for (let index = 0; index < reports.length; index++) {
+        let report = reports[index];
+        let n = await getUserById(report.expense_receiver);
+        let v = await getVehicleById(report.vehicle_id);
+        report.expense_receiver_name = n;
+        report.plate_number = v;
+        reports[index] = report;
+    }
+
 
     let page_data = {
         title: "Vehicles",
         currrentPath: "vehicles",
-        vehicles: result
+        vehicles: result,
+        users: users,
+        reports: reports
     };
     res.render('dashboard/vehicles', page_data);
 });
@@ -159,7 +279,7 @@ routerDashboard.post('/post-new-vehicle', async (req, res) => {
 
     const [i] = await (await conn).query("INSERT INTO tbl_vehicles (plate_number, owner, type, capacity) VALUES (?,?,?,?)", [plate_no, owner, type, capacity]);
     req.flash('success', 'Vehicle successfully recorded!');
-    res.redirect('/dashboard/vehicles');
+    res.redirect('/dashboard/vehicles?tab=vehicles');
 
 });
 routerDashboard.post('/post-edit-vehicle', async (req, res) => {
@@ -173,7 +293,7 @@ routerDashboard.post('/post-edit-vehicle', async (req, res) => {
     const [i] = await (await conn).query("UPDATE tbl_vehicles SET plate_number = ?, owner = ?, type = ?, capacity = ? WHERE id = ?", [plate_no, owner, type, capacity, id]);
 
     req.flash('success', 'Car successfully updated!');
-    res.redirect('/dashboard/vehicles');
+    res.redirect('/dashboard/vehicles?tab=vehicles');
 
 });
 routerDashboard.get('/delete-car', async (req, res) => {
@@ -182,11 +302,92 @@ routerDashboard.get('/delete-car', async (req, res) => {
     const [d] = await (await conn).query("DELETE FROM tbl_vehicles WHERE id = ?", [id]);
 
     req.flash('success', 'Car successfully deleted!');
+    res.redirect('/dashboard/vehicles?tab=vehicles');
+
+});
+routerDashboard.post('/post-new-vehicle-report', async (req, res) => {
+
+    let date_time = req.body.date_time;
+    let vehicle_id = req.body.vehicle_id;
+    let status = req.body.status;
+    let expense_amount = req.body.expense_amount;
+    let expense_receiver = req.body.expense_receiver;
+    let note = req.body.note;
+
+    const [i] = await (await conn).query("INSERT INTO tbl_vehicles_report (date_time, vehicle_id, status, expense_amount, expense_receiver, note) VALUES (?,?,?,?,?,?)", [date_time, vehicle_id, status, expense_amount, expense_receiver, note]);
+    req.flash('success', 'Report successfully recorded!');
+    res.redirect('/dashboard/vehicles?tab=report');
+
+});
+routerDashboard.get('/delete-vehicle-report', async (req, res) => {
+
+    let id = req.query.id;
+    const [d] = await (await conn).query("DELETE FROM tbl_vehicles_report WHERE id = ?", [id]);
+
+    req.flash('success', 'Report successfully deleted!');
+    res.redirect('/dashboard/vehicles');
+
+});
+routerDashboard.post('/post-edit-vehicle-report', async (req, res) => {
+
+
+    let date_time = req.body.date_time;
+    let vehicle_id = req.body.vehicle_id;
+    let status = req.body.status;
+    let expense_amount = req.body.expense_amount;
+    let expense_receiver = req.body.expense_receiver;
+    let note = req.body.note;
+    let id = req.body.id;
+
+    const [i] = await (await conn).query("UPDATE tbl_vehicles_report SET date_time = ?, vehicle_id = ?, status = ?, expense_amount = ?, expense_receiver = ?, note = ?", [date_time, vehicle_id, status, expense_amount, expense_receiver, note, id]);
+
+    req.flash('success', 'Report successfully updated!');
     res.redirect('/dashboard/vehicles');
 
 });
 
 
+
+
+
+//######################################
+// #####################################
+// #####################################
+// ##### Permissions #####################
+// #####################################
+routerDashboard.post('/new-user', async (req, res) => {
+
+    let workforce_id = req.body.workforce_id;
+    let role = req.body.role;
+    let email = req.body.email;
+
+    const [user] = await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [workforce_id]);
+
+    if (user.length <= 0) {
+        return res.redirect('/dashboard/users');
+    }
+
+    const [check_email] = await (await conn).query("SELECT * FROM tbl_users WHERE email = ?", [email]);
+    if (check_email[0]) {
+        req.flash('error', 'User with same email exist!');
+        return res.redirect('/dashboard/users');
+    }
+
+
+    const [username_email] = await (await conn).query("SELECT * FROM tbl_users WHERE username = ?", [user[0].username]);
+    if (username_email[0]) {
+        req.flash('error', 'User with same username exist!');
+        return res.redirect('/dashboard/users');
+    }
+
+    let password = await bcrypt.hash(user[0].password, 8);
+
+    const [i] = await (await conn).query("INSERT INTO tbl_users (first_name, last_name, username, email, password, role) VALUES (?,?,?,?,?,?)", [user[0].first_name, user[0].last_name, user[0].username, email, password, role]);
+
+    req.flash('success', 'Login successfully added!');
+    res.redirect('/dashboard/users');
+
+});
 
 
 
@@ -239,6 +440,7 @@ routerDashboard.post('/inventory/edit', inventoryController.editInventory);
 
 routerDashboard.get('/debts', debtsController.debtsHome);
 routerDashboard.post('/debt-paid', debtsController.paidDebt);
+routerDashboard.post('/debt-unpaid', debtsController.markAsUnPaidDebt);
 
 routerDashboard.get('/expenses', expensesController.expensesHome);
 routerDashboard.post('/expense/new', expensesController.expensesNew);
@@ -252,18 +454,27 @@ routerDashboard.post('/customer/edit', customersController.postEditCutomer);
 routerDashboard.get('/customer/delete', customersController.deleteCutomer);
 
 
+
+
+routerDashboard.get('/sellers', sellersController.sellersHome);
+routerDashboard.post('/seller/new', sellersController.postNewSeller);
+routerDashboard.post('/seller/edit', sellersController.postEditSeller);
+routerDashboard.get('/seller/delete', sellersController.deleteSeller);
+
+
 routerDashboard.get('/users', usersController.usersHome);
 routerDashboard.get('/desactivate-admin', usersController.desactivateUser);
 routerDashboard.get('/activate-admin', usersController.activateUser);
 routerDashboard.post('/new-admin', usersController.newAdmin);
 
 routerDashboard.get('/configs', configsController.configsHome);
+routerDashboard.post('/configs/post-allow-before-hours', configsController.postAllowEditBeforeHours);
 routerDashboard.post('/configs/post-system-name', configsController.postSystemName);
 routerDashboard.post('/configs/post-copyright-text', configsController.postcopyrighttext);
 
 
 const logoUpload = upload.fields([{ name: "file", maxCount: 1 }]);
-routerDashboard.post('/configs/post-new-logo', logoUpload,configsController.postNewLogo);
+routerDashboard.post('/configs/post-new-logo', logoUpload, configsController.postNewLogo);
 const faviconUpload = upload.fields([{ name: "file", maxCount: 1 }]);
 routerDashboard.post('/configs/post-new-favicon', faviconUpload, configsController.postNewFavicon);
 

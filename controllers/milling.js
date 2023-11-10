@@ -8,7 +8,8 @@ const millingHome = async (req, res) => {
 
     // let my_id = req.session.loggedInUser.id;
 
-    const [users] = await (await conn).query("SELECT * FROM tbl_workforce WHERE type = 'PERMANENT' AND active = 'Y'");
+    // const [users] = await (await conn).query("SELECT * FROM tbl_workforce WHERE type = 'PERMANENT' AND active = 'Y'");
+    const [users] = await (await conn).query("SELECT * FROM tbl_workforce WHERE active = 'Y'");
     const [millings] = await (await conn).query("SELECT tbl_milling.id as milling_id, tbl_milling.*, tbl_workforce.*  FROM `tbl_milling` LEFT JOIN tbl_workforce ON tbl_workforce.id = tbl_milling.technician_id ORDER BY tbl_milling.created_at DESC");
     console.log(millings);
     let page_data = {

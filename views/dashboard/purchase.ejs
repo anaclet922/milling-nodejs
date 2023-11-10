@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -41,11 +41,12 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Item name</th>
-                                        <th>Unit Price</th>
-                                        <th>Quantity</th>
-                                        <th>Transport Cost</th>
-                                        <th>Total Cost</th>
+                                        <th>Unit Price (RWF)</th>
+                                        <th>Quantity (kg)</th>
+                                        <th>Product Cost (RWF)</th>
+                                        <th>Total Cost (RWF)</th>
                                         <th>Mode</th>
+                                        <th>Seller</th>
                                         <th>Date & Time</th>
                                         <th></th>
                                     </tr>
@@ -67,13 +68,16 @@
                                                 <%= purchase.quantity.toLocaleString() %>
                                             </td>
                                             <td>
-                                                <%= purchase.transport_cost.toLocaleString() %>
+                                                <%= (purchase.total_price - purchase.transport_cost - purchase.other_cost).toLocaleString() %>
                                             </td>
                                             <td>
                                                 <%= purchase.total_price.toLocaleString() %>
                                             </td>
                                             <td>
                                                 <%= purchase.name==null ? 'Debt' : purchase.name %>
+                                            </td>
+                                            <td>
+                                                <%= purchase.seller_name %>
                                             </td>
                                             <td>
                                                 <%= getFormatedDate(purchase.creation_date) %>
@@ -128,6 +132,8 @@
                                                                             <option value="inventory"
                                                                                 <%=purchase.type=='inventory'
                                                                                 ? 'selected' :'' %>>Inventory</option>
+
+                                                                            <option value="other">Other</option>
                                                                         </select>
                                                                     </div>
 
@@ -168,6 +174,15 @@
                                                                             value="<%= purchase.transport_cost %>">
                                                                     </div>
 
+                                                                    <div class="form-group col-md-6 col-lg-6">
+                                                                        <label for="">Other Cost (E.g.:
+                                                                            Gupakurura, Commissions...)</label>
+                                                                        <input class="form-control form-control-lg mb-3"
+                                                                            type="number" placeholder="Other costs"
+                                                                            name="other_cost" required
+                                                                            id="other_cost<%= purchase.other_cost %>"
+                                                                            value="<%= purchase.other_cost %>">
+                                                                    </div>
 
                                                                     <div class="form-group col-md-6 col-lg-6">
                                                                         <label for="">Total cost</label>
@@ -179,13 +194,25 @@
                                                                             value="<%= purchase.total_price %>">
                                                                     </div>
 
+
+
                                                                     <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Seller name</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="text" placeholder="Seller name"
-                                                                            name="seller" required
-                                                                            value="<%= purchase.seller %>">
+                                                                        <label for="">Seller</label>
+                                                                        <select name="seller"
+                                                                            class="form-control form-control-lg mb-3"
+                                                                            required>
+                                                                            <option value="">Select Seller</option>
+                                                                            <% sellers.forEach((seller, index)=> { %>
+                                                                                <option value="<%= seller.id %>"
+                                                                                    <%=purchase.seller==seller.id
+                                                                                    ? 'selected' : '' %>>
+                                                                                    <%= seller.first_name + ' ' +
+                                                                                        seller.last_name %>
+                                                                                </option>
+                                                                                <% }) %>
+                                                                        </select>
                                                                     </div>
+
 
                                                                     <div class="form-group col-md-6 col-lg-6">
                                                                         <label for="">Place of purchase</label>
@@ -238,8 +265,8 @@
                                                                         value=" <%= purchase.puchase_id %>">
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary">Save changes</button>
+                                                                    <button type="submit" class="btn btn-primary">Save
+                                                                        changes</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -251,21 +278,25 @@
                                                     $(document).ready(function () {
 
                                                         $('#unit_price_<%= purchase.puchase_id %>').keyup(function () {
-                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val());
+                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
                                                             $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
                                                         });
 
                                                         $('#quantity_<%= purchase.puchase_id %>').keyup(function () {
-                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val());
+                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
                                                             $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
                                                         });
 
                                                         $('#transport_cost_<%= purchase.puchase_id %>').keyup(function () {
-                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val());
+                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
                                                             $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
                                                         });
 
 
+                                                        $('#other_cost<%= purchase.puchase_id %>').keyup(function () {
+                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                            $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                        });
 
                                                     });
                                                 </script>
@@ -281,11 +312,12 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Item name</th>
-                                        <th>Unit Price</th>
-                                        <th>Quantity</th>
-                                        <th>Transport Cost</th>
-                                        <th>Total Cost</th>
+                                        <th>Unit Price (RWF)</th>
+                                        <th>Quantity (kg)</th>
+                                        <th>Product Cost (RWF)</th>
+                                        <th>Total Cost (RWF)</th>
                                         <th>Mode</th>
+                                        <th>Seller</th>
                                         <th>Date & Time</th>
                                         <th></th>
                                     </tr>
@@ -327,6 +359,7 @@
                                 <option value="" selected>Select item type</option>
                                 <option value="maize">Maize</option>
                                 <option value="inventory">Inventory</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
 
@@ -357,15 +390,28 @@
 
 
                         <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Other Cost (E.g.: Gupakurura, Commissions...)</label>
+                            <input class="form-control form-control-lg mb-3" type="number" placeholder="Other costs"
+                                name="other_cost" required value="0" id="other_cost">
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
                             <label for="">Total cost</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Total cost"
                                 name="total_price" required readonly="readonly" id="total_price">
                         </div>
 
+
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">Seller name</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Seller name"
-                                name="seller" required>
+                            <label for="">Seller</label>
+                            <select name="seller" class="form-control form-control-lg mb-3" required>
+                                <option value="">Select Seller</option>
+                                <% sellers.forEach((seller, index)=> { %>
+                                    <option value="<%= seller.id %>">
+                                        <%= seller.first_name + ' ' + seller.last_name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
                         </div>
 
                         <div class="form-group col-md-6 col-lg-6">
@@ -418,20 +464,25 @@
         $(document).ready(function () {
 
             $('#unit_price').keyup(function () {
-                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val());
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
                 $('#total_price').val(parseFloat(t));
             });
 
             $('#quantity').keyup(function () {
-                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val());
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
                 $('#total_price').val(parseFloat(t));
             });
 
             $('#transport_cost').keyup(function () {
-                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val());
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
                 $('#total_price').val(parseFloat(t));
             });
 
+
+            $('#other_cost').keyup(function () {
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
+                $('#total_price').val(parseFloat(t));
+            });
 
             $('#type').change(function () {
                 if ($('#type').val() == 'maize') {

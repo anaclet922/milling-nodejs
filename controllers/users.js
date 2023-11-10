@@ -9,11 +9,14 @@ const upload = require('../upload');
 const usersHome = async (req, res) => {
 
     const [users] = await (await conn).query("SELECT * FROM tbl_users");
+    const [permanetWorkforces] = await (await conn).query("SELECT * FROM tbl_workforce WHERE type = 'PERMANENT'");
+
 
     let page_data = {
-        title: "Admin",
+        title: "Permassions",
         currrentPath: "users",
-        users: users
+        users: users,
+        permanetWorkforces: permanetWorkforces
     };
 
     res.render('dashboard/users', page_data);

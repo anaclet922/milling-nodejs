@@ -30,6 +30,12 @@ const postNewCutomer = async (req, res) => {
 
     const [i] = await (await conn).query("INSERT INTO tbl_customers (id_no, phone, first_name, last_name, about, location) VALUES (?,?,?,?,?,?)", [id_no, phone, first_name, last_name, about, location]);
 
+    let link = req.query.back;
+
+    if (link == 'sale') {
+        req.flash('success', 'Customer successfully created!');
+        return res.redirect('/dashboard/sales');
+    }
     req.flash('success', 'Customer successfully created!');
     res.redirect('/dashboard/customers');
 
@@ -45,7 +51,7 @@ const postEditCutomer = async (req, res) => {
     let about = req.body.about;
     let location = req.body.location;
 
-    
+
     let id = req.body.id;
 
     const [i] = await (await conn).query("UPDATE tbl_customers SET id_no = ?, phone = ?, first_name = ?, last_name = ?, about = ?, location = ? WHERE id = ?", [id_no, phone, first_name, last_name, about, location, id]);
@@ -59,7 +65,7 @@ const postEditCutomer = async (req, res) => {
 const deleteCutomer = async (req, res) => {
 
     let id = req.query.id;
-    
+
     const [i] = await (await conn).query("DELETE FROM tbl_customers WHERE id = ?", [id]);
 
     req.flash('success', 'Customer successfully deleted!');

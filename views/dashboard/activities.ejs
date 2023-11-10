@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -25,7 +25,7 @@
                         <!-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                             data-bs-target="#new-activities-modal">Record New Activity</button> -->
                     </div>
-                </div>
+                </div> 
             </div>
 
 
@@ -49,6 +49,7 @@
                                         <th>Reminder Time</th>
                                         <th>Priority</th>
                                         <th>Assignee</th>
+                                        <th>Created By</th>
                                         <th>Created at</th>
                                         <th></th>
                                     </tr>
@@ -72,6 +73,9 @@
                                             </td>
                                             <td>
                                                 <%= activity.first_name ? (activity.first_name + ' ' + activity.last_name) : '' %>
+                                            </td>
+                                            <td>
+                                                <%= activity.created_by_name %>
                                             </td>
                                             <td>
                                                 <%= getFormatedDate(activity.activity_created_at) %>
@@ -177,6 +181,7 @@
                                         <th>Reminer Time</th>
                                         <th>Priority</th>
                                         <th>Assignee</th>
+                                        <th>Created By</th>
                                         <th>Created at</th>
                                         <th></th>
                                     </tr>
@@ -245,7 +250,7 @@
                         <div class="form-group col-md-6 col-lg-6">
                             <label for="">Assignee</label>
                             <select class="form-control form-control-lg mb-3"
-                                name="assignee">
+                                name="assignee" required>
                                 <option value="">Address to someone</option>
                                 <% workforces.forEach((user, index)=> { %>
                                     <option value="<%= user.id %>">

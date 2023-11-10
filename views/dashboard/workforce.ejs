@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -41,8 +41,8 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs nav-primary" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#primaryhome" role="tab"
-                                        aria-selected="true">
+                                    <a class="nav-link active daily-workforce-link" data-bs-toggle="tab"
+                                        href="#primaryhome" role="tab" aria-selected="true">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon">
                                             </div>
@@ -52,8 +52,8 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#primaryprofile" role="tab"
-                                        aria-selected="false" tabindex="-1">
+                                    <a class="nav-link permanent-workforce-link" data-bs-toggle="tab"
+                                        href="#primaryprofile" role="tab" aria-selected="false" tabindex="-1">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon">
                                             </div>
@@ -62,8 +62,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#primarycontact" role="tab"
-                                        aria-selected="false" tabindex="-1">
+                                    <a class="nav-link departments-link" data-bs-toggle="tab" href="#primarycontact"
+                                        role="tab" aria-selected="false" tabindex="-1">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon">
                                             </div>
@@ -136,7 +136,10 @@
                                                     </td>
                                                     <td>
                                                         <%= (new Date(workforce.end_date).toLocaleDateString(undefined,
-                                                            { year: 'numeric' , month: 'long' , day: 'numeric' })) %>
+                                                            { year: 'numeric' , month: 'long' , day: 'numeric'
+                                                            }))=='Invalid Date' ? '-' : (new
+                                                            Date(workforce.end_date).toLocaleDateString(undefined, {
+                                                            year: 'numeric' , month: 'long' , day: 'numeric' })) %>
                                                     </td>
                                                     <td>
                                                         <%= workforce.title==null ? 'N/A' : workforce.title %>
@@ -164,57 +167,104 @@
 
 
 
-                                                        <div class="modal fade" id="edit-workforce-daily-<%= workforce.workforce_id %>" tabindex="-1" aria-hidden="true" style="display: none;">
+                                                        <div class="modal fade"
+                                                            id="edit-workforce-daily-<%= workforce.workforce_id %>"
+                                                            tabindex="-1" aria-hidden="true" style="display: none;">
                                                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                                                 <div class="modal-content">
-                                                                    <form action="/dashboard/workforce/edit-daily-workforce" method="post" enctype="multipart/form-data">
+                                                                    <form
+                                                                        action="/dashboard/workforce/edit-daily-workforce"
+                                                                        method="post" enctype="multipart/form-data">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title">Edit <%= workforce.first_name + ' ' + workforce.last_name %></h5>
-                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            <h5 class="modal-title">Edit <%=
+                                                                                    workforce.first_name + ' ' +
+                                                                                    workforce.last_name %>
+                                                                            </h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
                                                                         </div>
                                                                         <div class="modal-body row">
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">First name</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
-                                                                                    name="first_name" value="<%= workforce.first_name %>" required>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="text" placeholder="First name"
+                                                                                    name="first_name"
+                                                                                    value="<%= workforce.first_name %>"
+                                                                                    required>
                                                                             </div>
-                                                    
+
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Last name</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
-                                                                                    name="last_name" value="<%= workforce.last_name %>" required>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="text" placeholder="Last name"
+                                                                                    name="last_name"
+                                                                                    value="<%= workforce.last_name %>"
+                                                                                    required>
                                                                             </div>
-                                                    
+
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Gender</label>
-                                                                                <select name="gender" id="" class="form-control form-control-lg mb-3" required>
-                                                                                    <option value="">Select gender</option>
-                                                                                    <option value="M" <%= workforce.gender == 'M' ? 'selected' : '' %>>Male</option>
-                                                                                    <option value="F" <%= workforce.gender == 'F' ? 'selected' : '' %>>Female</option>
+                                                                                <select name="gender" id=""
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
+                                                                                    <option value="">Select gender
+                                                                                    </option>
+                                                                                    <option value="M"
+                                                                                        <%=workforce.gender=='M'
+                                                                                        ? 'selected' : '' %>>Male
+                                                                                    </option>
+                                                                                    <option value="F"
+                                                                                        <%=workforce.gender=='F'
+                                                                                        ? 'selected' : '' %>>Female
+                                                                                    </option>
                                                                                 </select>
                                                                             </div>
-                                                    
+
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Date of birth</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="date" placeholder="Year of birth"
-                                                                                    name="date_of_birth" value="<%= workforce.date_of_birth %>" required>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="date"
+                                                                                    placeholder="Year of birth"
+                                                                                    name="date_of_birth"
+                                                                                    value="<%= workforce.date_of_birth %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">NID</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID"
-                                                                                    name="nid" value="<%= workforce.nid %>" required>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="text"
+                                                                                    placeholder="National ID" name="nid"
+                                                                                    value="<%= workforce.nid %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Phone number</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
-                                                                                    name="phone" value="<%= workforce.phone %>" required>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="text"
+                                                                                    placeholder="Phone number"
+                                                                                    name="phone"
+                                                                                    value="<%= workforce.phone %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Department</label>
-                                                                                <select name="department_id" id="" class="form-control form-control-lg mb-3" required>
-                                                                                    <option value="">Select Department</option>
-                                                                                    <% departments.forEach((department, index)=> { %>
-                                                                                        <option value="<%= department.department_id %>" <%= workforce.department_id == department.department_id ? 'selected' : '' %>>
+                                                                                <select name="department_id" id=""
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
+                                                                                    <option value="">Select Department
+                                                                                    </option>
+                                                                                    <% departments.forEach((department,
+                                                                                        index)=> { %>
+                                                                                        <option
+                                                                                            value="<%= department.department_id %>"
+                                                                                            <%=workforce.department_id==department.department_id
+                                                                                            ? 'selected' : '' %>>
                                                                                             <%= department.title %>
                                                                                         </option>
                                                                                         <% }); %>
@@ -222,56 +272,88 @@
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Position</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="text" placeholder="Position"
-                                                                                    name="position" value="<%= workforce.position %>" required>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="text" placeholder="Position"
+                                                                                    name="position"
+                                                                                    value="<%= workforce.position %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
-                                                                                <label for="">Start date/hiring date</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="date" placeholder="hired_date"
-                                                                                    name="hired_date" value="<%= workforce.hired_date.toISOString().slice(0, 10).replace('T', ' ') %>" required>
+                                                                                <label for="">Start date/hiring
+                                                                                    date</label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="date" placeholder="hired_date"
+                                                                                    name="hired_date"
+                                                                                    value="<%= workforce.hired_date.toISOString().slice(0, 10).replace('T', ' ') %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">End date</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="date" placeholder="hired_date"
-                                                                                    name="end_date" value="<%= workforce.end_date %>">
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="date" placeholder="hired_date"
+                                                                                    name="end_date"
+                                                                                    value="<%= workforce.end_date %>">
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
-                                                                                <label for="">Contract <a href="/contracts/<%= workforce.contract %>" download>Download</a></label>
-                                                                                <input class="form-control form-control-lg mb-3" type="file" name="contract"
+                                                                                <label for="">Contract <a
+                                                                                        href="/contracts/<%= workforce.contract %>"
+                                                                                        download>Download</a></label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="file" name="contract"
                                                                                     accept="application/pdf">
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
-                                                                                <label for="">Passport Photo <a href="/pictures/<%= workforce.picture %>" download>Download</a></label>
-                                                                                <input class="form-control form-control-lg mb-3" type="file" name="picture"
+                                                                                <label for="">Passport Photo <a
+                                                                                        href="/pictures/<%= workforce.picture %>"
+                                                                                        download>Download</a></label>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="file" name="picture"
                                                                                     accept="image/jpeg, image/png">
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Username</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="text" placeholder="Username"
-                                                                                    name="username" value="<%= workforce.username %>" required>
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="text" placeholder="Username"
+                                                                                    name="username"
+                                                                                    value="<%= workforce.username %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Password</label>
-                                                                                <input class="form-control form-control-lg mb-3" type="text" placeholder="Password"
+                                                                                <input
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    type="text" placeholder="Password"
                                                                                     name="password">
                                                                             </div>
-                                                    
+
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Note</label>
-                                                                                <textarea name="note" class="form-control"><%= workforce.note %></textarea>
+                                                                                <textarea name="note"
+                                                                                    class="form-control"><%= workforce.note %></textarea>
                                                                             </div>
-                                                    
+
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <input type="hidden" name="workforce_id" value="<%= workforce.workforce_id %>">
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                            <button type="submit" class="btn btn-primary">Save changes</button>
+                                                                            <input type="hidden" name="workforce_id"
+                                                                                value="<%= workforce.workforce_id %>">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Save
+                                                                                changes</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    
+
 
                                                     </td>
                                                 </tr>
@@ -346,8 +428,9 @@
                                                             year: 'numeric' , month: 'long' , day: 'numeric' })) %>
                                                     </td>
                                                     <td>
-                                                        <%= (new Date(workforce.end_date).toLocaleDateString(undefined,
-                                                            { year: 'numeric' , month: 'long' , day: 'numeric' })) %>
+                                                        <%= workforce.end_date=='N/A' ? '-' : (new
+                                                            Date(workforce.end_date).toLocaleDateString(undefined, {
+                                                            year: 'numeric' , month: 'long' , day: 'numeric' })) %>
                                                     </td>
                                                     <td>
                                                         <%= workforce.title==null ? 'N/A' : workforce.title %>
@@ -384,7 +467,10 @@
                                                                         action="/dashboard/workforce/edit-permanent-workforce"
                                                                         method="post" enctype="multipart/form-data">
                                                                         <div class="modal-header">
-                                                                            <h5 class="modal-title">Edit <%= workforce.first_name + ' ' + workforce.last_name %></h5>
+                                                                            <h5 class="modal-title">Edit <%=
+                                                                                    workforce.first_name + ' ' +
+                                                                                    workforce.last_name %>
+                                                                            </h5>
                                                                             <button type="button" class="btn-close"
                                                                                 data-bs-dismiss="modal"
                                                                                 aria-label="Close"></button>
@@ -396,7 +482,8 @@
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="text" placeholder="First name"
                                                                                     name="first_name"
-                                                                                    value="<%= workforce.first_name %>" required>
+                                                                                    value="<%= workforce.first_name %>"
+                                                                                    required>
                                                                             </div>
 
                                                                             <div class="form-group col-md-6 col-lg-6">
@@ -405,13 +492,15 @@
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="text" placeholder="Last name"
                                                                                     name="last_name"
-                                                                                    value="<%= workforce.last_name %>" required>
+                                                                                    value="<%= workforce.last_name %>"
+                                                                                    required>
                                                                             </div>
 
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Gender</label>
                                                                                 <select name="gender" id=""
-                                                                                    class="form-control form-control-lg mb-3" required>
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
                                                                                     <option value="">Select gender
                                                                                     </option>
                                                                                     <option value="M"
@@ -432,7 +521,8 @@
                                                                                     type="date"
                                                                                     placeholder="Year of birth"
                                                                                     name="date_of_birth"
-                                                                                    value="<%= workforce.date_of_birth %>" required>
+                                                                                    value="<%= workforce.date_of_birth %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">NID</label>
@@ -440,7 +530,8 @@
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="text"
                                                                                     placeholder="National ID" name="nid"
-                                                                                    value="<%= workforce.nid %>" required>
+                                                                                    value="<%= workforce.nid %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Phone number</label>
@@ -449,12 +540,14 @@
                                                                                     type="text"
                                                                                     placeholder="Phone number"
                                                                                     name="phone"
-                                                                                    value="<%= workforce.phone %>" required>
+                                                                                    value="<%= workforce.phone %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Department</label>
                                                                                 <select name="department_id" id=""
-                                                                                    class="form-control form-control-lg mb-3" required>
+                                                                                    class="form-control form-control-lg mb-3"
+                                                                                    required>
                                                                                     <option value="">Select Department
                                                                                     </option>
                                                                                     <% departments.forEach((department,
@@ -474,7 +567,8 @@
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="text" placeholder="Position"
                                                                                     name="position"
-                                                                                    value="<%= workforce.position %>" required>
+                                                                                    value="<%= workforce.position %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Start date/hiring
@@ -483,7 +577,8 @@
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="date" placeholder="hired_date"
                                                                                     name="hired_date"
-                                                                                    value="<%= workforce.hired_date.toISOString().slice(0, 10).replace('T', ' ') %>" required>
+                                                                                    value="<%= workforce.hired_date.toISOString().slice(0, 10).replace('T', ' ') %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">End date</label>
@@ -494,14 +589,18 @@
                                                                                     readonly="readonly">
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
-                                                                                <label for="">Contract <a href="/contracts/<%= workforce.contract %>" download>Download</a></label>
+                                                                                <label for="">Contract <a
+                                                                                        href="/contracts/<%= workforce.contract %>"
+                                                                                        download>Download</a></label>
                                                                                 <input
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="file" name="contract"
                                                                                     accept="application/pdf">
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
-                                                                                <label for="">Passport Photo <a href="/pictures/<%= workforce.picture %>" download>Download</a></label>
+                                                                                <label for="">Passport Photo <a
+                                                                                        href="/pictures/<%= workforce.picture %>"
+                                                                                        download>Download</a></label>
                                                                                 <input
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="file" name="picture"
@@ -513,7 +612,8 @@
                                                                                     class="form-control form-control-lg mb-3"
                                                                                     type="text" placeholder="Username"
                                                                                     name="username"
-                                                                                    value="<%= workforce.username %>" required>
+                                                                                    value="<%= workforce.username %>"
+                                                                                    required>
                                                                             </div>
                                                                             <div class="form-group col-md-6 col-lg-6">
                                                                                 <label for="">Password</label>
@@ -537,7 +637,8 @@
                                                                                 class="btn btn-secondary"
                                                                                 data-bs-dismiss="modal">Close</button>
                                                                             <button type="submit"
-                                                                                class="btn btn-primary">Save changes</button>
+                                                                                class="btn btn-primary">Save
+                                                                                changes</button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -681,7 +782,7 @@
 
 
 
-    <!-- Modal -->
+
     <div class="modal fade" id="new-daily-workforce-modal" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -789,9 +890,6 @@
         </div>
     </div>
 
-
-
-    <!-- Modal -->
     <div class="modal fade" id="new-permanent-workforce-modal" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -899,10 +997,6 @@
         </div>
     </div>
 
-
-
-
-    <!-- Modal -->
     <div class="modal fade" id="new-department-modal" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -932,7 +1026,7 @@
         function areYouSureToDelete(id, title, path) {
 
             let id_ = 'department_id';
-            if (title = 'employee') {
+            if (title == 'employee') {
                 id_ = 'employee_id';
             }
 
@@ -950,6 +1044,32 @@
                 }
             })
         }
+
+        $(document).ready(function () {
+
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('tab')) {
+                let tab = urlParams.get('tab');
+                console.log(tab == 'department');
+                if (tab == 'department') {
+                    setTimeout(function () {
+                        $(".departments-link")[0].click();
+                    }, 1000);
+                } else if (tab == 'dailyw') {
+                    setTimeout(function () {
+                        $(".daily-workforce-link")[0].click();
+                    }, 1000);
+                } else if (tab == 'permanet') {
+                    setTimeout(function () {
+                        $(".permanent-workforce-link")[0].click();
+                    }, 500);
+                }
+            }
+
+            $('#departments-link').click(function () {
+                console.log('Hello');
+            })
+        });
     </script>
 
     <style>

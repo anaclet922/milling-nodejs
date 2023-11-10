@@ -9,7 +9,9 @@ const inventoryHome = async (req, res) => {
 
     const [inventories] = await (await conn).query("SELECT * FROM tbl_purchases WHERE type = 'inventory' ORDER BY id DESC");
     const [users] = await (await conn).query("SELECT * FROM tbl_workforce ORDER BY id DESC");
-    const [inventory_users] = await (await conn).query("SELECT tbl_inventory.id as inventory_id, tbl_inventory.*, tbl_workforce.* FROM tbl_inventory LEFT JOIN tbl_workforce ON tbl_inventory.user_id = tbl_workforce.id ORDER BY tbl_inventory.id DESC");
+    const [inventory_users] = await (await conn).query("SELECT tbl_inventory.id as inventory_id, tbl_inventory.*, tbl_inventory.note as inventory_node, tbl_workforce.* FROM tbl_inventory LEFT JOIN tbl_workforce ON tbl_inventory.user_id = tbl_workforce.id ORDER BY tbl_inventory.id DESC");
+
+    console.log(inventory_users);
 
     let page_data = {
         title: "Inventory",
@@ -31,7 +33,7 @@ const postNewInventory = async (req, res) => {
     let user_id = req.body.user_id;
     let note = req.body.note;
 
-    const [i] = await (await conn).query("INSERT INTO tbl_inventory (item_name, description, type, user_id, Note) VALUES (?,?,?,?,?)", [item_name,description,type, user_id, note]);
+    const [i] = await (await conn).query("INSERT INTO tbl_inventory (item_name, description, type, user_id, Note) VALUES (?,?,?,?,?)", [item_name, description, type, user_id, note]);
 
     req.flash('success', 'New Inventory recorded successfully!');
     res.redirect('/dashboard/inventory');
@@ -49,7 +51,7 @@ const deleteInventory = async (req, res) => {
 
 const editInventory = async (req, res) => {
 
-    
+
     let item_name = req.body.item_name;
     let description = req.body.description;
     let type = req.body.type;
@@ -58,7 +60,7 @@ const editInventory = async (req, res) => {
 
     let inventory_id = req.body.inventory_id;
 
-    const [i] = await (await conn).query("UPDATE tbl_inventory SET item_name = ?, description = ?, type = ?, user_id = ?, note = ? WHERE id = ?", [item_name,description,type, user_id, note, inventory_id]);
+    const [i] = await (await conn).query("UPDATE tbl_inventory SET item_name = ?, description = ?, type = ?, user_id = ?, note = ? WHERE id = ?", [item_name, description, type, user_id, note, inventory_id]);
 
     req.flash('success', 'Inventory updated successfully!');
     res.redirect('/dashboard/inventory');

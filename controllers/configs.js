@@ -24,6 +24,14 @@ const postSystemName = async (req, res) => {
     res.redirect('/dashboard/configs');
 };
 
+const postAllowEditBeforeHours = async (req, res) => {
+
+    let hours = req.body.allow_edit_before_hours;
+    const [i] = await (await conn).query("UPDATE tbl_configs SET value = ? WHERE config_key = 'allow_edit_before_hours'", [hours]);
+    req.flash('success', 'Successfully updated!');
+    res.redirect('/dashboard/configs');
+};
+
 const postcopyrighttext = async (req, res) => {
 
     let new_name = req.body.copyright_text;
@@ -58,4 +66,4 @@ const postNewFavicon = async (req, res) => {
 
 
 
-module.exports = { configsHome, postSystemName, postcopyrighttext, postNewLogo, postNewFavicon };
+module.exports = { configsHome, postSystemName, postcopyrighttext, postNewLogo, postNewFavicon, postAllowEditBeforeHours };

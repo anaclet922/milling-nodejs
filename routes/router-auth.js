@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const conn = require('../database');
 
 router.get('', (req, res) => {
-    res.render('auth/login', { message: req.flash('error') });
+    res.render('auth/login');
 })
 
 
@@ -29,20 +29,21 @@ router.post('/post-login', async (req, res) => {
         let hash = user[0].password;
 
         bcrypt.compare(password, hash).then(function (result) {
-            if (result == true) {
+
+            if (result == true) {    
                 console.log('Logged in!');
                 req.session.loggedin = true;
                 req.session.loggedInUser = user[0];
-                res.redirect('/');
-            } else {
+                return res.redirect('/');
+            } else {    
                 req.flash('error', 'Incorrect credentials provided!');
-                res.redirect('/auth')
+                return res.redirect('/auth')
             }
         });
 
     } else {
         req.flash('error', 'Incorrect credentials provided!')
-        res.redirect('/auth')
+        return res.redirect('/auth')
     }
 
 

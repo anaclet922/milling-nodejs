@@ -5,7 +5,7 @@
         <div class="page-content">
 
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Dashboard</div>
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
@@ -42,7 +42,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Customer/Seller</th>
-                                        <th>Amount</th>
+                                        <th>Amount (RWF)</th>
                                         <th>Note</th>
                                         <th>Type</th>
                                         <th>Date & Time</th>
@@ -58,8 +58,7 @@
                                                 <%= index + 1 %>
                                             </td>
                                             <td>
-                                                <%= debt.customer_id !=null ? (debt.sale.first_name + ' ' +
-                                                    debt.sale.last_name) : debt.purchase.seller %>
+                                                <%= debt.saller_name %>
                                             </td>
                                             <td>
                                                 <%= debt.debited_amount.toLocaleString() %>
@@ -77,33 +76,42 @@
                                                 <%= debt.created_at.toLocaleString() %>
                                             </td>
                                             <td>
-                                                <span class="badge bg-<%= debt.paid == 'NO' ? 'danger' : 'success' %>"><%= debt.paid %></span>
+                                                <span class="badge bg-<%= debt.paid == 'NO' ? 'danger' : 'success' %>">
+                                                    <%= debt.paid %>
+                                                </span>
                                             </td>
                                             <td>
 
-                                                <% if(debt.paid == 'NO') { %>
-                                                <div class="btn-group">
-                                                    <a href="javascript:;" class="btn btn-outline-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#mark-paid-<%= debt.id %>">
-                                                        Mark as Paid
-                                                    </a>
-                                                </div>
+                                                <% if(debt.paid=='NO' ) { %>
+                                                    <div class="btn-group">
+                                                        <a href="javascript:;" class="btn btn-outline-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#mark-paid-<%= debt.id %>">
+                                                            Mark as Paid
+                                                        </a>
+                                                    </div>
 
-                                                <div class="modal fade" id="mark-paid-<%= debt.id %>" tabindex="-1" aria-hidden="true" style="display: none;">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <form action="/dashboard/debt-paid" method="post">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">New Department</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    
+                                                    <div class="modal fade" id="mark-paid-<%= debt.id %>" tabindex="-1"
+                                                        aria-hidden="true" style="display: none;">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <form action="/dashboard/debt-paid" method="post">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Debt Update</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+
 
                                                                         <div class="form-group col-md-12">
                                                                             <label for="">Paid with?</label>
-                                                                            <select name="payment_method_id" class="form-control form-control-lg mb-3" required>
-                                                                                <option value="">Select Payment mode</option>
+                                                                            <select name="payment_method_id"
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                required>
+                                                                                <option value="">Select Payment mode
+                                                                                </option>
                                                                                 <% modes.forEach((mode, index)=> { %>
                                                                                     <option value="<%= mode.id %>">
                                                                                         <%= mode.name %>
@@ -111,20 +119,61 @@
                                                                                     <% }) %>
                                                                             </select>
                                                                         </div>
-                                                
-                                            
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="hidden" name="debt_id" value="<%= debt.id %>">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                                </div>
-                                                            </form>
+
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <input type="hidden" name="debt_id"
+                                                                            value="<%= debt.id %>">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Submit</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <% } %>
+                                                    <%  }else if((Math.abs(new Date() - new Date(debt.updated_at)) / 36e5) <= 24){ %>
+                                                        <div class="btn-group">
+                                                            <a href="javascript:;" class="btn btn-outline-primary"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#mark-uppaid-<%= debt.id %>">
+                                                                Mark as UnPaid
+                                                            </a>
+                                                        </div>
+                                                        <div class="modal fade" id="mark-uppaid-<%= debt.id %>" tabindex="-1"
+                                                        aria-hidden="true" style="display: none;">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <form action="/dashboard/debt-unpaid" method="post">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Debt Update</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+
+
+                                                                        <h4>Are you sure?</h4>
+
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <input type="hidden" name="debt_id"
+                                                                            value="<%= debt.id %>">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Debt Update</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        <% } %>
 
                                             </td>
 
@@ -136,7 +185,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Customer/Seller</th>
-                                        <th>Amount</th>
+                                        <th>Amount (RWF)</th>
                                         <th>Note</th>
                                         <th>Type</th>
                                         <th>Date & Time</th>

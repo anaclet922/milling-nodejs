@@ -16,9 +16,13 @@ const debtsHome = async (req, res) => {
         if(debts[i].purchase_id != null){
             const [p] = await (await conn).query("SELECT * FROM tbl_purchases WHERE id = ?", [debts[i].purchase_id]);
             debts[i].purchase = p[0];
+            let n = await getSellerById(p[0].seller);
+            debts[i].saller_name = n;
         }else{
             const [s] = await (await conn).query("SELECT * FROM tbl_sales WHERE id = ?", [debts[i].sale_id]);
-            debts[i].sale = s[0];
+            debts[i].sale = s[0]; 
+            let n = await getCustomerById(s[0].customer_id);
+            debts[i].saller_name = n;
         }
         all_debts.push(debts[i]);
     }
@@ -60,4 +64,29 @@ const paidDebt = async (req, res) => {
 }
 
 
-module.exports = { debtsHome, paidDebt };
+const markAsUnPaidDebt = async (req, res) => {
+
+    let debt_id = req.body.debt_id;
+
+    const [debt] = await (await conn).query("SELECT * FROM tbl_debts WHERE id = ?", [debt_id]);
+
+
+    if(debt.length){
+
+        const [debtUpdate] = await (await conn).query("UPDATE tbl_debts SET paid = 'NO' WHERE id = ?", [debt_id]);
+        
+        if(debt[0].sale_id != null){
+            const [sale] = await (await conn).query("SELECT * FROM tbl_sales WHERE id = ?", [debt[0].sale_id]);
+            const [payment] = await (await conn).query("UPDATE tbl_payments SET note = 'Cancelled' WHERE customer_id = ? AND sale_id = ?", [sale[0].customer_id, sale[0].id]);
+        }
+            
+            req.flash('success', 'Debt paid!');
+            return res.redirect('/dashboard/debts');
+       
+    }else{
+        req.flash('error', 'Debt not found!');
+        return res.redirect('/dashboard/debts');
+    }
+}
+
+module.exports = { debtsHome, paidDebt, markAsUnPaidDebt };

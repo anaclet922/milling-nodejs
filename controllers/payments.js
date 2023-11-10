@@ -18,13 +18,14 @@ const paymentHome = async (req, res) => {
         const [user] =  await (await conn).query("SELECT * FROM tbl_workforce WHERE id = ?", [payments[i].user_id]);
         const [mode] =  await (await conn).query("SELECT * FROM tbl_payments_methods WHERE id = ?", [payments[i].method_of_payment]);
 
-        console.log(customer);
         payments[i].customer = customer[0];
         payments[i].sale = sale[0];
         payments[i].user = user[0];
         payments[i].paymentMode = mode[0]
 
     }
+    
+
 
     let page_data = {
         title: "Payments",
@@ -43,7 +44,7 @@ const updatePaymentMode = async (req, res) => {
         const [u] = await (await conn).query("UPDATE tbl_payments_methods SET status= ? WHERE id = ?", [status, id]);
     
         req.flash('success', 'Payment mode successfully updated!');
-        res.redirect('/dashboard/payments');
+        res.redirect('/dashboard/payments?tab=payment-mode-tab');
     
 };
 const deletePaymentMode = async (req, res) => {
@@ -51,7 +52,7 @@ const deletePaymentMode = async (req, res) => {
         let id = req.query.id;
         const [d] = await (await conn).query("DELETE FROM tbl_payments_methods WHERE id = ?", [id]);
         req.flash('success', 'Payment mode successfully deleted!');
-        res.redirect('/dashboard/payments');
+        res.redirect('/dashboard/payments?tab=payment-mode-tab');
     
     
 }
@@ -63,7 +64,7 @@ const postNewPaymentMode = async (req, res) => {
         const [i] = await (await conn).query("INSERT INTO tbl_payments_methods (name, status) VALUES (?,?)", [payment_mode, status]);
     
         req.flash('success', 'Payment mode successfully created!');
-        res.redirect('/dashboard/payments');
+        res.redirect('/dashboard/payments?tab=payment-mode-tab');
     
 };
 const postEditPaymentMode = async (req, res) => {
@@ -75,7 +76,7 @@ const postEditPaymentMode = async (req, res) => {
         const [i] = await (await conn).query("UPDATE tbl_payments_methods SET name = ?, status = ? WHERE id = ?", [payment_mode, status, id]);
     
         req.flash('success', 'Payment mode successfully updated!');
-        res.redirect('/dashboard/payments');
+        res.redirect('/dashboard/payments?tab=payment-mode-tab');
     
 }
 
