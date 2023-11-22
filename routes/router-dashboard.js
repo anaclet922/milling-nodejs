@@ -182,7 +182,9 @@ routerDashboard.get('/sales', salesController.salesHome);
 routerDashboard.post('/sale/new', salesController.newSale);
 routerDashboard.get('/sale/delete', salesController.saleDelete);
 routerDashboard.post('/sale/edit', salesController.saleEdit);
-
+routerDashboard.get('/sale/new-sale', salesController.newSaleForm);
+routerDashboard.post('/sale/new-customer', salesController.newCustomer);
+routerDashboard.get('/search-customer', salesController.searchCustomer);
 
 
 
@@ -426,6 +428,9 @@ routerDashboard.get('/purchase', purchasesController.purchasesHome);
 routerDashboard.post('/purchase/new', purchasesController.newPurchase);
 routerDashboard.get('/delete-purchase', purchasesController.deletePurchase);
 routerDashboard.post('/purchase/edit', purchasesController.editPurchase);
+routerDashboard.get('/form-new-purchase', purchasesController.formNewPurchase);
+routerDashboard.post('/purchase/new-type', purchasesController.newType);
+routerDashboard.post('/purchase/new-seller', purchasesController.newSeller);
 
 
 routerDashboard.get('/milling', millingController.millingHome);
@@ -478,7 +483,10 @@ routerDashboard.post('/configs/post-new-logo', logoUpload, configsController.pos
 const faviconUpload = upload.fields([{ name: "file", maxCount: 1 }]);
 routerDashboard.post('/configs/post-new-favicon', faviconUpload, configsController.postNewFavicon);
 
+
 routerDashboard.get('/stock', stockController.stockHome);
+routerDashboard.post('/add-stock', stockController.addToStock);
+routerDashboard.post('/remove-stock', stockController.removeToStock);
 
 
 
@@ -487,6 +495,8 @@ routerDashboard.get('/update-payment-mode', paymentController.updatePaymentMode)
 routerDashboard.get('/delete-payment-mode', paymentController.deletePaymentMode);
 routerDashboard.post('/post-new-payment-mode', paymentController.postNewPaymentMode);
 routerDashboard.post('/post-edit-payment-mode', paymentController.postEditPaymentMode);
+
+
 
 
 module.exports = routerDashboard

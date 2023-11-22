@@ -1,0 +1,400 @@
+<%- include('../includes/dashboard-top') %>
+
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+
+            <div class="page-breadcrumb d-sm-flex align-items-center mb-3">
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0 align-items-center">
+                            <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img"
+                                        class="md hydrated" aria-label="home outline"></ion-icon></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= locals.title %>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <!-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#new-purchase-modal">New Purchase</button> -->
+                        <a href="/dashboard/purchase" class="btn btn-outline-primary">Back to purchases</a>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <br>
+            <br>
+            <br>
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+
+
+
+                            <form action="/dashboard/purchase/new" method="post">
+
+
+                                <div class=" row">
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Item Type</label>
+                                        <select name="type" class="form-control form-control-lg mb-3" id="type"
+                                            required>
+                                            <option value="" selected>Select item type</option>
+                                            <option value="maize">Maize</option>
+                                            <option value="inventory">Inventory</option>
+                                            <% item_types.forEach((item_type, index)=> { %>
+                                                <option value="<%= item_type.type %>">
+                                                    <%= item_type.type %>
+                                                </option>
+                                                <% }) %>
+                                                    <option value="other">**New Type**</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Item Name</label>
+                                        <input class="form-control form-control-lg mb-3" type="text"
+                                            placeholder="Item name" name="item_name" required>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Unit price</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Unit price" name="unit_price" required value="0"
+                                            id="unit_price">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="" id="quantity-lable-id">Quantity</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Quantity" name="quantity" required value="0" id="quantity">
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Transport cost</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Transport cost" name="transport_cost" required value="0"
+                                            id="transport_cost">
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Other Cost (E.g.: Gupakurura, Commissions...)</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Other costs" name="other_cost" required value="0"
+                                            id="other_cost">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Total cost</label>
+                                        <input class="form-control form-control-lg mb-3" type="text"
+                                            placeholder="Total cost" name="total_price" required readonly="readonly"
+                                            id="total_price">
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Seller</label>
+                                        <select name="seller" class="form-control form-control-lg mb-3" required
+                                            id="seller-id">
+                                            <option value="">Select Seller</option>
+                                            <% sellers.forEach((seller, index)=> { %>
+                                                <option value="<%= seller.id %>">
+                                                    <%= seller.first_name + ' ' + seller.last_name %>
+                                                </option>
+                                                <% }) %>
+                                                    <option value="other">**New Seller**</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Place of purchase</label>
+                                        <input class="form-control form-control-lg mb-3" type="text"
+                                            placeholder="Place of purchase" name="place_of_purchase" required>
+                                    </div>
+
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Payment Mode</label>
+                                        <select name="payment_method_id" class="form-control form-control-lg mb-3"
+                                            required>
+                                            <option value="">Select Payment mode</option>
+                                            <% modes.forEach((mode, index)=> { %>
+                                                <option value="<%= mode.id %>">
+                                                    <%= mode.name %>
+                                                </option>
+                                                <% }) %>
+                                                    <option value="debt">Debt</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Description</label>
+                                        <textarea name="description" class="form-control"></textarea>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Note</label>
+                                        <textarea name="note" class="form-control"></textarea>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12 text-end">
+                                        <a href="/dashboard/purchase" class="btn btn-secondary">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+
+    <button type="button" class="btn btn-outline-primary show-new-seller-model" data-bs-toggle="modal"
+        data-bs-target="#new-seller-modal" style="display: none;">New seller</button>
+    <button type="button" class="btn btn-outline-primary show-new-type-model" data-bs-toggle="modal"
+        data-bs-target="#new-type-modal" style="display: none;">New seller</button>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="new-type-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <form action="/dashboard/purchase/new-type" method="post" id="new-type-form-id">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Type</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body row">
+
+                        <div class="form-group col-md-12">
+                            <label for="">Type name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" name="type" required>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="new-seller-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+                <form action="/dashboard/purchase/new-seller" method="post" id="new-seller-form-id">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">New seller</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body row">
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">First Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
+                                name="first_name" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Last Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
+                                name="last_name" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">NID/TIN</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID"
+                                name="id_no" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Phone</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
+                                name="phone" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Location</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Location"
+                                name="location" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">About</label>
+                            <textarea name="about" class="form-control"></textarea>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#unit_price').keyup(function () {
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
+                $('#total_price').val(parseFloat(t));
+            });
+
+            $('#quantity').keyup(function () {
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
+                $('#total_price').val(parseFloat(t));
+            });
+
+            $('#transport_cost').keyup(function () {
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
+                $('#total_price').val(parseFloat(t));
+            });
+
+
+            $('#other_cost').keyup(function () {
+                let t = parseFloat($('#unit_price').val() * $('#quantity').val()) + parseFloat($('#transport_cost').val()) + parseFloat($('#other_cost').val());
+                $('#total_price').val(parseFloat(t));
+            });
+
+            $('#type').change(function () {
+                if ($('#type').val() == 'maize') {
+                    $('#quantity-lable-id').html('Quantity in kg');
+                } else {
+                    $('#quantity-lable-id').html('Quantity');
+                }
+
+                if ($('#type').val() == 'other') {
+                    $('.show-new-type-model').click();
+                }
+            });
+
+
+            $('#seller-id').change(function () {
+
+                if ($('#seller-id').val() == 'other') {
+                    $('.show-new-seller-model').click();
+                }
+
+            });
+
+
+            $('#new-seller-form-id').on('submit', function (e) {
+
+                e.preventDefault();
+                $.ajax({
+                    url: '/dashboard/purchase/new-seller',
+                    data: $('#new-seller-form-id').serialize(),
+                    type: 'post',
+                    success: function (response) {
+                        if (response.error == 'no') {
+                            $('#seller-id').append('<option value="' + response.id + '">' + response.name + '</option>');
+                            $('#seller-id').val(response.id);
+                            $('#new-seller-modal').modal('toggle');
+                            $('#new-seller-form-id').trigger("reset");
+                        } else {
+                            showToastSuccessOrErrorJS('eror', response.name);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+
+
+
+            });
+
+
+            $('#new-type-form-id').on('submit', function (e) {
+
+                e.preventDefault();
+                $.ajax({
+                    url: '/dashboard/purchase/new-type',
+                    data: $('#new-type-form-id').serialize(),
+                    type: 'post',
+                    success: function (response) {
+                        console.log(response);
+                        if (response.error == 'no') {
+                            $('#seller').append('<option value="' + response.new_type + '">' + response.new_type + '</option>');
+                            $('#type').val(response.new_type);
+                            $('#new-type-modal').modal('toggle');
+                            $('#new-type-form-id').trigger("reset");
+                        } else {
+                            showToastSuccessOrErrorJS('eror', response.new_type);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+        });
+
+        function areYouSureToDelete(id) {
+            Swal.fire({
+                title: 'Are you sure to delete this purchase?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = '/dashboard/delete-purchase?id=' + id;
+                }
+            })
+        }
+
+
+    </script>
+
+    <%- include('../includes/dashboard-foot') %>

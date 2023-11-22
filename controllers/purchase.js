@@ -9,7 +9,9 @@ const purchasesHome = async (req, res) => {
 
     const [purchases] = await (await conn).query("SELECT tbl_purchases.id as puchase_id, tbl_purchases.created_at as creation_date, tbl_purchases.*, tbl_payments_methods.* FROM tbl_purchases LEFT JOIN tbl_payments_methods ON tbl_payments_methods.id = tbl_purchases.payment_method_id ORDER BY tbl_purchases.id DESC");
     const [sellers] = await (await conn).query("SELECT * FROM tbl_sellers ORDER BY id DESC");
-    const [modes] = await (await conn).query("SELECT * FROM tbl_payments_methods WHERE status = 'ACTIVE' ORDER BY id DESC");
+    const [modes] = await (await conn).query("SELECT * FROM tbl_payments_methods WHERE status = 'ACTIVE' ORDER BY id DESC"); 
+    const [item_types] = await (await conn).query("SELECT * FROM tbl_purchase_item_types ORDER BY id DESC");
+
 
     for (let index = 0; index < purchases.length; index++) {
         let purchase = purchases[index];
@@ -17,19 +19,47 @@ const purchasesHome = async (req, res) => {
         purchase.seller_name = n;
         purchases[index] = purchase;
     }
-    
+
+
+    let page_data = {
+        title: "Purchase",
+        currrentPath: "purchase",
+        modes: modes,
+        sellers: sellers,
+        purchases: purchases,
+        item_types: item_types
+    };
+
+    res.render('dashboard/purchase', page_data);
+};
+
+const formNewPurchase = async (req, res) => {
+
+    const [purchases] = await (await conn).query("SELECT tbl_purchases.id as puchase_id, tbl_purchases.created_at as creation_date, tbl_purchases.*, tbl_payments_methods.* FROM tbl_purchases LEFT JOIN tbl_payments_methods ON tbl_payments_methods.id = tbl_purchases.payment_method_id ORDER BY tbl_purchases.id DESC");
+    const [sellers] = await (await conn).query("SELECT * FROM tbl_sellers ORDER BY id DESC");
+    const [modes] = await (await conn).query("SELECT * FROM tbl_payments_methods WHERE status = 'ACTIVE' ORDER BY id DESC");
+    const [item_types] = await (await conn).query("SELECT * FROM tbl_purchase_item_types ORDER BY id DESC");
+
+    for (let index = 0; index < purchases.length; index++) {
+        let purchase = purchases[index];
+        let n = await getSellerById(purchase.seller);
+        purchase.seller_name = n;
+        purchases[index] = purchase;
+    }
+
 
     let page_data = {
         title: "Purchase",
         currrentPath: "purchase",
         purchases: purchases,
         modes: modes,
-        sellers: sellers
+        sellers: sellers,
+        item_types: item_types
     };
 
-    res.render('dashboard/purchase', page_data);
-};
+    res.render('dashboard/new-purchase', page_data);
 
+};
 
 const newPurchase = async (req, res) => {
 
@@ -57,7 +87,7 @@ const newPurchase = async (req, res) => {
         payment_method_id = 0;
     }
 
-    const [u] = await (await conn).query("INSERT INTO tbl_purchases (type, item_name, description, note, unit_price, quantity, total_price, transport_cost, other_cost, place_of_purchase, seller, payment_method_id) VALUES (?,?,?,?,?,?,?,?.?,?,?,?)", [type, item_name, description, note, unit_price, quantity, total_price, transport_cost, other_cost, place_of_purchase, seller, payment_method_id]);
+    const [u] = await (await conn).query("INSERT INTO tbl_purchases (type, item_name, description, note, unit_price, quantity, total_price, transport_cost, other_cost, place_of_purchase, seller, payment_method_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [type, item_name, description, note, unit_price, quantity, total_price, transport_cost, other_cost, place_of_purchase, seller, payment_method_id]);
 
     let purchase_id = u.insertId;
 
@@ -150,8 +180,82 @@ const editPurchase = async (req, res) => {
     }
 
     req.flash('success', 'Puchase successfully updated!');
-    res.redirect('/dashboard/purchase');
+    res.redirect('/dashboard/new-purchase');
 
 };
 
-module.exports = { purchasesHome, newPurchase, deletePurchase, editPurchase };
+
+const newType = async (req, res) => {
+
+    try {
+        let type = req.body.type;
+
+        const [c] = await (await conn).query("SELECT * FROM tbl_purchase_item_types WHERE type = ?", [type]);
+
+        if (c.length) {
+            let resp = {
+                error: 'yes',
+                new_type: 'Existing type'
+            }
+            return res.status(200).json(resp);
+        }
+
+        const [t] = await (await conn).query("INSERT INTO tbl_purchase_item_types (type) VALUES (?)", [type]);
+
+        let id = t.insertId;
+
+        let resp = {
+            error: 'no',
+            new_type: type
+        }
+        res.status(200).json(resp);
+    }
+    catch (err) {
+        let resp = {
+            error: 'yes',
+            type: 'Error, try again'
+        }
+        res.status(200).json(resp);
+    }
+
+};
+
+const newSeller = async (req, res) => {
+    try {
+        let id_no = req.body.id_no;
+        let phone = req.body.phone;
+        let first_name = req.body.first_name;
+        let last_name = req.body.last_name;
+        let about = req.body.about;
+        let location = req.body.location;
+
+        const [c] = await (await conn).query("SELECT * FROM tbl_sellers WHERE id_no = ?", [id_no]);
+
+        if (c.length) {
+            let resp = {
+                error: 'yes',
+                name: 'Seller with same ID/TIN Exist'
+            }
+            return res.status(200).json(resp);
+        }
+
+
+        const [i] = await (await conn).query("INSERT INTO tbl_sellers (id_no, phone, first_name, last_name, about, location) VALUES (?,?,?,?,?,?)", [id_no, phone, first_name, last_name, about, location]);
+
+        let resp = {
+            error: 'no',
+            id: i.insertId,
+            name: first_name + ' ' + last_name
+        }
+        res.status(200).json(resp);
+    }
+    catch (err) {
+        let resp = {
+            error: 'yes',
+            type: 'Error, try again!'
+        }
+        res.status(200).json(resp);
+    }
+};
+
+module.exports = { purchasesHome, newPurchase, deletePurchase, editPurchase, formNewPurchase, newSeller, newType };

@@ -20,8 +20,9 @@
                 </div>
                 <div class="ms-auto">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-purchase-modal">New Purchase</button>
+                        <!-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#new-purchase-modal">New Purchase</button> -->
+                            <a href="/dashboard/form-new-purchase" class="btn btn-outline-primary">New Purchase</a>
                     </div>
                 </div>
             </div>
@@ -132,8 +133,11 @@
                                                                             <option value="inventory"
                                                                                 <%=purchase.type=='inventory'
                                                                                 ? 'selected' :'' %>>Inventory</option>
-
-                                                                            <option value="other">Other</option>
+                                                                            <% item_types.forEach((item_type, index)=> { %>
+                                                                                <option value="<%= item_type.type %>" <%=purchase.type== item_type.type ? 'selected':'' %>>
+                                                                                    <%= item_type.type %>
+                                                                                </option>
+                                                                                <% }) %>
                                                                         </select>
                                                                     </div>
 

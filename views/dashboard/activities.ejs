@@ -72,7 +72,7 @@
                                                 <%= activity.priority %>
                                             </td>
                                             <td>
-                                                <%= activity.first_name ? (activity.first_name + ' ' + activity.last_name) : '' %>
+                                                <%= activity.first_name ? (activity.first_name + ' ' + activity.last_name) : 'To All' %>
                                             </td>
                                             <td>
                                                 <%= activity.created_by_name %>
@@ -148,6 +148,7 @@
                                                                         <select class="form-control form-control-lg mb-3"
                                                                             name="assignee">
                                                                             <option value="">Address to someone</option>
+                                                                            <option value="0" <%= activity.assignee == 0 ? 'selected' : '' %>>All</option>
                                                                             <% workforces.forEach((user, index)=> { %>
                                                                                 <option value="<%= user.id %>" <%= activity.assignee == user.id ? 'selected' : '' %>>
                                                                                     <%= user.first_name + ' ' + user.last_name %>
@@ -252,6 +253,7 @@
                             <select class="form-control form-control-lg mb-3"
                                 name="assignee" required>
                                 <option value="">Address to someone</option>
+                                <option value="0">All</option>
                                 <% workforces.forEach((user, index)=> { %>
                                     <option value="<%= user.id %>">
                                         <%= user.first_name + ' ' + user.last_name %>

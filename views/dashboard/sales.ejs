@@ -20,8 +20,7 @@
                 </div>
                 <div class="ms-auto">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-sale-modal">Record New Sale</button>
+                        <a href="/dashboard/sale/new-sale" class="btn btn-outline-primary">Record New Sale</a>
                     </div>
                 </div>
             </div>
@@ -115,14 +114,14 @@
                                                             sale.amount_debited.toLocaleString() :
                                                             sale.amount_paid.toLocaleString() %>
                                                     </td>
-                                                    <td> 
-                                                        <%= sale.discount.toLocaleString() %>
-                                                    </td>
                                                     <td>
                                                         <span
                                                             class="badge bg-<%= sale.paid_or_debt == 'DEBT' ? 'danger' : 'success' %>">
                                                             <%= sale.paid_or_debt=='DEBT' ? 'Debt' : 'Paid' %>
                                                         </span>
+                                                    </td>
+                                                    <td> 
+                                                        <%= sale.discount.toLocaleString() %>
                                                     </td>
                                                     <td>
                                                         <%= sale.sale_at.toLocaleString() %>
@@ -1428,7 +1427,8 @@
 
 
 
-    <!-- Modal -->
+
+
     <div class="modal fade" id="new-customer-modal" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">

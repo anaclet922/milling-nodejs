@@ -24,6 +24,32 @@ const stockHome = async (req, res) => {
 };
 
 
+const addToStock = async (req,res) => {
+
+    let addValue = req.body.what_to_add; 
+    let stock = req.body.stock;
+
+    const [branda] = await (await conn).query("UPDATE tbl_stock_" + stock + " SET quantity = quantity + ?", [addValue]);
+
+    req.flash('success', 'Stock successfully updated!');
+    res.redirect('/dashboard/stock');
+
+}
+
+
+const removeToStock = async (req,res) => {
+
+    let removeValue = req.body.what_to_remove;
+    let stock = req.body.stock;
+
+    
+    const [branda] = await (await conn).query("UPDATE tbl_stock_" + stock + " SET quantity = quantity - ?", [removeValue]);
+
+    req.flash('success', 'Stock successfully updated!');
+    res.redirect('/dashboard/stock');
+
+}
+
 
  
-module.exports = { stockHome };
+module.exports = { stockHome, addToStock, removeToStock };

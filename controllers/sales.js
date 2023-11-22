@@ -27,6 +27,27 @@ const salesHome = async (req, res) => {
 };
 
 
+const newSaleForm = async (req, res) => {
+
+    const [modes] = await (await conn).query("SELECT * FROM tbl_payments_methods WHERE status = 'ACTIVE' ORDER BY id DESC");
+    const [customers] = await (await conn).query("SELECT * FROM tbl_customers ORDER BY id DESC");
+    const [users] = await (await conn).query("SELECT * FROM tbl_workforce WHERE type = 'PERMANENT'");
+
+    const [sales] = await (await conn).query("SELECT tbl_sales.id as sale_id, tbl_sales.created_at as sale_at, tbl_sales.*, tbl_customers.* FROM tbl_sales LEFT JOIN tbl_customers on tbl_sales.customer_id = tbl_customers.id ORDER BY tbl_sales.id DESC");
+
+    console.log(sales);
+
+    let page_data = {
+        title: "Sales",
+        currrentPath: "sales",
+        modes: modes,
+        customers: customers,
+        users: users,
+        sales: sales
+    };
+    res.render('dashboard/new-sale', page_data);
+};
+
 const newSale = async (req, res) => {
 
     const [stock_flour] = await (await conn).query("SELECT * FROM tbl_stock_flour");
@@ -96,7 +117,7 @@ const saleDelete = async (req, res) => {
     if (sale.length) {
         if (sale[0].payment_method_id == 'debt') {
             const [d] = await (await conn).query("DELETE FROM tbl_debts WHERE sale_id = ?", [sale_id]);
-        }else{
+        } else {
             const [payment] = await (await conn).query("DELETE FROM tbl_payments WHERE sale_id = ? ", [sale_id]);
         }
 
@@ -128,7 +149,7 @@ const saleEdit = async (req, res) => {
     if (sale.length) {
         if (sale[0].payment_method_id == 'debt') {
             const [d] = await (await conn).query("DELETE FROM tbl_debts WHERE sale_id = ?", [sale_id]);
-        }else{
+        } else {
             const [d] = await (await conn).query("DELETE FROM tbl_payments WHERE sale_id = ?", [sale_id]);
         }
 
@@ -193,4 +214,84 @@ const saleEdit = async (req, res) => {
 };
 
 
-module.exports = { salesHome, newSale, saleDelete, saleEdit };
+const newCustomer = async (req, res) => {
+
+    try {
+
+        let id_no = req.body.id_no;
+        let phone = req.body.phone;
+        let first_name = req.body.first_name;
+        let last_name = req.body.last_name;
+        let about = req.body.about;
+        let location = req.body.location;
+
+        console.log(req.body);
+
+        const [c] = await (await conn).query("SELECT * FROM tbl_sellers WHERE id_no = ?", [id_no]);
+
+        if (c.length) {
+            let resp = {
+                error: 'yes',
+                name: 'Seller with same ID/TIN Exist'
+            }
+            return res.status(200).json(resp);
+        }
+
+        const [i] = await (await conn).query("INSERT INTO tbl_customers (id_no, phone, first_name, last_name, about, location) VALUES (?,?,?,?,?,?)", [id_no, phone, first_name, last_name, about, location]);
+
+        let resp = {
+            error: 'no',
+            id: i.insertId,
+            name: first_name + ' ' + last_name
+        }
+
+        res.status(200).json(resp);
+
+
+    } catch (err) {
+        let resp = {
+            error: 'yes',
+            name: 'Error, try again'
+        }
+        res.status(200).json(resp);
+    }
+
+
+}
+
+const searchCustomer = async (req, res) => {
+    try {
+        let term = req.body.searchTerm;
+
+        const [customers] = await (await conn).query("SELECT * FROM tbl_customers WHERE first_name like '%?%' or last_name like '%?%'", [term, term]);
+
+        if (customers.length) {
+
+            let items = [];
+
+            for (let index = 0; index < customers.length; index++) {
+                let item = {
+                    id: customers[index].id,
+                    text: customers[index].first_name + ' ' + customers[index].last_name
+                }
+                items.push(item);
+            }
+
+        } else {
+            let resp = {
+                id: 'new',
+                text: 'New Customer'
+            }
+            res.status(200).json(resp);
+        }
+
+    } catch (err) {
+        let resp = {
+            id: 'new',
+            text: 'New Customer'
+        }
+        res.status(200).json(resp);
+    }
+};
+
+module.exports = { salesHome, newSale, saleDelete, saleEdit, newSaleForm, newCustomer, searchCustomer };

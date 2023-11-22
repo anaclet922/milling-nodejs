@@ -1,0 +1,424 @@
+<%- include('../includes/dashboard-top') %>
+
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+
+            <div class="page-breadcrumb d-sm-flex align-items-center mb-3">
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0 align-items-center">
+                            <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img"
+                                        class="md hydrated" aria-label="home outline"></ion-icon></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= locals.title %>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <a href="/dashboard/sales" class="btn btn-outline-primary">Back To Sales</a>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <br>
+            <br>
+            <br>
+
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <form action="/dashboard/sale/new" method="post">
+
+                                <div class=" row">
+
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Customer</label>
+                                        <!-- <select name="customer_id" class="form-control form-control-lg mb-3" required
+                                            id="new-sale-customer-select-id">
+                                            <option value="">Select Customer</option>
+                                            <% customers.forEach((customer, index)=> { %>
+                                                <option value="<%= customer.id %>">
+                                                    <%= customer.first_name + ' ' + customer.last_name %>
+                                                </option>
+                                                <% }) %>
+                                                    
+                                        </select> -->
+                                        <select class="new-sale-customer-select-id" class="form-control form-control-lg mb-3" required>
+                                            <option value='0'>- Search Customer -</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="form-group  col-md-6 col-lg-6">
+                                        <label for="">Type</label>
+                                        <select class="form-control form-control-lg mb-3" name="product_type" required>
+                                            <option value="">Select type</option>
+                                            <option value="FLOUR">Flour</option>
+                                            <option value="BRANDA">Branda</option>
+                                        </select>
+                                    </div>
+
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Unit Price</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Enter unit price" name="unit_price" required
+                                            id="new-unit-price" onkeyup="calcTotalAmount()">
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Payment Mode</label>
+                                        <select name="payment_method_id" class="form-control form-control-lg mb-3"
+                                            required>
+                                            <option value="">Select Payment mode</option>
+                                            <% modes.forEach((mode, index)=> { %>
+                                                <option value="<%= mode.id %>">
+                                                    <%= mode.name %>
+                                                </option>
+                                                <% }) %>
+                                                    <option value="debt">Debt</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-12 col-lg-12" style="display: none;"
+                                        id="packaging-bags">
+                                        <label for="">Bag Type</label>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-4 col-form-label">5 kg</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control form-control-lg mb-3"
+                                                    name="kg_5" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-4 col-form-label">10 kg</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control form-control-lg mb-3"
+                                                    name="kg_10" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-4 col-form-label">20 kg</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control form-control-lg mb-3"
+                                                    name="kg_20" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-4 col-form-label">25 kg</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control form-control-lg mb-3"
+                                                    name="kg_25" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row" style="display: none;">
+                                            <label for="" class="col-sm-4 col-form-label">Other Packaging</label>
+                                            <div class="col-sm-8">
+                                                <input type="number" class="form-control form-control-lg mb-3"
+                                                    name="kg_custom" value="0">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Total Quantity/kg</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Total Quantity" name="total_quantity" required
+                                            id="new-quantity" onkeyup="calcTotalAmount()">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Discount</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Discount amount" name="discount" required id="new-discount"
+                                            value="0" onkeyup="calcTotalAmount()">
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Total Price</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Total Price" name="amount" required readonly="readonly"
+                                            id="new-total-price" onkeyup="calcTotalAmount()">
+                                    </div>
+
+
+                                    <% if(users.length==0){ %>
+                                        <input type="hidden" name="seller_id"
+                                            value="<%= locals.session.loggedInUser.id %>">
+                                        <% } %>
+
+                                            <% if(locals.session.loggedInUser.role=='admin' ||
+                                                locals.session.loggedInUser.role=='manager' ){ %>
+                                                <div class="form-group col-md-6 col-lg-6">
+                                                    <label for="">Seller</label>
+                                                    <select name="seller_id" id=""
+                                                        class="form-control-lg form-control mb-3" required>
+                                                        <option value="">Select Seller</option>
+                                                        <% users.forEach((user, index)=> { %>
+                                                            <option value="<%= user.id %>">
+                                                                <%= user.first_name + ' ' + user.last_name %>
+                                                            </option>
+                                                            <% }); %>
+                                                    </select>
+                                                </div>
+                                                <% }else{ %>
+                                                    <input type="hidden" name="seller_id"
+                                                        value="<%= locals.session.loggedInUser.id %>">
+                                                    <% } %>
+
+
+                                                        <div class="form-group col-md-12 col-lg-12">
+                                                            <label for="">Note</label>
+                                                            <textarea name="note"
+                                                                class="form-control form-control-lg"></textarea>
+                                                        </div>
+
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12 text-end">
+                                        <a href="/dashboard/sales" class="btn btn-secondary">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <div class="modal fade" id="new-customer-modal" tabindex="-1" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+
+                <form action="" method="post" id="new-customer-form-id">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Customer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body row">
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Customer Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Person or Company"
+                                name="first_name" required>
+                        </div>
+
+                        <!-- <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Last Name</label> -->
+                        <input class="form-control form-control-lg mb-3" type="hidden" placeholder="Last name"
+                            name="last_name" value="">
+                        <!-- </div> -->
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">ID/TIN</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="ID or TIN"
+                                name="id_no" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Phone</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
+                                name="phone" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">Location</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Location"
+                                name="location" required>
+                        </div>
+
+                        <div class="form-group col-md-6 col-lg-6">
+                            <label for="">About</label>
+                            <textarea name="about" class="form-control"></textarea>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <button type="button" class="new-customer-btn" data-bs-toggle="modal" data-bs-target="#new-customer-modal"
+        style="display: none;">New Customer</button>
+
+
+
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#new-sale-customer-select-id').select2();
+            //     {
+            //     ajax: {
+            //         url: '/dashboard/search-customer',
+            //         dataType: 'json',
+            //         delay: 250,
+            //         data: function (params) {
+            //             return {
+            //                 searchTerm: params.term // search term
+            //             };
+            //         },
+            //         processResults: function (response) {
+            //             return {
+            //                 results: response
+            //             };
+            //         },
+            //         cache: true
+            //     }
+            // });
+
+            $('select[name="product_type"]').change(function () {
+
+                if ($('select[name="product_type"]').val() == 'FLOUR') {
+                    $('#packaging-bags').show();
+                } else {
+                    $('#packaging-bags').hide();
+                }
+
+            });
+
+
+            $('#new-sale-customer-select-id').change(function () {
+                console.log($('#new-sale-customer-select-id').val());
+                if ($('#new-sale-customer-select-id').val() == 'new') {
+                    console.log('btn click');
+                    $('.new-customer-btn')[0].click();
+
+                }
+
+            });
+
+
+
+
+            $('#new-customer-form-id').on('submit', function (e) {
+
+                e.preventDefault();
+                $.ajax({
+                    url: '/dashboard/sale/new-customer',
+                    data: $('#new-customer-form-id').serialize(),
+                    type: 'post',
+                    success: function (response) {
+                        console.log(response);
+                        if (response.error == 'no') {
+                            $('#new-sale-customer-select-id').append('<option value="' + response.id + '">' + response.name + '</option>');
+                            $('#new-sale-customer-select-id').val(response.id);
+                            $('#new-customer-modal').modal('toggle');
+                            $('#new-customer-form-id').trigger("reset");
+                        } else {
+                            showToastSuccessOrErrorJS('eror', response.name);
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            });
+
+
+
+            // // Attach keyup event to inputs with names starting with "kg_"
+            // $('input[name^="kg_"]').keyup(function () {
+            //     // Initialize total quantity
+            //     var totalQuantity = 0;
+
+            //     // Loop through each kg input and add its value to total quantity
+            //     $('input[name^="kg_"]').each(function () {
+            //         totalQuantity += parseInt($(this).val()) || 0;
+            //     });
+
+            //     // Update the total quantity input
+            //     $('#new-quantity').val(totalQuantity);
+            // });
+
+            $('input[name^="kg_"]').keyup(function () {
+                // Initialize total quantity
+                var totalQuantity = 0;
+
+                // Loop through each kg input and add its value * ending number to total quantity
+                $('input[name^="kg_"]').each(function () {
+                    var kgInput = $(this);
+                    var inputValue = parseInt(kgInput.val()) || 0;
+
+                    // Extract ending number from the name attribute
+                    var endingNumberMatch = kgInput.attr('name').match(/\d+/);
+                    var endingNumber = endingNumberMatch ? parseInt(endingNumberMatch[0]) : 0;
+
+                    totalQuantity += endingNumber * inputValue;
+                });
+
+                // Update the total quantity input
+                $('#new-quantity').val(totalQuantity);
+            });
+
+
+
+        });
+
+        function calcTotalAmount() {
+            let quantity = $('#new-quantity').val();
+            let unit_price = $('#new-unit-price').val();
+            let discount = $('#new-discount').val();
+            var total = quantity * unit_price;
+            // discount = total - discount;
+            $('#new-total-price').val(total - discount);
+        }
+
+        function areYouSureToDelete(id) {
+            Swal.fire({
+                title: 'Are you sure to delete?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = '/dashboard/sale/delete?id=' + id;
+                }
+            })
+        }
+    </script>
+
+    <%- include('../includes/dashboard-foot') %>
