@@ -47,15 +47,17 @@ const newPurchase = async (req, res) => {
     let quantity = req.body.quantity;
     let total_price = req.body.total_price;
     let transport_cost = req.body.transport_cost;
+    let other_cost = req.body.other_cost;
     let place_of_purchase = req.body.place_of_purchase;
     let seller = req.body.seller;
     let payment_method_id = req.body.payment_method_id;
+
 
     if (payment_method_id == 'debt') {
         payment_method_id = 0;
     }
 
-    const [u] = await (await conn).query("INSERT INTO tbl_purchases (type, item_name, description, note, unit_price, quantity, total_price, transport_cost, place_of_purchase, seller, payment_method_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [type, item_name, description, note, unit_price, quantity, total_price, transport_cost, place_of_purchase, seller, payment_method_id]);
+    const [u] = await (await conn).query("INSERT INTO tbl_purchases (type, item_name, description, note, unit_price, quantity, total_price, transport_cost, other_cost, place_of_purchase, seller, payment_method_id) VALUES (?,?,?,?,?,?,?,?.?,?,?,?)", [type, item_name, description, note, unit_price, quantity, total_price, transport_cost, other_cost, place_of_purchase, seller, payment_method_id]);
 
     let purchase_id = u.insertId;
 

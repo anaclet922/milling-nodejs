@@ -64,7 +64,7 @@ const newSale = async (req, res) => {
     }
 
 
-    const [i] = await (await conn).query("INSERT INTO tbl_sales (product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, discount, note, kg_5, kg_10, kg_20, kg_25, kg_custom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, discount, note, kg_5, kg_10, kg_20, kg_25, kg_custom]);
+    const [i] = await (await conn).query("INSERT INTO tbl_sales (product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, discount, note, kg_5, kg_10, kg_20, kg_25, kg_custom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [product_type, unit_price, total_quantity, seller_id, customer_id, payment_method_id, paid_or_debt, amount_paid, amount_debited, discount, note, kg_5, kg_10, kg_20, kg_25, kg_custom]);
 
     let sale_id = i.insertId;
 
