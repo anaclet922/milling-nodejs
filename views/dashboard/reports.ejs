@@ -94,7 +94,9 @@
                                         <tfoot>
                                             <tr>
                                                 <th colspan="2" style="text-align:right">Total:</th>
-                                                <th></th>
+                                                <th>
+                                                    <%= (daily.total_purchase_today + daily.total_expenses_today + daily.total_vehicle_today + daily.total_sale_debt_today + daily.total_sale_paid_today + daily.total_debt_today).toLocaleString() %>
+                                                </th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -157,9 +159,10 @@
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Item</th>
-                                                <th>Amount (RWF)</th>
+                                                <th colspan="2" style="text-align:right">Total:</th>
+                                                <th>
+                                                    <%= (weekly.total_purchase_week + weekly.total_expenses_week + weekly.total_vehicle_week + weekly.total_sale_debt_week + weekly.total_sale_paid_week + weekly.total_debt_week).toLocaleString() %>
+                                                </th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -221,9 +224,10 @@
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Item</th>
-                                                <th>Amount (RWF)</th>
+                                                <th colspan="2" style="text-align:right">Total:</th>
+                                                <th>
+                                                    <%= (monthly.total_purchase_month + monthly.total_expenses_month + monthly.total_vehicle_month + monthly.total_sale_debt_month + monthly.total_sale_paid_month + monthly.total_debt_month).toLocaleString() %>
+                                                </th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -304,9 +308,10 @@
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Item</th>
-                                                <th>Amount (RWF)</th>
+                                                <th colspan="2" style="text-align:right">Total:</th>
+                                                <th>
+                                                    <%= (cuctom.total_purchase_custom + cuctom.total_expenses_custom + cuctom.total_vehicle_custom + cuctom.total_sale_debt_custom + cuctom.total_sale_paid_custom + cuctom.total_debt_custom).toLocaleString() %>
+                                                </th>
                                             </tr>
                                         </tfoot>
                                         <tbody>

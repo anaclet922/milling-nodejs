@@ -13,7 +13,7 @@ const salesHome = async (req, res) => {
 
     const [sales] = await (await conn).query("SELECT tbl_sales.id as sale_id, tbl_sales.created_at as sale_at, tbl_sales.*, tbl_customers.* FROM tbl_sales LEFT JOIN tbl_customers on tbl_sales.customer_id = tbl_customers.id ORDER BY tbl_sales.id DESC");
 
-    console.log(sales);
+   
 
     let page_data = {
         title: "Sales",
@@ -35,11 +35,11 @@ const newSaleForm = async (req, res) => {
 
     const [sales] = await (await conn).query("SELECT tbl_sales.id as sale_id, tbl_sales.created_at as sale_at, tbl_sales.*, tbl_customers.* FROM tbl_sales LEFT JOIN tbl_customers on tbl_sales.customer_id = tbl_customers.id ORDER BY tbl_sales.id DESC");
 
-    console.log(sales);
+
 
     let page_data = {
         title: "Sales",
-        currrentPath: "sales",
+        currrentPath: "new-sale",
         modes: modes,
         customers: customers,
         users: users,
@@ -261,9 +261,16 @@ const newCustomer = async (req, res) => {
 
 const searchCustomer = async (req, res) => {
     try {
-        let term = req.body.searchTerm;
+        let term = req.query.searchTerm;
 
-        const [customers] = await (await conn).query("SELECT * FROM tbl_customers WHERE first_name like '%?%' or last_name like '%?%'", [term, term]);
+        if(term.trim() == ''){
+            let resp = {
+                id: 'new',
+                text: 'New Customer'
+            }
+            return res.status(200).json('resp'); 
+        }
+        const [customers] = await (await conn).query("SELECT * FROM tbl_customers WHERE first_name like '%" + term + "%' or last_name like '%" + term + "%'");
 
         if (customers.length) {
 
@@ -276,13 +283,13 @@ const searchCustomer = async (req, res) => {
                 }
                 items.push(item);
             }
-
+            return res.status(200).json(items);
         } else {
             let resp = {
                 id: 'new',
                 text: 'New Customer'
             }
-            res.status(200).json(resp);
+            return res.status(200).json([resp]);
         }
 
     } catch (err) {
@@ -290,7 +297,7 @@ const searchCustomer = async (req, res) => {
             id: 'new',
             text: 'New Customer'
         }
-        res.status(200).json(resp);
+        return res.status(200).json([resp]);
     }
 };
 

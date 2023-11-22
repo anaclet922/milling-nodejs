@@ -46,6 +46,7 @@
                                         <th>Note</th>
                                         <th>Type</th>
                                         <th>Date & Time</th>
+                                        <th>Paid at</th>
                                         <th>Status</th>
                                         <th></th>
                                     </tr>
@@ -74,6 +75,9 @@
                                             </td>
                                             <td>
                                                 <%= debt.created_at.toLocaleString() %>
+                                            </td>
+                                            <td>
+                                                <%= debt.paid == 'NO' ? '':debt.updated_at.toLocaleString() %>
                                             </td>
                                             <td>
                                                 <span class="badge bg-<%= debt.paid == 'NO' ? 'danger' : 'success' %>">
@@ -189,6 +193,7 @@
                                         <th>Note</th>
                                         <th>Type</th>
                                         <th>Date & Time</th>
+                                        <th>Paid at</th>
                                         <th>Status</th>
                                         <th>
 

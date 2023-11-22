@@ -54,7 +54,9 @@
                                                 <% }) %>
                                                     
                                         </select> -->
-                                        <select class="new-sale-customer-select-id" class="form-control form-control-lg mb-3" required>
+                                        <select class="new-sale-customer-select-id"
+                                            class="new-sale-customer-select-id form-control form-control-lg mb-3"
+                                            required style="width: 100%;" name="customer_id">
                                             <option value='0'>- Search Customer -</option>
                                         </select>
                                     </div>
@@ -278,34 +280,32 @@
 
 
 
-
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
     <script>
 
         $(document).ready(function () {
 
-            $('#new-sale-customer-select-id').select2();
-            //     {
-            //     ajax: {
-            //         url: '/dashboard/search-customer',
-            //         dataType: 'json',
-            //         delay: 250,
-            //         data: function (params) {
-            //             return {
-            //                 searchTerm: params.term // search term
-            //             };
-            //         },
-            //         processResults: function (response) {
-            //             return {
-            //                 results: response
-            //             };
-            //         },
-            //         cache: true
-            //     }
-            // });
+            $('.new-sale-customer-select-id').select2(
+                {
+                    theme: 'bootstrap-5',
+                    tags: true,
+                    ajax: {
+                        url: '/dashboard/search-customer',
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            console.log(response);
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+                });
 
             $('select[name="product_type"]').change(function () {
 
@@ -318,9 +318,9 @@
             });
 
 
-            $('#new-sale-customer-select-id').change(function () {
-                console.log($('#new-sale-customer-select-id').val());
-                if ($('#new-sale-customer-select-id').val() == 'new') {
+            $('.new-sale-customer-select-id').change(function () {
+                console.log($('new-sale-customer-select-id').val());
+                if ($('.new-sale-customer-select-id').val() == 'new') {
                     console.log('btn click');
                     $('.new-customer-btn')[0].click();
 
@@ -346,7 +346,7 @@
                             $('#new-customer-modal').modal('toggle');
                             $('#new-customer-form-id').trigger("reset");
                         } else {
-                            showToastSuccessOrErrorJS('eror', response.name);
+                            showToastSuccessOrErrorJS('error', response.name);
                         }
                     },
                     error: function (error) {

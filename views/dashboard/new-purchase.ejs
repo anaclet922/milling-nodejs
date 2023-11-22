@@ -230,20 +230,20 @@
                     <div class="modal-body row">
 
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">First Name</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="First name"
+                            <label for="">Seller Name</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Person or Company"
                                 name="first_name" required>
                         </div>
 
-                        <div class="form-group col-md-6 col-lg-6">
+                        <!-- <div class="form-group col-md-6 col-lg-6">
                             <label for="">Last Name</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Last name"
                                 name="last_name" required>
-                        </div>
+                        </div> -->
 
                         <div class="form-group col-md-6 col-lg-6">
-                            <label for="">NID/TIN</label>
-                            <input class="form-control form-control-lg mb-3" type="text" placeholder="National ID"
+                            <label for="">ID/TIN</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="ID or TIN"
                                 name="id_no" required>
                         </div>
 
@@ -362,12 +362,12 @@
                     success: function (response) {
                         console.log(response);
                         if (response.error == 'no') {
-                            $('#seller').append('<option value="' + response.new_type + '">' + response.new_type + '</option>');
+                            $('#type').append('<option value="' + response.new_type + '">' + response.new_type + '</option>');
                             $('#type').val(response.new_type);
                             $('#new-type-modal').modal('toggle');
                             $('#new-type-form-id').trigger("reset");
                         } else {
-                            showToastSuccessOrErrorJS('eror', response.new_type);
+                            showToastSuccessOrErrorJS('error', response.new_type);
                         }
                     },
                     error: function (error) {

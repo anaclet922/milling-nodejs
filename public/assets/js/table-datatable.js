@@ -15,37 +15,37 @@ $(function () {
 
 
         
-        var dailyReport = $('#daily-report').DataTable({
-            footerCallback: function (row, data, start, end, display) {
-                let api = this.api();
+        var dailyReport = $('#daily-report').DataTable();
+        //    { footerCallback: function (row, data, start, end, display) {
+        //         let api = this.api();
          
-                // Remove the formatting to get integer data for summation
-                let intVal = function (i) {
-                    return typeof i === 'string'
-                        ? i.replace(/[\$,]/g, '') * 1
-                        : typeof i === 'number'
-                        ? i
-                        : 0;
-                };
+        //         // Remove the formatting to get integer data for summation
+        //         let intVal = function (i) {
+        //             return typeof i === 'string'
+        //                 ? i.replace(/[\$,]/g, '') * 1
+        //                 : typeof i === 'number'
+        //                 ? i
+        //                 : 0;
+        //         };
          
-                // Total over all pages
-                total = api
-                    .column(2)
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+        //         // Total over all pages
+        //         total = api
+        //             .column(2)
+        //             .data()
+        //             .reduce((a, b) => intVal(a) + intVal(b), 0);
          
-                // Total over this page
-                pageTotal = api
-                    .column(2, { page: 'current' })
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+        //         // Total over this page
+        //         pageTotal = api
+        //             .column(2, { page: 'current' })
+        //             .data()
+        //             .reduce((a, b) => intVal(a) + intVal(b), 0);
          
-                // Update footer
-                api.column(2).footer().innerHTML =
-                    '$' + pageTotal + ' ( $' + total + ' total)';
-            }
+        //         // Update footer
+        //         api.column(2).footer().innerHTML =
+        //             '$' + pageTotal + ' ( $' + total + ' total)';
+        //     }
             
-        });
+        // });
       
 
         var monthlyReport = $('#monthly-report').DataTable();

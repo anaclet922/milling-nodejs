@@ -50,7 +50,7 @@ const formNewPurchase = async (req, res) => {
 
     let page_data = {
         title: "Purchase",
-        currrentPath: "purchase",
+        currrentPath: "form-new-purchase",
         purchases: purchases,
         modes: modes,
         sellers: sellers,
@@ -67,7 +67,7 @@ const newPurchase = async (req, res) => {
 
     if (type == '') {
         req.flash('error', 'Choose type of purchase!');
-        return res.redirect('/dashboard/purchases');
+        return res.redirect('/dashboard/form-new-purchase');
     }
 
     let item_name = req.body.item_name;
@@ -143,7 +143,7 @@ const editPurchase = async (req, res) => {
 
     if (type == '') {
         req.flash('error', 'Choose type of purchase!');
-        return res.redirect('/dashboard/purchases');
+        return res.redirect('/dashboard/purchase');
     }
 
     let item_name = req.body.item_name;
@@ -180,7 +180,7 @@ const editPurchase = async (req, res) => {
     }
 
     req.flash('success', 'Puchase successfully updated!');
-    res.redirect('/dashboard/new-purchase');
+    res.redirect('/dashboard/purchase');
 
 };
 
@@ -225,7 +225,7 @@ const newSeller = async (req, res) => {
         let id_no = req.body.id_no;
         let phone = req.body.phone;
         let first_name = req.body.first_name;
-        let last_name = req.body.last_name;
+        let last_name = '';
         let about = req.body.about;
         let location = req.body.location;
 

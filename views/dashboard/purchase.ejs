@@ -22,7 +22,7 @@
                     <div class="btn-group">
                         <!-- <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                             data-bs-target="#new-purchase-modal">New Purchase</button> -->
-                            <a href="/dashboard/form-new-purchase" class="btn btn-outline-primary">New Purchase</a>
+                        <a href="/dashboard/form-new-purchase" class="btn btn-outline-primary">New Purchase</a>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,8 @@
                                                 <%= purchase.quantity.toLocaleString() %>
                                             </td>
                                             <td>
-                                                <%= (purchase.total_price - purchase.transport_cost - purchase.other_cost).toLocaleString() %>
+                                                <%= (purchase.total_price - purchase.transport_cost -
+                                                    purchase.other_cost).toLocaleString() %>
                                             </td>
                                             <td>
                                                 <%= purchase.total_price.toLocaleString() %>
@@ -133,8 +134,11 @@
                                                                             <option value="inventory"
                                                                                 <%=purchase.type=='inventory'
                                                                                 ? 'selected' :'' %>>Inventory</option>
-                                                                            <% item_types.forEach((item_type, index)=> { %>
-                                                                                <option value="<%= item_type.type %>" <%=purchase.type== item_type.type ? 'selected':'' %>>
+                                                                            <% item_types.forEach((item_type, index)=> {
+                                                                                %>
+                                                                                <option value="<%= item_type.type %>"
+                                                                                    <%=purchase.type==item_type.type
+                                                                                    ? 'selected' :'' %>>
                                                                                     <%= item_type.type %>
                                                                                 </option>
                                                                                 <% }) %>
@@ -184,7 +188,7 @@
                                                                         <input class="form-control form-control-lg mb-3"
                                                                             type="number" placeholder="Other costs"
                                                                             name="other_cost" required
-                                                                            id="other_cost<%= purchase.other_cost %>"
+                                                                            id="other_cost<%= purchase.puchase_id %>"
                                                                             value="<%= purchase.other_cost %>">
                                                                     </div>
 
@@ -281,28 +285,48 @@
                                                 <script>
                                                     $(document).ready(function () {
 
+                                                        // $('#unit_price_<%= purchase.puchase_id %>').keyup(function () {
+                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                        // });
+
+                                                        // $('#quantity_<%= purchase.puchase_id %>').keyup(function () {
+                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                        // });
+
+                                                        // $('#transport_cost_<%= purchase.puchase_id %>').keyup(function () {
+                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                        // });
+
+
+                                                        // $('#other_cost<%= purchase.puchase_id %>').keyup(function () {
+                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                        // });
                                                         $('#unit_price_<%= purchase.puchase_id %>').keyup(function () {
-                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                            $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            calculateTotal(<%= purchase.puchase_id %>);
                                                         });
 
                                                         $('#quantity_<%= purchase.puchase_id %>').keyup(function () {
-                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                            $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            calculateTotal(<%= purchase.puchase_id %>);
                                                         });
 
                                                         $('#transport_cost_<%= purchase.puchase_id %>').keyup(function () {
-                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                            $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            calculateTotal(<%= purchase.puchase_id %>);
                                                         });
 
-
                                                         $('#other_cost<%= purchase.puchase_id %>').keyup(function () {
-                                                            let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                            $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            calculateTotal(<%= purchase.puchase_id %>);
                                                         });
 
                                                     });
+
+
+
+
+
                                                 </script>
 
 
@@ -512,6 +536,22 @@
                     location.href = '/dashboard/delete-purchase?id=' + id;
                 }
             })
+        }
+
+        function calculateTotal(purchaseId) {
+            let unitPrice = parseFloat($('#unit_price_' + purchaseId).val()) || 0;
+            let quantity = parseFloat($('#quantity_' + purchaseId).val()) || 0;
+            let transportCost = parseFloat($('#transport_cost_' + purchaseId).val()) || 0;
+            let otherCost = parseFloat($('#other_cost' + purchaseId).val()) || 0;
+
+            let total = unitPrice * quantity + transportCost + otherCost;
+
+            if (!isNaN(total)) {
+                $('#total_price_' + purchaseId).val(parseFloat(total));
+            } else {
+                // Handle the case where the calculation results in NaN
+                $('#total_price_' + purchaseId).val('Invalid Input');
+            }
         }
     </script>
 
