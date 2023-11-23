@@ -24,7 +24,8 @@ const postNewSeller = async (req, res) => {
     let id_no = req.body.id_no;
     let phone = req.body.phone;
     let first_name = req.body.first_name;
-    let last_name = req.body.last_name;
+    // let last_name = req.body.last_name;
+    let last_name = '';
     let about = req.body.about;
     let location = req.body.location;
 
@@ -41,7 +42,8 @@ const postEditSeller = async (req, res) => {
     let id_no = req.body.id_no;
     let phone = req.body.phone;
     let first_name = req.body.first_name;
-    let last_name = req.body.last_name;
+    // let last_name = req.body.last_name;
+    let last_name = '';
     let about = req.body.about;
     let location = req.body.location;
 

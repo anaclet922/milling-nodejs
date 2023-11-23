@@ -289,7 +289,7 @@ const searchCustomer = async (req, res) => {
                 id: 'new',
                 text: 'New Customer'
             }
-            return res.status(200).json([resp]);
+            return res.status(200).json([]);
         }
 
     } catch (err) {
@@ -297,7 +297,7 @@ const searchCustomer = async (req, res) => {
             id: 'new',
             text: 'New Customer'
         }
-        return res.status(200).json([resp]);
+        return res.status(200).json([]);
     }
 };
 

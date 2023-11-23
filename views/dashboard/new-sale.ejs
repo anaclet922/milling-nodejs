@@ -40,25 +40,19 @@
 
                                 <div class=" row">
 
-
-
                                     <div class="form-group col-md-6 col-lg-6">
                                         <label for="">Customer</label>
-                                        <!-- <select name="customer_id" class="form-control form-control-lg mb-3" required
-                                            id="new-sale-customer-select-id">
-                                            <option value="">Select Customer</option>
-                                            <% customers.forEach((customer, index)=> { %>
-                                                <option value="<%= customer.id %>">
-                                                    <%= customer.first_name + ' ' + customer.last_name %>
-                                                </option>
-                                                <% }) %>
-                                                    
-                                        </select> -->
-                                        <select class="new-sale-customer-select-id"
-                                            class="new-sale-customer-select-id form-control form-control-lg mb-3"
-                                            required style="width: 100%;" name="customer_id">
-                                            <option value='0'>- Search Customer -</option>
-                                        </select>
+                                        <div class="input-group mb-3">
+                                            <select class="new-sale-customer-select-id"
+                                                class="new-sale-customer-select-id form-control form-control-lg mb-3"
+                                                required name="customer_id">
+                                                <option value='0'>- Search Customer -</option>
+                                            </select>
+                                            <button type="button" class="btn text-black"
+                                                data-bs-toggle="modal" data-bs-target="#new-customer-modal" data-bs-toggle="tooltip" data-bs-placement="top" title="Add new customer" style="font-size: 15px;">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
 
 
