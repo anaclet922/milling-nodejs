@@ -37,8 +37,8 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs nav-primary" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link active payments-tab" data-bs-toggle="tab" href="#primaryhome" role="tab"
-                                        aria-selected="true">
+                                    <a class="nav-link active payments-tab" data-bs-toggle="tab" href="#primaryhome"
+                                        role="tab" aria-selected="true">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon">
                                             </div>
@@ -48,8 +48,8 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <a class="nav-link payment-mode-tab" data-bs-toggle="tab" href="#primaryprofile" role="tab"
-                                        aria-selected="false" tabindex="-1">
+                                    <a class="nav-link payment-mode-tab" data-bs-toggle="tab" href="#primaryprofile"
+                                        role="tab" aria-selected="false" tabindex="-1">
                                         <div class="d-flex align-items-center">
                                             <div class="tab-icon">
                                             </div>
@@ -82,20 +82,25 @@
                                                         <%= index + 1 %>
                                                     </td>
                                                     <td>
-                                                        <%= payment.customer.first_name + ' ' +
-                                                            payment.customer.last_name %>
+                                                        <% if(payment.customer){ %>
+                                                            <%= payment.customer.first_name + ' ' +
+                                                                payment.customer.last_name %>
+                                                                <% } %>
                                                     </td>
                                                     <td>
                                                         <%= payment.sale ? payment.sale.product_type : '' %>
                                                     </td>
                                                     <td>
-                                                        <%= payment.sale ? payment.sale.total_quantity.toLocaleString() : '' %>
+                                                        <%= payment.sale ? payment.sale.total_quantity.toLocaleString()
+                                                            : '' %>
                                                     </td>
                                                     <td>
                                                         <%= payment.amount_paid.toLocaleString() %>
                                                     </td>
                                                     <td>
-                                                        <%= payment.paymentMode.name %>
+                                                        <% if(payment.paymentMode){ %>
+                                                            <%= payment.paymentMode.name %>
+                                                                <% } %>
                                                     </td>
                                                     <td>
                                                         <%= payment.created_at.toLocaleString() %>

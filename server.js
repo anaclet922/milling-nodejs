@@ -27,6 +27,7 @@ app.use(async function(req,res,next){
 
     res.locals.session = req.session;
     var configs = [];
+    
     // conn.query("SELECT * FROM tbl_configs", async function (error, config, fields) {
     //     if (error) throw error;
 

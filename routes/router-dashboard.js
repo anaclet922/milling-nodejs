@@ -382,9 +382,11 @@ routerDashboard.post('/new-user', async (req, res) => {
         return res.redirect('/dashboard/users');
     }
 
-    let password = await bcrypt.hash(user[0].password, 8);
+    // let password = await bcrypt.hash(user[0].password, 8);    
+    let password = user[0].password;
 
-    const [i] = await (await conn).query("INSERT INTO tbl_users (first_name, last_name, username, email, password, role) VALUES (?,?,?,?,?,?)", [user[0].first_name, user[0].last_name, user[0].username, email, password, role]);
+
+    const [i] = await (await conn).query("INSERT INTO tbl_users (first_name, last_name, username, email, password, role, workforce_id) VALUES (?,?,?,?,?,?,?)", [user[0].first_name, user[0].last_name, user[0].username, email, password, role, user[0].id]);
 
     req.flash('success', 'Login successfully added!');
     res.redirect('/dashboard/users');

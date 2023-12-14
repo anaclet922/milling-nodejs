@@ -97,6 +97,7 @@ const postPermanentWorkforce = async (req, res) => {
     let username = req.body.username;
     let password = req.body.password;
     let hashedPassword = await bcrypt.hash(password, 8);
+    // let hashedPassword = password;
 
     const [nid_check] = await (await conn).query("SELECT * FROM tbl_workforce WHERE nid = ?", [nid]);
     if (nid_check.length) {
@@ -246,6 +247,8 @@ const editDailyWorkforce = async (req, res) => {
 
     const [i] = await (await conn).query("UPDATE tbl_workforce SET type = ?, first_name = ?, last_name = ? , gender = ?, date_of_birth = ? , nid = ?, phone = ? , department_id = ? , position = ? , note = ?, hired_date = ?, end_date = ?, contract = ? , picture = ?, username = ?, password = ? WHERE id = ?", [type, first_name, last_name, gender, date_of_birth, nid, phone, department_id, position, note, hired_date, end_date, contract, picture, username, hashedPassword, workforce_id]);
 
+    
+
     req.flash('success', 'Workforce successfully updated!');
     res.redirect('/dashboard/workforce?tab=dailyw');
 
@@ -292,6 +295,7 @@ const editPermanentWorkforce = async (req, res) => {
 
     if (req.body.password != '') {
         hashedPassword = await bcrypt.hash(password, 8);
+        const [login] = await (await conn).query("UPDATE tbl_users SET password = ? WHERE workforce_id = ?", [hashedPassword, workforce_id]);
     } else {
         hashedPassword = workforce[0].password;
     }
