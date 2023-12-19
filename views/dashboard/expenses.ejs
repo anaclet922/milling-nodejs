@@ -45,6 +45,7 @@
                                         <th>Amount  (RWF)</th>
                                         <th>Sender</th>
                                         <th>Note</th>
+                                        <th>Date & Time</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -66,6 +67,9 @@
                                             </td>
                                             <td>
                                                 <%= expense.note %>
+                                            </td>
+                                            <td>
+                                                <%= getFormatedDate(expense.created_at) %>
                                             </td>
                                             <td>
 
@@ -177,6 +181,7 @@
                                         <th>Amount (RWF)</th>
                                         <th>Sender</th>
                                         <th>Note</th>
+                                        <th>Date & Time</th>
                                         <th></th>
                                     </tr>
                                 </tfoot>

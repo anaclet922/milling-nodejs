@@ -66,6 +66,14 @@ const newAdmin = async (req, res) => {
 
 };
 
+const deleteUser = async (req, res) => {
+
+    let id = req.query.id;
+    const [user] = await (await conn).query("DELETE FROM tbl_users WHERE ID = ?", [id]);
+    req.flash('success', 'User Successfully deleted!');
+    res.redirect('/dashboard/users');
+
+}
 
 
-module.exports = { usersHome, desactivateUser, activateUser, newAdmin };
+module.exports = { usersHome, desactivateUser, activateUser, newAdmin, deleteUser };

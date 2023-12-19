@@ -28,7 +28,7 @@
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                             data-bs-target="#new-vehicle-report-modal">New Vehicle Report</button>
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#new-vehicle">Record New Sale</button>
+                            data-bs-target="#new-vehicle">Record new vehicle</button>
                     </div>
                 </div>
             </div>
@@ -82,6 +82,7 @@
                                                         <td>Expense receiver</td>
                                                         <td>Status</td>
                                                         <td>Note</td>
+                                                        <td>Date & Time</td>
                                                         <td></td>
                                                     </tr>
                                                 </thead>
@@ -93,6 +94,7 @@
                                                         <td>Expense receiver</td>
                                                         <td>Status</td>
                                                         <td>Note</td>
+                                                        <td>Date & Time</td>
                                                         <td></td>
                                                     </tr>
                                                 </tfoot>
@@ -124,9 +126,9 @@
                                                             </td>
                                                             <td>
 
-                                                                <% if((Math.abs(new Date() - new Date(report.updated_at))
-                                                                    / 36e5) <=locals.configs['allow_edit_before_hours'])
-                                                                    { %>
+                                                                <% if((Math.abs(new Date() - new
+                                                                    Date(report.updated_at)) / 36e5)
+                                                                    <=locals.configs['allow_edit_before_hours']) { %>
 
                                                                     <div class="btn-group">
                                                                         <a href="javascript:;"
@@ -149,9 +151,8 @@
                                                                     </div>
 
                                                                     <div class="modal fade"
-                                                                        id="edit-report-<%= report.id %>"
-                                                                        tabindex="-1" aria-hidden="true"
-                                                                        style="display: none;">
+                                                                        id="edit-report-<%= report.id %>" tabindex="-1"
+                                                                        aria-hidden="true" style="display: none;">
                                                                         <div class="modal-dialog modal-dialog-centered">
                                                                             <div class="modal-content">
                                                                                 <form
@@ -264,12 +265,15 @@
 
                                                                                     </div>
                                                                                     <div class="modal-footer">
-                                                                                        <input type="hidden" value="<%= report.id %>" name="id">
+                                                                                        <input type="hidden"
+                                                                                            value="<%= report.id %>"
+                                                                                            name="id">
                                                                                         <button type="button"
                                                                                             class="btn btn-secondary"
                                                                                             data-bs-dismiss="modal">Close</button>
                                                                                         <button type="submit"
-                                                                                            class="btn btn-primary">Save changes</button>
+                                                                                            class="btn btn-primary">Save
+                                                                                            changes</button>
                                                                                     </div>
                                                                                 </form>
                                                                             </div>
@@ -408,6 +412,17 @@
                                                                                     </div>
 
 
+                                                                                    <div class="form-group">
+                                                                                        <label for="">Phone
+                                                                                            Number</label>
+                                                                                        <input
+                                                                                            class="form-control form-control-lg mb-3"
+                                                                                            type="text"
+                                                                                            placeholder="Phone number"
+                                                                                            name="phone" required
+                                                                                            value="<%= vehicle.phone %>">
+                                                                                    </div>
+
 
                                                                                     <div class="form-group">
                                                                                         <label for="">Type</label>
@@ -495,6 +510,12 @@
                             <label for="">Owner</label>
                             <input class="form-control form-control-lg mb-3" type="text" placeholder="Owner name"
                                 name="owner" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Phone Number</label>
+                            <input class="form-control form-control-lg mb-3" type="text" placeholder="Phone number"
+                                name="phone" required>
                         </div>
 
 

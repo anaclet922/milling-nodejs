@@ -46,12 +46,20 @@ routerDashboard.get('', async (req, res) => {
     const [flour_stock_object] = await (await conn).query("SELECT * FROM tbl_stock_flour");
     const [workforces_object] = await (await conn).query("SELECT COUNT(*) AS quantity FROM tbl_workforce");
 
+    let flour = 0;
+
+    if(flour_stock_object.length > 0){
+        flour += (flour_stock_object[0].quantity_5kg * 5);
+        flour += (flour_stock_object[0].quantity_10kg * 10);
+        flour += (flour_stock_object[0].quantity_25kg * 25);
+    }
+
     let page_data = {
         title: "Home",
         currrentPath: "/",
         maize_stock: ((maize_stock_object.length > 0) ? maize_stock_object[0].quantity : 0),
         branda_stock: ((branda_stock_object.length > 0) ? branda_stock_object[0].quantity : 0),
-        flour_stock: ((flour_stock_object.length > 0) ? flour_stock_object[0].quantity : 0),
+        flour_stock: flour,
         workforces: workforces_object[0].quantity
     };
 
@@ -278,8 +286,9 @@ routerDashboard.post('/post-new-vehicle', async (req, res) => {
     let owner = req.body.owner;
     let type = req.body.type;
     let capacity = req.body.capacity;
+    let phone = req.body.phone
 
-    const [i] = await (await conn).query("INSERT INTO tbl_vehicles (plate_number, owner, type, capacity) VALUES (?,?,?,?)", [plate_no, owner, type, capacity]);
+    const [i] = await (await conn).query("INSERT INTO tbl_vehicles (plate_number, owner, phone, type, capacity) VALUES (?,?,?,?,?)", [plate_no, owner, phone, type, capacity]);
     req.flash('success', 'Vehicle successfully recorded!');
     res.redirect('/dashboard/vehicles?tab=vehicles');
 
@@ -290,9 +299,10 @@ routerDashboard.post('/post-edit-vehicle', async (req, res) => {
     let owner = req.body.owner;
     let type = req.body.type;
     let capacity = req.body.capacity;
+    let phone = req.body.phone
     let id = req.body.id;
 
-    const [i] = await (await conn).query("UPDATE tbl_vehicles SET plate_number = ?, owner = ?, type = ?, capacity = ? WHERE id = ?", [plate_no, owner, type, capacity, id]);
+    const [i] = await (await conn).query("UPDATE tbl_vehicles SET plate_number = ?, owner = ?, phone = ?, type = ?, capacity = ? WHERE id = ?", [plate_no, owner, phone, type, capacity, id]);
 
     req.flash('success', 'Car successfully updated!');
     res.redirect('/dashboard/vehicles?tab=vehicles');
@@ -341,7 +351,7 @@ routerDashboard.post('/post-edit-vehicle-report', async (req, res) => {
     let note = req.body.note;
     let id = req.body.id;
 
-    const [i] = await (await conn).query("UPDATE tbl_vehicles_report SET date_time = ?, vehicle_id = ?, status = ?, expense_amount = ?, expense_receiver = ?, note = ?", [date_time, vehicle_id, status, expense_amount, expense_receiver, note, id]);
+    const [i] = await (await conn).query("UPDATE tbl_vehicles_report SET date_time = ?, vehicle_id = ?, status = ?, expense_amount = ?, expense_receiver = ?, note = ? WHERE id = ?", [date_time, vehicle_id, status, expense_amount, expense_receiver, note, id]);
 
     req.flash('success', 'Report successfully updated!');
     res.redirect('/dashboard/vehicles');
@@ -393,6 +403,8 @@ routerDashboard.post('/new-user', async (req, res) => {
 
 });
 
+
+routerDashboard.get('/delete-user', usersController.deleteUser);
 
 
 

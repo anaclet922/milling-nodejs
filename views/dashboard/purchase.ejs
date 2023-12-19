@@ -86,250 +86,271 @@
                                             </td>
                                             <td>
 
-                                                <div class="btn-group">
-                                                    <a href="javascript:;" class="btn btn-outline-primary"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#edit-purchase-<%= purchase.puchase_id %>">
-                                                        <i class="fas fa-pencil-alt"></i>
-                                                    </a>
-                                                    <button type="button"
-                                                        class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                                                        data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle
-                                                            Dropdown</span>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                                                        <a class="dropdown-item" href="javascript:;"
-                                                            onclick="areYouSureToDelete(<%= purchase.puchase_id %>)">Delete</a>
-                                                    </div>
-                                                </div>
+                                                <% if((Math.abs(new Date() - new Date(purchase.creation_date)) / 36e5)
+                                                    <=locals.configs['allow_edit_before_hours']) { %>
 
-
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="edit-purchase-<%= purchase.puchase_id %>"
-                                                    tabindex="-1" aria-hidden="true" style="display: none;">
-                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                        <div class="modal-content">
-
-                                                            <form action="/dashboard/purchase/edit" method="post">
-
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title">Edit purchase</h5>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-
-                                                                <div class="modal-body row">
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Item Type</label>
-                                                                        <select name="type"
-                                                                            class="form-control form-control-lg mb-3"
-                                                                            required>
-                                                                            <option value="" selected>Select item type
-                                                                            </option>
-                                                                            <option value="maize"
-                                                                                <%=purchase.type=='maize' ? 'selected'
-                                                                                :'' %>>Maize</option>
-                                                                            <option value="inventory"
-                                                                                <%=purchase.type=='inventory'
-                                                                                ? 'selected' :'' %>>Inventory</option>
-                                                                            <% item_types.forEach((item_type, index)=> {
-                                                                                %>
-                                                                                <option value="<%= item_type.type %>"
-                                                                                    <%=purchase.type==item_type.type
-                                                                                    ? 'selected' :'' %>>
-                                                                                    <%= item_type.type %>
-                                                                                </option>
-                                                                                <% }) %>
-                                                                        </select>
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Item Name</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="text" placeholder="Item name"
-                                                                            name="item_name" required
-                                                                            value="<%= purchase.item_name %>">
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Unit price</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="number" placeholder="Unit price"
-                                                                            name="unit_price" required
-                                                                            id="unit_price_<%= purchase.puchase_id %>"
-                                                                            value="<%= purchase.unit_price %>">
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for=""
-                                                                            id="quantity-lable-id">Quantity</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="number" placeholder="Quantity"
-                                                                            name="quantity" required
-                                                                            id="quantity_<%= purchase.puchase_id %>"
-                                                                            value="<%= purchase.quantity %>">
-                                                                    </div>
-
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Transport cost</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="number" placeholder="Transport cost"
-                                                                            name="transport_cost" required
-                                                                            id="transport_cost_<%= purchase.puchase_id %>"
-                                                                            value="<%= purchase.transport_cost %>">
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Other Cost (E.g.:
-                                                                            Gupakurura, Commissions...)</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="number" placeholder="Other costs"
-                                                                            name="other_cost" required
-                                                                            id="other_cost<%= purchase.puchase_id %>"
-                                                                            value="<%= purchase.other_cost %>">
-                                                                    </div>
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Total cost</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="text" placeholder="Total cost"
-                                                                            name="total_price" required
-                                                                            readonly="readonly"
-                                                                            id="total_price_<%= purchase.puchase_id %>"
-                                                                            value="<%= purchase.total_price %>">
-                                                                    </div>
-
-
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Seller</label>
-                                                                        <select name="seller"
-                                                                            class="form-control form-control-lg mb-3"
-                                                                            required>
-                                                                            <option value="">Select Seller</option>
-                                                                            <% sellers.forEach((seller, index)=> { %>
-                                                                                <option value="<%= seller.id %>"
-                                                                                    <%=purchase.seller==seller.id
-                                                                                    ? 'selected' : '' %>>
-                                                                                    <%= seller.first_name + ' ' +
-                                                                                        seller.last_name %>
-                                                                                </option>
-                                                                                <% }) %>
-                                                                        </select>
-                                                                    </div>
-
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Place of purchase</label>
-                                                                        <input class="form-control form-control-lg mb-3"
-                                                                            type="text" placeholder="Place of purchase"
-                                                                            name="place_of_purchase" required
-                                                                            value="<%= purchase.place_of_purchase %>">
-                                                                    </div>
-
-
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Payment Mode</label>
-                                                                        <select name="payment_method_id"
-                                                                            class="form-control form-control-lg mb-3"
-                                                                            required>
-                                                                            <option value="">Select Payment mode
-                                                                            </option>
-                                                                            <% modes.forEach((mode, index)=> { %>
-                                                                                <option value="<%= mode.id %>"
-                                                                                    <%=purchase.payment_method_id==mode.id
-                                                                                    ? 'selected' :'' %>>
-                                                                                    <%= mode.name %>
-                                                                                </option>
-                                                                                <% }) %>
-                                                                                    <option value="debt"
-                                                                                        <%=purchase.payment_method_id==0
-                                                                                        ? 'selected' :'' %>>Debt
-                                                                                    </option>
-                                                                        </select>
-                                                                    </div>
-
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Description</label>
-                                                                        <textarea name="description"
-                                                                            class="form-control"></textarea>
-                                                                    </div>
-
-
-                                                                    <div class="form-group col-md-6 col-lg-6">
-                                                                        <label for="">Note</label>
-                                                                        <textarea name="note"
-                                                                            class="form-control"></textarea>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <input type="hidden" name="purchase_id"
-                                                                        value=" <%= purchase.puchase_id %>">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary">Save
-                                                                        changes</button>
-                                                                </div>
-                                                            </form>
+                                                    <div class="btn-group">
+                                                        <a href="javascript:;" class="btn btn-outline-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#edit-purchase-<%= purchase.puchase_id %>">
+                                                            <i class="fas fa-pencil-alt"></i>
+                                                        </a>
+                                                        <button type="button"
+                                                            class="btn btn-outline-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                                                            data-bs-toggle="dropdown"> <span
+                                                                class="visually-hidden">Toggle
+                                                                Dropdown</span>
+                                                        </button>
+                                                        <div
+                                                            class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                                            <a class="dropdown-item" href="javascript:;"
+                                                                onclick="areYouSureToDelete(<%= purchase.puchase_id %>)">Delete</a>
                                                         </div>
                                                     </div>
-                                                </div>
 
 
-                                                <script>
-                                                    $(document).ready(function () {
+                                                    <!-- Modal -->
+                                                    <div class="modal fade"
+                                                        id="edit-purchase-<%= purchase.puchase_id %>" tabindex="-1"
+                                                        aria-hidden="true" style="display: none;">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                            <div class="modal-content">
 
-                                                        // $('#unit_price_<%= purchase.puchase_id %>').keyup(function () {
-                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
-                                                        // });
+                                                                <form action="/dashboard/purchase/edit" method="post">
 
-                                                        // $('#quantity_<%= purchase.puchase_id %>').keyup(function () {
-                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
-                                                        // });
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Edit purchase</h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                    </div>
 
-                                                        // $('#transport_cost_<%= purchase.puchase_id %>').keyup(function () {
-                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
-                                                        // });
+                                                                    <div class="modal-body row">
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Item Type</label>
+                                                                            <select name="type"
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                required>
+                                                                                <option value="" selected>Select item
+                                                                                    type
+                                                                                </option>
+                                                                                <option value="maize"
+                                                                                    <%=purchase.type=='maize'
+                                                                                    ? 'selected' :'' %>>Maize</option>
+                                                                                <option value="inventory"
+                                                                                    <%=purchase.type=='inventory'
+                                                                                    ? 'selected' :'' %>>Inventory
+                                                                                </option>
+                                                                                <% item_types.forEach((item_type,
+                                                                                    index)=> {
+                                                                                    %>
+                                                                                    <option
+                                                                                        value="<%= item_type.type %>"
+                                                                                        <%=purchase.type==item_type.type
+                                                                                        ? 'selected' :'' %>>
+                                                                                        <%= item_type.type %>
+                                                                                    </option>
+                                                                                    <% }) %>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Item Name</label>
+                                                                            <input
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                type="text" placeholder="Item name"
+                                                                                name="item_name" required
+                                                                                value="<%= purchase.item_name %>">
+                                                                        </div>
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Unit price</label>
+                                                                            <input
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                type="number" placeholder="Unit price"
+                                                                                name="unit_price" required
+                                                                                id="unit_price_<%= purchase.puchase_id %>"
+                                                                                value="<%= purchase.unit_price %>">
+                                                                        </div>
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for=""
+                                                                                id="quantity-lable-id">Quantity</label>
+                                                                            <input
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                type="number" placeholder="Quantity"
+                                                                                name="quantity" required
+                                                                                id="quantity_<%= purchase.puchase_id %>"
+                                                                                value="<%= purchase.quantity %>">
+                                                                        </div>
 
 
-                                                        // $('#other_cost<%= purchase.puchase_id %>').keyup(function () {
-                                                        //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
-                                                        //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
-                                                        // });
-                                                        $('#unit_price_<%= purchase.puchase_id %>').keyup(function () {
-                                                            calculateTotal(<%= purchase.puchase_id %>);
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Transport cost</label>
+                                                                            <input
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                type="number"
+                                                                                placeholder="Transport cost"
+                                                                                name="transport_cost" required
+                                                                                id="transport_cost_<%= purchase.puchase_id %>"
+                                                                                value="<%= purchase.transport_cost %>">
+                                                                        </div>
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Other Cost (E.g.:
+                                                                                Gupakurura, Commissions...)</label>
+                                                                            <input
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                type="number" placeholder="Other costs"
+                                                                                name="other_cost" required
+                                                                                id="other_cost<%= purchase.puchase_id %>"
+                                                                                value="<%= purchase.other_cost %>">
+                                                                        </div>
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Total cost</label>
+                                                                            <input
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                type="text" placeholder="Total cost"
+                                                                                name="total_price" required
+                                                                                readonly="readonly"
+                                                                                id="total_price_<%= purchase.puchase_id %>"
+                                                                                value="<%= purchase.total_price %>">
+                                                                        </div>
+
+
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Seller</label>
+                                                                            <select name="seller"
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                required>
+                                                                                <option value="">Select Seller</option>
+                                                                                <% sellers.forEach((seller, index)=> {
+                                                                                    %>
+                                                                                    <option value="<%= seller.id %>"
+                                                                                        <%=purchase.seller==seller.id
+                                                                                        ? 'selected' : '' %>>
+                                                                                        <%= seller.first_name + ' ' +
+                                                                                            seller.last_name %>
+                                                                                    </option>
+                                                                                    <% }) %>
+                                                                            </select>
+                                                                        </div>
+
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Place of purchase</label>
+                                                                            <input
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                type="text"
+                                                                                placeholder="Place of purchase"
+                                                                                name="place_of_purchase" required
+                                                                                value="<%= purchase.place_of_purchase %>">
+                                                                        </div>
+
+
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Payment Mode</label>
+                                                                            <select name="payment_method_id"
+                                                                                class="form-control form-control-lg mb-3"
+                                                                                required>
+                                                                                <option value="">Select Payment mode
+                                                                                </option>
+                                                                                <% modes.forEach((mode, index)=> { %>
+                                                                                    <option value="<%= mode.id %>"
+                                                                                        <%=purchase.payment_method_id==mode.id
+                                                                                        ? 'selected' :'' %>>
+                                                                                        <%= mode.name %>
+                                                                                    </option>
+                                                                                    <% }) %>
+                                                                                        <option value="debt"
+                                                                                            <%=purchase.payment_method_id==0
+                                                                                            ? 'selected' :'' %>>Debt
+                                                                                        </option>
+                                                                            </select>
+                                                                        </div>
+
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Description</label>
+                                                                            <textarea name="description"
+                                                                                class="form-control"></textarea>
+                                                                        </div>
+
+
+                                                                        <div class="form-group col-md-6 col-lg-6">
+                                                                            <label for="">Note</label>
+                                                                            <textarea name="note"
+                                                                                class="form-control"></textarea>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <input type="hidden" name="purchase_id"
+                                                                            value=" <%= purchase.puchase_id %>">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Save
+                                                                            changes</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <script>
+                                                        $(document).ready(function () {
+
+                                                            // $('#unit_price_<%= purchase.puchase_id %>').keyup(function () {
+                                                            //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                            //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            // });
+
+                                                            // $('#quantity_<%= purchase.puchase_id %>').keyup(function () {
+                                                            //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                            //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            // });
+
+                                                            // $('#transport_cost_<%= purchase.puchase_id %>').keyup(function () {
+                                                            //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                            //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            // });
+
+
+                                                            // $('#other_cost<%= purchase.puchase_id %>').keyup(function () {
+                                                            //     let t = parseFloat($('#unit_price_<%= purchase.puchase_id %>').val() * $('#quantity_<%= purchase.puchase_id %>').val()) + parseFloat($('#transport_cost_<%= purchase.puchase_id %>').val()) + parseFloat($('#other_cost<%= purchase.puchase_id %>').val());
+                                                            //     $('#total_price_<%= purchase.puchase_id %>').val(parseFloat(t));
+                                                            // });
+                                                            $('#unit_price_<%= purchase.puchase_id %>').keyup(function () {
+                                                                calculateTotal(<%= purchase.puchase_id %>);
+                                                            });
+
+                                                            $('#quantity_<%= purchase.puchase_id %>').keyup(function () {
+                                                                calculateTotal(<%= purchase.puchase_id %>);
+                                                            });
+
+                                                            $('#transport_cost_<%= purchase.puchase_id %>').keyup(function () {
+                                                                calculateTotal(<%= purchase.puchase_id %>);
+                                                            });
+
+                                                            $('#other_cost<%= purchase.puchase_id %>').keyup(function () {
+                                                                calculateTotal(<%= purchase.puchase_id %>);
+                                                            });
+
                                                         });
 
-                                                        $('#quantity_<%= purchase.puchase_id %>').keyup(function () {
-                                                            calculateTotal(<%= purchase.puchase_id %>);
-                                                        });
-
-                                                        $('#transport_cost_<%= purchase.puchase_id %>').keyup(function () {
-                                                            calculateTotal(<%= purchase.puchase_id %>);
-                                                        });
-
-                                                        $('#other_cost<%= purchase.puchase_id %>').keyup(function () {
-                                                            calculateTotal(<%= purchase.puchase_id %>);
-                                                        });
-
-                                                    });
 
 
 
 
+                                                    </script>
 
-                                                </script>
-
-
+                                                    <% } %>
 
                                             </td>
                                         </tr>

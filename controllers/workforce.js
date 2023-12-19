@@ -10,10 +10,11 @@ const workforceHome = async (req, res) => {
 
     const [departments] = await (await conn).query("SELECT tbl_departments.id as department_id, COUNT(tbl_workforce.department_id) as members, tbl_departments.title FROM tbl_departments LEFT JOIN tbl_workforce ON tbl_departments.id = tbl_workforce.department_id GROUP BY tbl_departments.id");
 
-    const [dailyWorkforces] = await (await conn).query("SELECT tbl_workforce.id as workforce_id, tbl_workforce.*, tbl_departments.* FROM tbl_workforce LEFT JOIN tbl_departments ON tbl_workforce.department_id = tbl_departments.id WHERE tbl_workforce.type = 'DAILY'");
+    const [dailyWorkforces] = await (await conn).query("SELECT tbl_workforce.id as workforce_id, tbl_workforce.*, tbl_departments.* FROM tbl_workforce LEFT JOIN tbl_departments ON tbl_workforce.department_id = tbl_departments.id WHERE (tbl_workforce.type = 'DAILY' AND tbl_workforce.deleted_at IS NULL)");
 
-    const [permanetWorkforces] = await (await conn).query("SELECT tbl_workforce.id as workforce_id, tbl_workforce.*, tbl_departments.* FROM tbl_workforce LEFT JOIN tbl_departments ON tbl_workforce.department_id = tbl_departments.id WHERE tbl_workforce.type = 'PERMANENT'");
-
+    const [permanetWorkforces] = await (await conn).query("SELECT tbl_workforce.id as workforce_id, tbl_workforce.*, tbl_departments.* FROM tbl_workforce LEFT JOIN tbl_departments ON tbl_workforce.department_id = tbl_departments.id WHERE (tbl_workforce.type = 'PERMANENT' AND tbl_workforce.deleted_at IS NULL)");
+ 
+    
 
     let page_data = {
         title: "Workforce",
@@ -177,7 +178,8 @@ const editDepartment = async (req, res) => {
 
 const deleteWorkforce = async (req, res) => {
     let id = req.query.employee_id;
-    const [u] = await (await conn).query("DELETE FROM tbl_workforce WHERE id = ?", [id]);
+    const [u] = await (await conn).query("UPDATE tbl_workforce SET deleted_at = NOW() WHERE id = ?", [id]);
+    const [d] = await (await conn).query("DELETE FROM tbl_users WHERE workforce_id = ?", [id]);
     req.flash('success', 'Employee successfully deleted!');
     res.redirect('/dashboard/workforce');
 };

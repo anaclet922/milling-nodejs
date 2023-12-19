@@ -6,6 +6,8 @@ const conn = require('./database');
 
 const app = express()
 
+process.env.TZ = 'Africa/Kigali';
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'uploads')));
 
@@ -27,7 +29,6 @@ app.use(async function(req,res,next){
 
     res.locals.session = req.session;
     var configs = [];
-    
     // conn.query("SELECT * FROM tbl_configs", async function (error, config, fields) {
     //     if (error) throw error;
 
