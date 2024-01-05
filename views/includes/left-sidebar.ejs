@@ -69,14 +69,7 @@
 
 
 
-    <li class="<%= currrentPath == 'stock' ? 'mm-active' : '' %>">
-      <a href="/dashboard/stock">
-        <div class="parent-icon">
-          <i class="fas fa-warehouse"></i>
-        </div>
-        <div class="menu-title">Stock</div>
-      </a>
-    </li>
+   
 
     <li class="<%= currrentPath == 'workforce' ? 'mm-active' : '' %>">
       <a href="/dashboard/workforce">
@@ -95,6 +88,34 @@
         <div class="menu-title">Inventory</div>
       </a>
     </li>
+
+
+
+
+
+    <li class="menu-label">Stock</li>
+
+    <li class="<%= currrentPath == 'new-stock' ? 'mm-active' : '' %>">
+      <a href="/dashboard/stock/new-stock">
+        <div class="parent-icon">
+          <i class="fas fa-plus"></i>
+        </div>
+        <div class="menu-title">New Stock</div>
+      </a>
+    </li>
+    
+    <li class="<%= currrentPath == 'stock' ? 'mm-active' : '' %>">
+      <a href="/dashboard/stock">
+        <div class="parent-icon">
+          <i class="fas fa-warehouse"></i>
+        </div>
+        <div class="menu-title">Stock</div>
+      </a>
+    </li>
+
+
+
+
 
     <li class="menu-label">Sales</li>
     

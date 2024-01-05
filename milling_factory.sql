@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 19, 2023 at 08:48 PM
+-- Generation Time: Dec 20, 2023 at 05:21 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -518,7 +518,7 @@ CREATE TABLE `tbl_stock_branda` (
 --
 
 INSERT INTO `tbl_stock_branda` (`id`, `quantity`, `updated_at`) VALUES
-(1, -252, '2023-12-19 19:18:52');
+(1, 900, '2023-12-20 02:30:01');
 
 -- --------------------------------------------------------
 
@@ -539,7 +539,7 @@ CREATE TABLE `tbl_stock_flour` (
 --
 
 INSERT INTO `tbl_stock_flour` (`id`, `quantity_5kg`, `quantity_10kg`, `quantity_25kg`, `updated_at`) VALUES
-(1, -21321, 36, 32, '2023-12-19 19:18:52');
+(1, -21297, 56, 42, '2023-12-20 02:30:01');
 
 -- --------------------------------------------------------
 
@@ -558,7 +558,7 @@ CREATE TABLE `tbl_stock_ibitiritiri` (
 --
 
 INSERT INTO `tbl_stock_ibitiritiri` (`id`, `quantity`, `updated_at`) VALUES
-(1, 22, '2023-12-19 19:18:52');
+(1, 47, '2023-12-20 02:30:01');
 
 -- --------------------------------------------------------
 
@@ -577,7 +577,7 @@ CREATE TABLE `tbl_stock_maize` (
 --
 
 INSERT INTO `tbl_stock_maize` (`id`, `quantity`, `updated_at`) VALUES
-(1, -5270, '2023-12-19 19:18:52');
+(1, 4730, '2023-12-20 02:07:24');
 
 -- --------------------------------------------------------
 

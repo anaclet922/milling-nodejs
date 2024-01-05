@@ -499,8 +499,9 @@ routerDashboard.post('/configs/post-new-favicon', faviconUpload, configsControll
 
 
 routerDashboard.get('/stock', stockController.stockHome);
-routerDashboard.post('/add-stock', stockController.addToStock);
+routerDashboard.post('/stock/new', stockController.addToStock);
 routerDashboard.post('/remove-stock', stockController.removeToStock);
+routerDashboard.get('/stock/new-stock', stockController.newStock);
 
 
 

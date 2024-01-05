@@ -1,0 +1,103 @@
+<%- include('../includes/dashboard-top') %>
+
+    <div class="page-content-wrapper">
+
+        <div class="page-content">
+
+            <div class="page-breadcrumb d-sm-flex align-items-center mb-3">
+                <!-- <div class="breadcrumb-title pe-3">Dashboard</div> -->
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0 align-items-center">
+                            <li class="breadcrumb-item"><a href="/dashboard"><ion-icon name="home-outline" role="img"
+                                        class="md hydrated" aria-label="home outline"></ion-icon></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= locals.title %>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ms-auto">
+                    <div class="btn-group">
+                        <a href="/dashboard/stock" class="btn btn-outline-primary">Back To Stock</a>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+
+            <br>
+            <br>
+            <br>
+
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <form action="/dashboard/stock/new" method="post">
+
+                                <div class=" row">
+
+
+                                    <div class="form-group col-md-4 col-lg-4">
+                                        <label for="">Flour 5kg Bags</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="How many bags of 5kg" name="output_5kg_flour" required/>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-lg-4">
+                                        <label for="">Flour 10kg Bags</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="How many bags of 10kg " name="output_10kg_flour" required/>
+                                    </div>
+
+                                    <div class="form-group col-md-4 col-lg-4">
+                                        <label for="">Flour 25kg Bags</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="How many bags of 25kg " name="output_25kg_flour" required/>
+                                    </div>
+
+
+                                    <hr>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Branda (kg)</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Kg" name="branda_quantity" required/>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-lg-6">
+                                        <label for="">Ibitiritiri (kg)</label>
+                                        <input class="form-control form-control-lg mb-3" type="number"
+                                            placeholder="Kg" name="ibitiritiri_quantity" required/>
+                                    </div>
+
+
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-12 text-end">
+                                        <a href="/dashboard/sales" class="btn btn-secondary">Cancel</a>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <%- include('../includes/dashboard-foot') %>
